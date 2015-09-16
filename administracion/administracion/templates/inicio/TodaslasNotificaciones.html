@@ -24,7 +24,7 @@
 				}
 			});
 		}
-		
+		/*data[i].fields.id*/
 		$('#fer').on('click',	iniciar);
 			function iniciar(e){
 				e.preventDefault();
@@ -46,9 +46,9 @@
 						console.log(data);
 						var html=""
 						for(var i = 0; i<data.length; i++){
-							html += '<li>'+(i+1)+' .- '+data[i].fields.Usuario+data[i].fields.id+':  Descricion:  '+data[i].fields.descripcion+'</li><br>';
+							html += '<li>      '+(i+1)+' .- '+data[i].fields.Usuario+':  Descricion:  '+data[i].fields.descripcion+'</li><br>';
 						}
-							$('#notiii').html(html);
+							$('#contend').html(html);
 						}
 					});
 				}
@@ -93,6 +93,7 @@ function ventanaSecundaria(URL){
 				<input type="button" id="lanzador2" value="..." />
 				<button id='fer'>Ver</button>
 			</form>
+		<div id="contend"></div>
 	{%  for i in ns %}
 		<ul class='nn'>
 			<li>Nombre de Usuario:  {{i.Usuario}}      Fecha de Notificacion: {{i.fecha_notificacion}}</li>
