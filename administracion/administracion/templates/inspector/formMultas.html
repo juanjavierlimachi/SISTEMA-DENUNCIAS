@@ -1,0 +1,139 @@
+{% extends 'inspector/inicio_inspector.html' %}
+{% block user %}{{user}}{% endblock %}
+{% block js %}
+{% if user.is_authenticated %}
+<script type="text/javascript">
+$(document).ready(function(){
+	Calendar.setup({
+		        inputField     :    "id_fecha_presentacion",      // id del campo de texto
+		        ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
+		        button         :    "lanzador"   // el id del botón que lanzará el calendario
+		    });
+});
+</script>
+<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
+  <!-- librería principal del calendario -->
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
+  <!-- librería para cargar el lenguaje deseado -->
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
+  <!-- librería que declara la función Calendar.setup, que ayuda a generar un calendario en unas pocas líneas de código -->
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
+{% endif %}
+{% endblock %}
+{% block inspecciones %}
+{% if not user.is_authenticated %}
+	<h2>Inicie sesion</h2>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		alert('Inicie sesion')
+	})
+	</script>
+	<style type="text/css">
+	html{
+		display: none;
+	}
+	</style>
+{% else %}
+<link rel="stylesheet" type="text/css" href="/static/css/formulariosCliente.css">
+<link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
+<style type="text/css">
+	section{
+		display: none;
+	}
+</style>
+<audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
+<div id="comentario">
+{% for mult in multa %}	
+	<li><a href="javascript:ventanaSecundaria('/detDenuncias/{{mult.id}}/')">{{ mult.Usuario}}- Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
+{% endfor %}
+</div>
+<div class="card">
+<form method='POST' id='form_coords'>{% csrf_token %}
+	<input id="id_idUser" name="idUser" value='{{user.id}}' type="hidden">
+	<tr><th><label for="id_Usuario">Usuario:{{user.username}}</label></th><td>
+	<input id="id_Usuario" maxlength="100" name="Usuario" type="hidden" value='{{user.username}}' /></td></tr>
+	<tr><th><label for="id_descripcion">Descripcion:</label></th><td>
+	<textarea cols="40" id="id_descripcion" name="descripcion" rows="10"></textarea></td></tr>
+	<tr><th><label for="id_Codigo">Codigo:</label></th><td>
+	<input id="id_Codigo" name="Codigo" type="number" /></td></tr>
+	<tr><th><label for="id_fecha_presentacion">Fecha presentacion:</label></th><td>
+	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" placeholder='Año-Mes-Dia' />
+	<input type="button" id="lanzador" value="..." /></td></tr>
+	<tr><th><label for="id_hora">Hora:</label></th><td>
+	<input id="id_hora" maxlength="12" name="hora" type="text" /></td></tr><br>
+	<button name='btn' id='bo'class="waves-effect waves-light btn">Notificar</button>
+</form>
+</div>
+<script>
+	var socket = io.connect("http://localhost:3000");
+	$('#bo').on('click', Notificar);var cont=0;
+	function Notificar(e){
+		e.preventDefault();
+		var dato = {
+			idUser:$('#id_idUser').val(),
+			Usuario:$('#id_Usuario').val(),
+			descripcion:$('#id_descripcion').val(),
+			Codigo:$('#id_Codigo').val(),
+			fecha_presentacion:$('#id_fecha_presentacion').val(),
+			hora:$('#id_hora').val()
+		}
+		if (dato.idUser.length<0 || dato.Usuario.length==0 || dato.descripcion.length<1 || dato.Codigo.length==0 || dato.fecha_presentacion.length==0 || dato.hora.length==0){
+			alert('Dejo Campos en blanco Verifique por favor...');
+			return false;
+		}
+		else{
+			$("#id_descripcion").val("");$("#id_Codigo").val("");$("#id_fecha_presentacion").val("");
+			$("#id_hora").val(" ");
+			 navigator.geolocation.getCurrentPosition(ubicacion,error);
+			   function ubicacion(posicion)
+				{
+				    var contenedor = document.getElementById("ubicacion");
+				    var latitud = posicion.coords.latitude;
+				    var longitud = posicion.coords.longitude;
+				    var precision = posicion.coords.accuracy;
+				    coordenadas={
+				    	lat:posicion.coords.latitude,
+				    	lng:posicion.coords.longitude
+				    }
+				    socket.emit('coordenadasDatos', coordenadas)
+				     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
+				     alert("Notificacion enviada exitosamente");
+				}    
+				function error(error)
+			     {
+				     if(error.code == 0)
+				      alert("Error Desconocido");
+				     else if(error.code == 1)
+				      alert("No fue posible contactarte");
+				     else if(error.code == 2)
+				      alert("No hay una ubicacion disponible");
+				     else if(error.code == 3)
+				      alert("Tiempo agotado");
+				    else 
+				      alert("Error Desconocido");
+				  }
+		socket.emit('notificacion', dato);
+		cont=cont+1;
+		socket.emit('notificaciones',cont);
+		}
+	}
+	socket.on('devolviendo', function(data){
+		console.log(data);
+	var data = JSON.parse(data);
+	$("#comentario").prepend("<p>"+data.Usuario+ ":Notifico.-" +data.descripcion+"Cod:"+data.Codigo+"</p>");
+		var playing = true;
+        $(this).toggleClass("down");
+        if (playing == true) {
+            document.getElementById('player').play();
+        }
+	});
+	/*socket.on('Avisos',Respuesta);
+		function Respuesta(data){
+			alert('Notificacion: '+data);
+		}*/
+function ventanaSecundaria(URL){
+    window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
+}
+</script>
+{% endif %}
+{% endblock %}

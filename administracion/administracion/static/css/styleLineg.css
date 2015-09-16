@@ -1,0 +1,17 @@
+#info{
+	width: 90%;height: auto;margin: auto;
+}
+#info p{
+	text-align: center;
+}
+#info ul {
+	width: 100%;height: auto;margin: auto;
+}
+#info ul li{
+	list-style: none;
+}
+#info ul li a:hover{
+	color: orange;text-decoration: none;
+}
+
+#leftt{display: none;} 

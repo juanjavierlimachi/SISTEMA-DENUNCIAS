@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Todas las Notificaciones</title>
+	<style type="text/css">
+	#todos{
+		width: 100%; height: 100%;
+	}
+	#todos ul{
+		width: 95%;height: auto;margin: auto;margin-top: 10px;
+	}
+	#todos ul li{
+		width: 100%;height: auto;margin: auto;list-style: none;
+	}
+	#todos ul:hover{
+		background: silver;
+	}
+	</style>
+</head>
+<body>
+<p>Todas las Notificaciones del Negocio : {{negocio.propietario}}</p>
+<div id="todos">
+{% for i in todasN %}
+<ul>
+	<li>{{i.Usuario}}</li>
+	<li>{{i.fecha_notificacion}}</li>
+	<li>{{i.descripcion}}</li>
+	<li>{{i.fecha_presentacion}}</li>
+	<li>{{i.hora}}</li>
+</ul>
+{% endfor %}
+</div>
+</body>
+</html>
