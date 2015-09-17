@@ -12,11 +12,8 @@ $(document).ready(function(){
 });
 </script>
 <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
-  <!-- librería principal del calendario -->
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
-  <!-- librería para cargar el lenguaje deseado -->
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
-  <!-- librería que declara la función Calendar.setup, que ayuda a generar un calendario en unas pocas líneas de código -->
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 {% endif %}
@@ -63,8 +60,8 @@ function verFormulario(){
 <div class="card">
 <form method='POST'>{% csrf_token %}
 <input type='hidden' name='csrfmiddlewaretoken' value='xVJkmM4l7vuK6cX1520xfqRh3EgHAEEa' />
-		<input id="id_idUser" name="idUser" value='{{user.id}}' type="hidden">
-		<tr><th><label for="id_Usuario">Usuario:{{user.username}}</label></th><td>
+<input id="id_idUser" name="idUser" value='{{user.id}}' type="hidden">
+<tr><th><label for="id_Usuario">Usuario:{{user.username}}</label></th><td>
 <input id="id_Usuario" maxlength="100" name="Usuario" type="hidden" value='{{user.username}}' /></td></tr>
 <tr><th><label for="id_descripcion">Descripcion:</label>
 </th><td><textarea cols="40" id="id_descripcion" name="descripcion" rows="10" required>
@@ -83,11 +80,12 @@ function verFormulario(){
 	<script src="/static/js/jquery.min3.js"></script>
 	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>
+	$('#map_canvas').text("Cargando Mapa..");
 	var socket = io.connect("http://localhost:3000");
 	var cont=0;
-	$('#boton').on('click',	Comentar);
+	$('#boton').on('click',	Notificar);
 	//alert('as echo clik en enviars') 
-	function Comentar(e){
+	function Notificar(e){
 		e.preventDefault();
 		var dato = {
 			//user: "{{name}}",

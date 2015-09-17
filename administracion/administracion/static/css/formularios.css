@@ -46,7 +46,9 @@
         border-collapse: collapse;margin-bottom: 0px;margin-top: 0px;
     }
     #comentario li a{
+        width: 98%;
         color: #465866;
+        margin-left: 10px;
     }
     #comentario li:nth-child(odd) { background: #fff; }
     #comentario li:hover{
