@@ -51,9 +51,9 @@ function ventanaSecundaria(URL){
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>
 	var socket = io.connect("http://localhost:3000");
-
-	$('#boton').on('click',	Comentar);
-	function Comentar(e){
+	$('#map_canvas').text("Cargando Google Maps...")
+ $('#boton').on('click',	Denuncia);
+	function Denuncia(e){
 		e.preventDefault();
 		//son los datos que recuperamos del formulario
 		var datos = {
