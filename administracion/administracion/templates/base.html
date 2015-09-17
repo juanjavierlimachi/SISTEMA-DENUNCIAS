@@ -24,22 +24,21 @@
        <script src="http://localhost:3000/socket.io/socket.io.js"></script>
         <script type="text/javascript">
     $(document).ready(function(){
-        $('div.acordion> div').hide(); /*aki estamos ocultando los div k contiene el texto*/
+        alert("sea revodaso el codigo");
+        
+        $('div.acordion> div').hide();
         $('div.acordion> li').click(function(){
-            $(this).next().slideToggle(90) /*slideToggle este metodo hace el efecto cuando haces click en un tienpo de 90 mls*/
+            $(this).next().slideToggle(90)  
         })
     });
     var socket = io.connect("http://localhost:3000");
     var usuario=document.getElementById('user');
-    /*var de=document.getElementById('denuncia');
-    var notifi=document.getElementById('notificacion');*/
-    //aki estoy contando todos los usuarios conectados en el sistema
+
     socket.on('user',function(data){
         console.log('hay '+ data.numbrer +' usuario');
         var contador=data.numbrer;
         $('#user').html('Usuarios Conectados: '+(contador-1));
     });
-    //aki estoy contando todas las denuncias que me esta llegando al administrador
     var de=0;
     socket.on('denuncias',function(resp){
         console.log('llego una denuncia'+resp)
