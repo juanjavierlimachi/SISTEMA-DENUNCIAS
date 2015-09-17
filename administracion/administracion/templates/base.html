@@ -24,6 +24,7 @@
        <script src="http://localhost:3000/socket.io/socket.io.js"></script>
         <script type="text/javascript">
     $(document).ready(function(){
+        alert("se cambio el Codigo");
         $('div.acordion> div').hide();
         $('div.acordion> li').click(function(){
             $(this).next().slideToggle(90)  
@@ -52,12 +53,6 @@
         $('#notificacion').html('Notificaciones Recibidas:'+n);
     });
     </script>
-    <style type="text/css">
-        #notiii {
-    width: 90%;margin: auto;
-    margin-left: 20px;
-}
-    </style>
     </head>
     <body>   
         <header>
