@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}.:Perfil Usuario:.{% endblock %}
 {% block contenidos %}
+{% if user.is_authenticated and user.is_staff %}
 <style type="text/css">
     #leftt{
         display: none;
@@ -44,11 +45,20 @@
                     <li><label>Apellido:</label>{{user.last_name}}</li>
                    <li> <label>Numero de Ci:</label>{{info.ci}}</li></ul>
                     <!--  <button class="waves-effect waves-light btn" type="submit">Guardar</button> -->
-                
              {% endif %}
         {% endfor %}
     {% endfor %}
-    <a class="waves-effect waves-light btn" href="javascript:ventanaSecundaria('/editarperfil/')">Editar Datos</a>
-    <a class="waves-effect waves-light btn" href="/editarcon/">Editar Password</a>
+    <a class="waves-effect waves-light btn" href="/editarperfil/">Editar Datos</a>
+    <a class="waves-effect waves-light btn" href="/editarcontracenia/{{user.id}}/">Editar Password</a>
 </div>
+{% else %}
+<script type="text/javascript">
+$(document).ready(function(){
+    alert(window.location='/')
+});
+</script>
+<style type="text/css">
+html{display: none;}
+</style>
+{% endif %}
 {% endblock %}

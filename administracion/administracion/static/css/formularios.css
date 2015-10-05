@@ -35,20 +35,21 @@
     .card #id_tipo label input{width: 100px;
        float: right;
     }
-
+.card form .helptext{display: none;}
     #comentario{
         width: 100%;height: auto;margin: auto;
         background:#eee;margin-top: 10px;margin-bottom: 50px;
     }
   
     #comentario li{
-        width: auto;height: 25px;list-style: none;
+        width: auto;height: auto;list-style: none;
         border-collapse: collapse;margin-bottom: 0px;margin-top: 0px;
     }
     #comentario li a{
         width: 98%;
         color: #465866;
         margin-left: 10px;
+        text-decoration: none;
     }
     #comentario li:nth-child(odd) { background: #fff; }
     #comentario li:hover{
@@ -72,3 +73,7 @@
 section{
         display: none;
     }
+#fbuscarUser{
+    width: 50%;height: auto;margin: auto;
+}
+#fbuscarUser input{width: 100%;margin: auto;}

@@ -153,3 +153,4 @@ class ConsultarDenunciaClienteFecha(TemplateView):
 		print 'Esta es la fecha:',consulta
 		data = serializers.serialize('json', consulta,fields=('id','user','fecha_denuncia','comment'))
 		return HttpResponse(data, 'application/json')
+

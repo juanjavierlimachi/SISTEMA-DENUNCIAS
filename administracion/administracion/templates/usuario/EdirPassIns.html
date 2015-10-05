@@ -1,0 +1,24 @@
+{% extends 'inspector/inicio_inspector.html' %}
+{% block user %}{{user}}{% endblock %}
+{% block inspecciones %}
+{% if user.is_authenticated %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
+<div class="card">
+<p>Actulizar la Contraceña de : {{id_user|upper}} {{id_user.first_name|upper}}  {{id_user.last_name|upper}}</p>
+<form method='POST'>{% csrf_token %}
+	{{forms}}
+	<input type='submit' name='btn' value='Guardar'>
+</form>
+</div>
+{% else %}
+<script type="text/javascript">
+$(document).ready(function(){
+    alert(window.location='/')
+});
+</script>
+<style type="text/css">
+html{display: none;}
+</style>
+{% endif %}
+{% endblock %}

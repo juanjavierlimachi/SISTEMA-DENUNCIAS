@@ -1,87 +1,76 @@
 {% extends 'base.html' %}
 {% block title %}.:Nuevo:.{% endblock %}
 {% block contenidos %}
-<div>
-	<head>
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/forNuevo.css">
+{% if user.is_authenticated and user.is_staff %}
+<script type="text/javascript" src="{{STATIC_URL}}js/buscarUser.js"></script>
 <!-- <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css"> -->
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+        <div class="card">
+            <form method="POST" action="" onsubmit='return verificar()'> {% csrf_token %}
+                {{form}}
+                <button class="waves-effect waves-light btn" type="submit"
+                onsubmit='verificar()'>Guardar</button> <a href="#" 
+                class="waves-effect waves-light btn" id='buscarUser'>Buscar Usuario</a>
+            </form>
+            <div id="valor"></div>
+         </div>
+        <form action="#" name="" id="fbuscarUser" method="post">{% csrf_token %}
+    <input id="textoo" maxlength="50" name="textoo" type="text" placeholder='Buscar Usuario' />
+    </form>
+{% else %}
 <script type="text/javascript">
-    function verificar(){
+$(document).ready(function(){
+    alert(window.location='/')
+});
+</script>
+<style type="text/css">
+html{display: none;}
+</style>
+
+{% endif %}
+{% endblock %}
+{% block js %}
+<style type="text/css">
+    #valor p{color: red;}
+</style>
+<script type="text/javascript">
+ $(document).ready(function(){
+    $('#fbuscarUser').hide()
+        $('#id_username').blur(ejecutar);
+        function ejecutar(){
+            var use= $('#id_username').val();
+            $.ajax({
+                type:'get',
+                url:'/verificacion/',
+                data:{'use': use },
+                beforeSend: entesEnviar,
+                success:function (resp){
+                    console.log(resp);
+                    $('#valor').html('<p>'+resp+'</p>');
+                }
+            });
+            function entesEnviar(){
+                $('#valor p').text("Verificando...")
+            }
+        }
+       $('#buscarUser').click(buscarUsuario);
+       function buscarUsuario(){
+            $('#fbuscarUser').show(1000);
+            
+       }
+       
+    });
+function verificar(){
         var user=$('#id_username').val();
         var pass=$('#id_password').val();
         var repass=$('#id_password_confirm').val();
         var nombre=$('#id_first_name').val();
         var ape=$('#id_last_name').val();
-        var ci=$('#id_email').val();
-        if (user==''||pass==''||repass==''||nombre==''||ape==''||ci==''){
-            alert('Error no deve dejar casillas en blanco');
-            return false;
-        }
-    }
-</script>
-  </head>
-  <body class="valign-wrapper2">
-
-        <div class="card">
-            <form method="POST" action="" onsubmit='return verificar()'> {% csrf_token %}
-                {{form}}
-    <button class="waves-effect waves-light btn" type="submit"
-    onsubmit='verificar()'>Guardar</button>
-            </form>
-         </div>
-      
-
-      </div>
-<script type="text/javascript">
-    if (navigator.appVersion.indexOf("Win")!=-1) {
-        document.write('<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/robotofix.css">');
-    }
-
-    $(function() {
-        $('.dropdown-button').dropdown({hover: false});
-        $(".button-collapse").sideNav();
-        $('select').not('.disabled').not('.material-ignore').material_select();
-
-        $('[data-form-control="date"]').each(function() {
-            var input = $(this);
-            input.datetimepicker({format: input.data('date-format'), timepicker:false, mask:false});
-        });
-        $('[data-form-control="time"]').each(function() {
-            var input = $(this);
-            input.datetimepicker({format: input.data('date-format'), datepicker: false, timepicker:true, mask:false});
-        });
-        $('[data-form-control="datetime"]').each(function() {
-            var input = $(this);
-            input.datetimepicker({format: input.data('date-format'), datepicker: true, timepicker:true, mask:false});
-        });
-
-
-        /*
-          In chrome, there is no way to get to know is autofill
-          fills the password field until user is interacted. Assume
-          that it is
-        */
-        if($('input[type=password]').length) {
-            function autofix() {
-                $('input[type=password]').addClass('active').addClass('valid');
-                $('input[type=password]').next('label').addClass('active').addClass('valid');
-                $('input[type=password]').prev('i').addClass('active');
-                userInteracted();
+        var ci=$('#id_ci').val();
+            if (user==''||pass==''||repass==''||nombre==''||ape==''||ci=='' || isNaN(ci)){
+                alert('Error no deve dejar casillas en blanco');
+                return false;
             }
-
-            function userInteracted() {
-                $('body').off('input propertychange', 'input[type=text]', autofix);
-                $('body').off('input propertychange', 'input[type=email]', autofix);
-                $('body,html').unbind("scroll mousedown DOMMouseScroll mousewheel keyup", userInteracted);
-            }
-
-            $('body').on('input propertychange', 'input[type=text]', autofix);
-            $('body').on('input propertychange', 'input[type=email]', autofix);
-            $("body,html").bind("scroll mousedown DOMMouseScroll mousewheel keyup", userInteracted);
         }
-    });
 </script>
-
-</div>
 {% endblock %}

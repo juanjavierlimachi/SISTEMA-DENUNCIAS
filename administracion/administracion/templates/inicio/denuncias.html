@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}.:Denuncias:.{% endblock %}
 {% block contenidos %}
-{% if not user.is_authenticated %}
+{% if not user.is_authenticated and not user.is_staff %}
 	<script type="text/javascript">
 	$(document).ready(function(){
-		alert('Inicie sesion')
+		alert(window.location='/');
 	})
 	</script>
 	<style type="text/css">

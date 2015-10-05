@@ -1,7 +1,8 @@
-{%  extends 'base.html' %}
-
-{% block contenidos %}
+{% extends 'inspector/inicio_inspector.html' %}
+{% block user %}{{user}}{% endblock %}
+{% block inspecciones %}
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <div class="card">
 <form action="" method="POST">{% csrf_token %}
    {{ user_form }}

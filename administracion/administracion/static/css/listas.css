@@ -2,15 +2,25 @@
 	.nn{width: 90%; height: auto; margin: auto;
 		margin-top: 10px;border: 2 solid black;
 	}
+	.nn:hover{
+		background: #ddd;
+	}
 	.nn li{
 		list-style: none;
 	}
-.card p{width: 35%;
+.card p{width: auto;
 	text-align: center;color: black;height: 30px;margin: auto;
 }
 .card p #fecha{
 	width: 200px;float: left; margin-left: 20px;
 }
 .card #filtro{
-	width: 48%;height: 30px;margin: auto;
+	width: auto;height: 30px;margin: auto;margin-left: 50px;
+}
+#contend{
+	width: 80%;height: auto;margin: auto;margin-left: 50px;/* border: 1px solid black;*/
+}
+#contend li{width: auto;list-style: none;height: 25px;}
+#contend li:hover{
+	background: #ddd;
 }

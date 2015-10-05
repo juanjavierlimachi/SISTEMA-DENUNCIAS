@@ -34,8 +34,9 @@ $(document).ready(function(){
 	}
 	</style>
 {% else %}
-<link rel="stylesheet" type="text/css" href="/static/css/formulariosCliente.css">
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
+<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
 <style type="text/css">
 	section{
 		display: none;
@@ -47,6 +48,7 @@ $(document).ready(function(){
 	<li><a href="javascript:ventanaSecundaria('/detDenuncias/{{mult.id}}/')">{{ mult.Usuario}}- Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
 {% endfor %}
 </div>
+<div id="map_canvas"></div>
 <div class="card">
 <form method='POST' id='form_coords'>{% csrf_token %}
 	<input id="id_idUser" name="idUser" value='{{user.id}}' type="hidden">
@@ -120,13 +122,35 @@ $(document).ready(function(){
 	socket.on('devolviendo', function(data){
 		console.log(data);
 	var data = JSON.parse(data);
-	$("#comentario").prepend("<p>"+data.Usuario+ ":Notifico.-" +data.descripcion+"Cod:"+data.Codigo+"</p>");
+	$("#comentario").prepend("<p>"+data.Usuario+ ":Notifico.-" +data.descripcion+"   Cod:  "+data.Codigo+"</p>");
 		var playing = true;
         $(this).toggleClass("down");
         if (playing == true) {
             document.getElementById('player').play();
         }
 	});
+	
+	socket.on('regresandoCooords',DatosCoors);
+	function DatosCoors(Coords){
+		iniciar(Coords);
+	}
+	function iniciar(Coords) {
+		console.log(Coords.lat);
+		console.log(Coords.lng);
+		var mapOptions = {
+			center: new google.maps.LatLng(Coords.lat, Coords.lng),
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+		var pos = new google.maps.LatLng(Coords.lat, Coords.lng);
+		marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            title:"Ubicacion",
+            animation: google.maps.Animation.DROP
+        });
+	} 
 	/*socket.on('Avisos',Respuesta);
 		function Respuesta(data){
 			alert('Notificacion: '+data);

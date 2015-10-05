@@ -10,7 +10,6 @@
 					'fe':$('#campo_fecha').val(),
 					'fn':$('#campo_fecha_fin').val()
 				}
-				//console.log(fecha);
 				$.ajax({
 				type:'get',
 				url:'/ConsultarDenunciaClienteFecha/',
@@ -19,9 +18,9 @@
 					//console.log(data);
 					var html=""
 					for(var i = 0; i<data.length; i++){
-						html += '<li>'+(i+1)+' .- '+data[i].fields.user+':  Fecha:  '+data[i].fields.fecha_denuncia+'  Descricion:  '+data[i].fields.comment+'</li><br>';
+						html += '<li>'+(i+1)+' .- '+data[i].fields.user+':  Fecha:  '+data[i].fields.fecha_denuncia+'  Descricion:  '+data[i].fields.comment+'</li>';
 					}
-					$('#notiii').html(html);
+					$('#contend').html(html);
 				}
 			});
 		}
@@ -40,7 +39,7 @@
 function ventanaSecundaria(URL){
                 window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
             } 
-</script>
+</script> 
 <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
   <!-- librería principal del calendario -->
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
@@ -50,6 +49,7 @@ function ventanaSecundaria(URL){
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
 {% endblock %}
 {% block contenidos %}
+{% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
 <script type="text/javascript">
 function ventanaSecundaria(URL){
@@ -71,6 +71,7 @@ function ventanaSecundaria(URL){
 				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'><input type="button" id="lanzador2" value="..." />
 				<button id='fer'>Ver</button>
 	</form>
+	<div id="contend"></div>
 	{%  for i in cs %}
 		<ul class='nn'>
 			<li>Cliente:  {{i.user}} 
@@ -83,4 +84,15 @@ function ventanaSecundaria(URL){
 	{% endfor %}
 	<li><a href="#" onclick='Vermas()' id='mas'>Ver Mas</a></li>
 </div>
+{% else %}
+<script type="text/javascript">
+$(document).ready(function(){
+    alert(window.location='/')
+});
+</script>
+<style type="text/css">
+html{display: none;}
+</style>
+
+{% endif %}
 {% endblock %}

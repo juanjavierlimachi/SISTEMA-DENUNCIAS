@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}.:Denuncias:.{% endblock %}
 {% block contenidos %}
+{% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
 <script type="text/javascript">
 	function ventanaSecundaria(URL){
@@ -21,5 +22,14 @@
 <li><a href="javascript:ventanaSecundaria('/allNotDeUnNegocio/{{nego.id}}/')">Ver todos</a>
 </li>
 </div>
-
+{% else %}
+<script type="text/javascript">
+$(document).ready(function(){
+	alert(window.location='/');
+});
+</script>
+<style type="text/css">
+html{display: none;}
+</style>
+{% endif %}
 {% endblock %}

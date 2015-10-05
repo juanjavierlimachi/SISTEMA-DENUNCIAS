@@ -1,53 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}.:Denuncias:.{% endblock %}
-{% block js %}
-{% if user.is_authenticated %}
-<script type="text/javascript">
-$(document).ready(function(){
-	Calendar.setup({
-		        inputField     :    "id_fecha_presentacion",      // id del campo de texto
-		        ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
-		        button         :    "lanzador"   // el id del botón que lanzará el calendario
-		    });
-});
-</script>
-<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
-  <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
-  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
-  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
-<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-{% endif %}
-{% endblock %}
 {% block contenidos %}
-{% if not user.is_authenticated %}
-	<h2>Inicie sesion</h2>
-	<script type="text/javascript">
-	$(document).ready(function(){
-		alert('Inicie sesion')
-	})
-	</script>
-	<style type="text/css">
-	html{
-		display: none;
-	}
-	</style>
-{% else %}
+{% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
-<script type="text/javascript">
-/*$(document).on('ready',verFormulario);
-function verFormulario(){
-	$('.card').hide();
-	$('#not').click(function(){
-		$('.card').show(1000);
-		$('#not').hide();
-	});
-}*/
-</script>
-<script type="text/javascript">
-	function ventanaSecundaria(URL){
-                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
-            }
-</script>
 <!--<button id='not' class="waves-effect waves-light btn">Responder</button>-->
 <audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
 <div id="comentario">
@@ -74,7 +29,7 @@ function verFormulario(){
 <tr><th><label for="id_hora">Hora:</label></th><td>
 	<input id="id_hora" maxlength="12" name="hora" type="text" required/></td></tr><br>
 <!--class="waves-effect waves-light btn"-->
-					<button name='btn' id='boton'>Notificar</button>
+	<button name='btn' id='boton'>Notificar</button>
 </form>
 </div>
 	<script src="/static/js/jquery.min3.js"></script>
@@ -84,7 +39,6 @@ function verFormulario(){
 	var socket = io.connect("http://localhost:3000");
 	var cont=0;
 	$('#boton').on('click',	Notificar);
-	//alert('as echo clik en enviars') 
 	function Notificar(e){
 		e.preventDefault();
 		var dato = {
@@ -105,6 +59,7 @@ function verFormulario(){
 			socket.emit('notificaciones',cont);
 			$("#id_descripcion").val("");$("#id_Codigo").val("");$("#id_fecha_presentacion").val("");
 			$("#id_hora").val(" ");
+
 		}
 	}
 	socket.on('devolviendo', function(data){
@@ -144,7 +99,37 @@ function verFormulario(){
 			alert(data);
 		});
 	});*/
+function ventanaSecundaria(URL){
+                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
+            }
 </script>
+{% else %}
+	<script type="text/javascript">
+	$(document).ready(function(){
+		 alert(window.location='/')
+	})
+	</script>
+	<style type="text/css">
+	html{
+		display: none;
+	}
+	</style>
 {% endif %}
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function(){
+	Calendar.setup({
+		        inputField     :    "id_fecha_presentacion",      // id del campo de texto
+		        ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
+		        button         :    "lanzador"   // el id del botón que lanzará el calendario
+		    });
+});
+</script>
+<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 {% endblock %}
 

@@ -4,13 +4,20 @@ from django.forms import ModelForm
 from .models import Perfiles
 from django.contrib.auth.forms import User
 class UserForm(UserCreationForm):
-	username = forms.CharField(max_length=40,required=True)
-	password1 = forms.CharField(required=True)
-	password2 = forms.CharField(required=True)
-	first_name = forms.CharField(max_length=40,required=True)
-	last_name = forms.CharField(max_length=50,required=True)
-	ci = forms.IntegerField(required=True)
+	username = forms.CharField(max_length=40,required=True,label="Nombre de Usuario",widget=forms.TextInput())
+	password1 = forms.CharField(required=True, label="Contracenia",widget=forms.PasswordInput(render_value=False))
+	password2 = forms.CharField(required=True, label="Confirmacion",widget=forms.PasswordInput(render_value=False))
+	first_name = forms.CharField(max_length=40,required=True,label="Nombre Completo",widget=forms.TextInput())
+	last_name = forms.CharField(max_length=50,required=True,label="Apellido",widget=forms.TextInput())
+	ci = forms.IntegerField(required=True,label="Nro. de CI",widget=forms.TextInput())
 	#telefono = forms.IntegerField()
+	def clean_ci(self):
+		ci=self.cleaned_data['ci']
+		try:
+			p=Perfiles.objects.get(ci=ci)
+		except Perfiles.DoesNotExist:
+			return ci
+		raise forms.ValidationError('El Nro de CI ya Existe')
 	class Meta:
 		model=User
 		fields=("username","password1","password2","first_name","last_name")
@@ -35,3 +42,13 @@ class UserForms(forms.ModelForm):
 		fields = ('username','first_name','last_name')
 		#exclude=['password']
 
+class CambioForm(forms.Form):
+	Nueva_Contracenia= forms.CharField(required=True, label="Contracenia",widget=forms.PasswordInput(render_value=False))
+	Confirmacion	 = forms.CharField(required=True, label="Confirmar",widget=forms.PasswordInput(render_value=False))
+	def password(self):
+		pass_one=self.cleaned_data['Nueva_Contracenia']
+		pass_tho=self.cleaned_data['Confirmacion']
+		if pass_one == pass_tho:
+			pass
+		else:
+			raise forms.ValidationError('Los datos no Coinsiden')

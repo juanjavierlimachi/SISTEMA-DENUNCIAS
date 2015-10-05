@@ -1,8 +1,8 @@
 {% extends 'inspector/inicio_inspector.html' %}
 {% block user %}{{user}}{% endblock %}
 {% block inspecciones %}
-<link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 	<div class="card">
 		<p>Datos de Perfil</p>
 		{% for i in perfil %}
@@ -14,6 +14,9 @@
 					<li>Num de Ci: {{d.ci}}</li>
 				{% endif %}
 			{% endfor %}
-		{% endfor %}	
+		{% endfor %}
+		<a class="waves-effect waves-light btn" href="/editarperfilInspector/">Editar Datos</a>
+		<a class="waves-effect waves-light btn" href="/editarcontraceniaInspector/{{user.id}}/">Editar Password</a>
 	</div>	
+
 {% endblock %}

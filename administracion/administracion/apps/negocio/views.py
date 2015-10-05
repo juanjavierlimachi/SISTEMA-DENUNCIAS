@@ -13,7 +13,7 @@ from django.http import  HttpResponseRedirect, HttpResponse
 def RegistroNegocio(request):
 	if request.method=='POST':
 		formulario=formNegocio(request.POST)
-		if formulario.is_valid:
+		if formulario.is_valid():
 			formulario.save()
 			return HttpResponseRedirect('/ListaNegocio/')
 	else:
