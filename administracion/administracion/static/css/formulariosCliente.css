@@ -1,18 +1,18 @@
-    .card{
-        width: 70%;height: auto;margin: auto;border-radius: 5px;
+    .row{
+        width: 100%;height: auto;margin: auto;border-radius: 5px;
         margin-top: 10px;margin-bottom: 50px;
     }
-    .card form{
-        width: 80%;height: auto;margin: auto;margin-top: 5px;margin-bottom: 10px;
+    .row form{
+        width: 100%;height: auto;margin: auto;margin-top: 5px;margin-bottom: 10px;
     }
-    .card form textarea{
+    .row form textarea{
         width: 100%;height: 40px;border-radius: 7px;margin-top: 5px;
     }
-    .card form label{
-        width: 150px;margin-left: 0px;display: inline-block;
+    .row form label{
+        width: 200px;margin-left: 0px;display: inline-block;
        
     }
-    .card form input{
+    .row form input{
         height: 20px;margin-left: 0px;display: inline-block;width:100%;
         margin-bottom: 10px;
     }

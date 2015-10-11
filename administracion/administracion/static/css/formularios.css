@@ -2,14 +2,14 @@
         display: none;
     }
     .card{
-        width: 50%;height: auto;margin: auto;margin-top: 10px;border-radius: 5px;
+        width: 60%;height: auto;margin: auto;margin-top: 10px;border-radius: 5px;
         margin-bottom: 50px;
     }
     .card p{
         text-align: center;color: black;
     }
     .card form{
-        width: 80%;height: auto;margin: auto;margin-top: 5px;
+        width: 95%;height: auto;margin: auto;margin-top: 5px;
     }
     .card form textarea{
         width: 100%;height: 50px;border-radius: 7px;margin-top: 5px;
@@ -40,7 +40,12 @@
         width: 100%;height: auto;margin: auto;
         background:#eee;margin-top: 10px;margin-bottom: 50px;
     }
-  
+.card form #lanzador{
+    width: 25%;float: left;display: inline-block;
+}
+.card form #id_fecha_presentacion{
+    width: 60%;float: right;display: inline-block;
+}
     #comentario li{
         width: auto;height: auto;list-style: none;
         border-collapse: collapse;margin-bottom: 0px;margin-top: 0px;
@@ -65,9 +70,16 @@
     #longitud_textarea{
         width: auto;height: auto;margin: auto;border: 1px solid black;
     }
-
+.help{
+     width: 60%;height: 200px;margin: auto;margin-top: 0px;border-radius: 5px;
+        margin-bottom: 0px;
+}
 #map_canvas{
-    width: 50%;height: 300px;margin: auto;margin-top: 0px;border-radius: 5px;
+    width: 100%;height: 200px;margin: auto;margin-top: 0px;border-radius: 5px;
+        margin-bottom: 5px;border: 1px solid black;
+}
+#map_canvass{
+    width: 100%;height: 200px;margin: auto;margin-top: -10px;border-radius: 5px;
         margin-bottom: 10px;border: 1px solid black;
 }
 section{
@@ -77,3 +89,48 @@ section{
     width: 50%;height: auto;margin: auto;
 }
 #fbuscarUser input{width: 100%;margin: auto;}
+/*Formularios de inspectores*/
+
+.row{
+        width: 100%;height: auto;margin: auto;margin-top: 10px;border-radius: 5px;
+        margin-bottom: 50px;
+    }
+    
+    .row form{
+        width: 95%;height: auto;margin: auto;margin-top: 5px;
+    }
+    .row form textarea{
+        width: 100%;height: 50px;border-radius: 7px;margin-top: 5px;
+    }
+    .row form label{
+        width: 150px;margin-left: 0px;display: inline-block;
+       
+    }
+    .row form input{
+        height: 20px;margin-left: 0px;display: inline-block;width:100%;
+        margin-bottom: 10px;
+    }
+    .row #id_tipo{
+        margin-bottom: 50px;
+    }
+    .row #id_tipo li{list-style: none;
+        width: 100px; height: 35px; float: left;margin-left: 5px;
+    }
+    .row #id_tipo label{
+        width: 100px;
+        float: left;
+    }
+    .row #id_tipo label input{width: 100px;
+       float: right;
+    }
+.row form .helptext{display: none;}
+    #comentario{
+        width: 100%;height: auto;margin: auto;
+        background:#eee;margin-top: 10px;margin-bottom: 50px;
+    }
+.row form #lanzador{
+    width: 25%;float: left;display: inline-block;
+}
+.row form #id_fecha_presentacion{
+    width: 60%;float: right;display: inline-block;
+}

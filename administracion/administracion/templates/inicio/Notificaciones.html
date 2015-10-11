@@ -9,9 +9,11 @@
 {% for mult in multa %}	
 	<li><a href="javascript:ventanaSecundaria('/detDenuncias/{{mult.id}}/')">{{ mult.Usuario}}- Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
 {% endfor %}
-<li class='cuenta'>Notificaciones registradas hasta la fecha: {{cont}}      <a href="/TodaslasNotificaciones/">Ver Todos</a></li>
+<li class='cuenta'>Notificaciones registradas: {{cont}}   <a href="/TodaslasNotificaciones/">Ver Todos</a></li>
 </div>
+<div class="help">
 <div id="map_canvas"></div>
+</div>
 <div class="card">
 <form method='POST'>{% csrf_token %}
 <input type='hidden' name='csrfmiddlewaretoken' value='xVJkmM4l7vuK6cX1520xfqRh3EgHAEEa' />
@@ -23,86 +25,17 @@
 </textarea></td></tr>
 <tr><th><label for="id_Codigo">Codigo:</label></th>
 	<td><input id="id_Codigo" name="Codigo" type="number" required/></td></tr>
-<tr><th><label for="id_fecha_presentacion">Fecha presentacion:</label></th><td>
+
 	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" placeholder='Año-Mes-Dia' />
-</td><input type="button" id="lanzador" value="..." /></tr>
+</td><input type="button" id="lanzador" value="Eliga una fecha" /></tr>
 <tr><th><label for="id_hora">Hora:</label></th><td>
-	<input id="id_hora" maxlength="12" name="hora" type="text" required/></td></tr><br>
+	<input id="id_hora" maxlength="12" name="hora" type="text" required placeholder='Formato de 24 horas'/></td></tr><br>
 <!--class="waves-effect waves-light btn"-->
-	<button name='btn' id='boton'>Notificar</button>
+	<button name='btn' id='bo' class="btn btn-primary">Notificar</button>
 </form>
 </div>
 	<script src="/static/js/jquery.min3.js"></script>
 	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-	$('#map_canvas').text("Cargando Mapa..");
-	var socket = io.connect("http://localhost:3000");
-	var cont=0;
-	$('#boton').on('click',	Notificar);
-	function Notificar(e){
-		e.preventDefault();
-		var dato = {
-			//user: "{{name}}",
-			idUser:$('#id_idUser').val(),
-			Usuario:$('#id_Usuario').val(),
-			descripcion:$('#id_descripcion').val(),
-			Codigo:$('#id_Codigo').val(),
-			fecha_presentacion:$('#id_fecha_presentacion').val(),
-			hora:$('#id_hora').val()
-		}
-		if (dato.idUser.length<0 || dato.Usuario.length==0 || dato.descripcion.length<1 || dato.Codigo.length==0 || dato.fecha_presentacion.length==0 || dato.hora.length==0){
-			alert('Dejo Campos en blanco Verifique por favor...');
-		}
-		else{
-			socket.emit('notificacion', dato);
-			cont=cont+1;
-			socket.emit('notificaciones',cont);
-			$("#id_descripcion").val("");$("#id_Codigo").val("");$("#id_fecha_presentacion").val("");
-			$("#id_hora").val(" ");
-
-		}
-	}
-	socket.on('devolviendo', function(data){
-		var data =JSON.parse(data);
-		//alert('escucho el evento devolvien el el cliente');
-		$("#comentario").prepend("<p>"+data.Usuario+ "  :Notifico:   " +data.descripcion+"Cod:    "+data.Codigo+"</p>");
-		var playing = true;
-        $(this).toggleClass("down");
-        if (playing == true) {
-            document.getElementById('player').play();
-        }
-        $('.cuenta').html("Notificaciones registradas hasta la fecha:"+data.cont+"<a href='/TodaslasNotificaciones/'>            Ver Todos</a>");
-	});
-	socket.on('regresandoCooords',DatosCoors);
-	function DatosCoors(Coords){
-		iniciar(Coords);
-	}
-	function iniciar(Coords) {
-		console.log(Coords.lat);
-		console.log(Coords.lng);
-		var mapOptions = {
-			center: new google.maps.LatLng(Coords.lat, Coords.lng),
-			zoom: 15,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
-		var pos = new google.maps.LatLng(Coords.lat, Coords.lng);
-		marker = new google.maps.Marker({
-            position: pos,
-            map: map,
-            title:"Ubicacion",
-            animation: google.maps.Animation.DROP
-        });
-	}  
-	/*$(document).ready(function(){
-			socket.on('Avisos', function(data){
-			alert(data);
-		});
-	});*/
-function ventanaSecundaria(URL){
-                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
-            }
-</script>
 {% else %}
 	<script type="text/javascript">
 	$(document).ready(function(){
@@ -131,5 +64,8 @@ $(document).ready(function(){
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="/static/js/jquery.min3.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/NotificacionesAdmin.js"></script>
 {% endblock %}
 

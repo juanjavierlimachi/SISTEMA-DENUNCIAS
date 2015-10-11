@@ -32,9 +32,11 @@ function ventanaSecundaria(URL){
 	{% for comment in comments %}
 		<li><a href="javascript:ventanaSecundaria('/DetalleDenuncias/{{comment.id}}/')">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
 	{% endfor %} 
-<li class='cuenta'>Numero de Notificaciones registradas hasta la fecha: {{cont}}      <a href="/TodaslasDenuncias/">Ver Todos</a></li>
+<li class='cuenta'>Notificaciones registradas: {{cont}}      <a href="/TodaslasDenuncias/">Ver Todos</a></li>
 </div>
-<div id="map_canvas"></div>
+<div class="help">
+<div id="map_canvass"></div>
+</div>
 <!-- <li>Negocio a denunciar::{{nego.propietario}}</li><br> -->
 <div class="card">
 <form method='POST' id='for'>{% csrf_token %}
@@ -44,70 +46,12 @@ function ventanaSecundaria(URL){
 	placeholder='Ingrese al Codigo del negocio'><br>
 	<!-- <input type='text' name='paran' value=>
 	onclick="this.disabled=true; this.value='Enviando...'; this.form.submit()" -->
-	<button id ="boton" name="enviar">Notificar</button>
+	<button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
 </form>
 </div>
 <script src="/static/js/jquery.min3.js"></script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-	var socket = io.connect("http://localhost:3000");
-	$('#map_canvas').text("Cargando Google Maps...");
- $('#boton').on('click',	Denuncia);
-	function Denuncia(e){
-		e.preventDefault();
-		//son los datos que recuperamos del formulario
-		var datos = {
-			user: $('#name').val(),
-			comment:$('#id_comment').val(),
-			idNegocio:$('#id_idNegocio').val()
-		}
-		//var info=datos.comment.length;
-		if(datos.user.length==0 || datos.comment.length==1 || datos.idNegocio.length == 0){
-			alert('Por favor Escriba una Denuncia....');
-		}
-		else{
-			console.log(datos);
-			socket.emit('nuevo comentario', datos);
-		}
-	}
-	socket.on('devolviendo comentario', function(data){
-		var data =JSON.parse(data);
-		$("#comentario").prepend("<p>"+data.user+ "   Denuncio     " +data.comment+"     Cod    "+data.idNegocio+"</p>");
-		$("#id_comment").val("");
-
-    	var playing = true;
-        $(this).toggleClass("down");
-        if (playing == true) {
-            document.getElementById('player').play();
-            playing = true;
-            //$(this).text("Parar Sonido");
-        }
-
-		$('.cuenta').html('Numero de Notificaciones registradas hasta la fecha:'+data.cont+"<a href='vertododdd'>        Ver Todos</a>")
-	});
-	socket.on('ObtenerUbicacion',DatosUbicacion);
-	function DatosUbicacion(ubicacion){
-		//console.log(ubicacion);
-		iniciar(ubicacion);
-	}
-	function iniciar(ubicacion) {
-		console.log(ubicacion.lat);
-		console.log(ubicacion.lng);
-		var mapOptions = {
-			center: new google.maps.LatLng(ubicacion.lat, ubicacion.lng),
-			zoom: 15,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
-		var pos = new google.maps.LatLng(ubicacion.lat, ubicacion.lng);
-		marker = new google.maps.Marker({
-            position: pos,
-            map: map,
-            title:"Ubicacion",
-            animation: google.maps.Animation.DROP
-        });
-	} 
-</script> 
+<script type="text/javascript" src="/static/js/denunciasAdmin.js"></script>
 {% endif %}
 {% endblock %}
 	

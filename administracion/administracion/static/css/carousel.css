@@ -182,7 +182,7 @@ body {
 #fbuscar{
   width: 150px;height: 20px;
   margin-top: 15px;
-  margin-left: 50px;
+  margin-left: 0px;
   background-color: black;
 }
 #fbuscar input{
@@ -192,7 +192,7 @@ body {
   width:100%;
   text-align: center;
 }
-.resultados{ background: white; width: 200px; position: absolute;margin-left: 50px;
+.resultados{ background: white; width: 200px; position: absolute;margin-left: 0px;
   margin-top: 5px; border-radius: 15px;}
 .resultados ul{list-style: none;margin:0;padding: 0;}
 .resultados li{display: block; float: left; width: 200px;

@@ -162,7 +162,7 @@ def editarcontracenia(request,id):
 	else:
 		forms=CambioForm()
 	return render_to_response('usuario/cambio.html',{'id_user':id_user,'forms':forms},context_instance=RequestContext(request))
-
+@login_required(login_url='/')
 def EditarcontraceniaInspector(request,id):
 	#id_user=int(id)
 	id_user=User.objects.get(id=int(id))

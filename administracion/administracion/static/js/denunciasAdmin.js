@@ -1,45 +1,3 @@
-{% extends 'cliente/denuncia.html' %}
-{% block cliente %}
-{% if not user.is_authenticated %}
-	<h2>Inicie sesion</h2>
-{% else %}
-<link rel="stylesheet" type="text/css" href="/static/css/formulariosCliente.css">
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
-<script type="text/javascript" src='{{STATIC_URL}}js/visibleForm.js'></script>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
-<script type="text/javascript">
-	function ventanaSecundaria(URL){
-                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
-    }
-</script>
-</head>
-<audio id="player" src="/static/tonos/sonidoUno.mp3">
-		</audio>
-<div id='comentario'>
-	{% for comment in comments %}
-		<li><a  href="javascript:ventanaSecundaria('/DetalleDenuncias/{{comment.id}}/')">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
-	{% endfor %}
-</div>
-<h2>Bienvenido: {{user}}<br>
-Ud. esta en el negocio : {{codd.propietario}}</h2>
-<!-- <li>Negocio a denunciar::{{nego.propietario}}</li><br> -->
-<div class="row">
-<form method='POST' id='for'>{% csrf_token %}
-	<input type='hidden' name='name' id='name' value='{{user}}'>
-	<label>Escriba una denuncia</label>
-	<textarea id="id_comment" name="comment"></textarea> 
-	<input type='hidden' name='idNegocio' id='id_idNegocio' value='{{codd.id}}' required><br>
-	
-	<!-- <input type='text' name='paran' value=>
-	<input type='text' name='idNegocio' id='id_idNegocio'><br>
-	onclick="this.disabled=true; this.value='Enviando...'; this.form.submit()" -->
-	<button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
-</form> 
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
 var socket = io.connect("http://localhost:3000");
 $('#boton').on('click',	Comentar);
 	function Comentar(e){
@@ -86,6 +44,29 @@ $('#boton').on('click',	Comentar);
 				  }
 		}
 	}
+	/*escucho un evento ObetenerUbicacion para dibijar el mapa*/
+	socket.on('ObtenerUbicacion',DatosUbicacion);
+	function DatosUbicacion(ubicacion){
+		//console.log(ubicacion);
+		iniciar(ubicacion);
+	}
+	function iniciar(ubicacion) {
+		console.log(ubicacion.lat);
+		console.log(ubicacion.lng);
+		var mapOptions = {
+			center: new google.maps.LatLng(ubicacion.lat, ubicacion.lng),
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var map = new google.maps.Map(document.getElementById("map_canvass"),mapOptions);
+		var pos = new google.maps.LatLng(ubicacion.lat, ubicacion.lng);
+		marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            title:"Ubicacion",
+            animation: google.maps.Animation.DROP
+        });
+	}
 	socket.on('devolviendo comentario', function(data){
 		var data =JSON.parse(data);
 		$("#comentario").prepend("<li>"+data.user+ "   Denuncio     " +data.comment+"     Cod    "+data.idNegocio+"</li>");
@@ -95,8 +76,4 @@ $('#boton').on('click',	Comentar);
         if (playing == true) {
             document.getElementById('player').play();
         }
-
-	}); 
-</script>
-{% endif %}
-{% endblock %}
+	});

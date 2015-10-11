@@ -27,3 +27,14 @@
 	#leftt{
 		display: none;
 	}
+.row{background: #81C784;}
+.row li{
+	width: 100%;list-style: none;text-align: center;
+		height: auto;
+}
+.row li a{width: 100%;
+	text-decoration: none;color: white;
+}
+.row li a:hover{
+	color: #FF8C00;
+}

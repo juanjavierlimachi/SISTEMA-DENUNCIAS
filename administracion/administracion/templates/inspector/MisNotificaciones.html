@@ -9,14 +9,14 @@ function ventanaSecundaria(URL){
 }
 </script>
 <div id='info'>
-	<li>{{user.username}}</li>
-<ul class='det'>
+	<li>{{user.username}}, Estas son tus notificaciones</li>
+<div class='row'>
 {% for i in notificacion %}
-	{% if user.id == i.idUser %}
-	<li>{{i.descripcion}}</li>
-	<li><a href="javascript:ventanaSecundaria('/EditarNotificacion/{{i.id}}/')">{{i.fecha_notificacion}}</a></li>
+	{% if user.id == i.idUser %}<li>
+	<a href="javascript:ventanaSecundaria('/EditarNotificacion/{{i.id}}/')">{{i.descripcion}}<br>
+	{{i.fecha_notificacion}}</a></li>
 	{% endif %}
 {% endfor %}
-</ul>
+</div>
 </div>
 {% endblock %}

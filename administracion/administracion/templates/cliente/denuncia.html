@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/static/img/escudo.jpg" type="image/x-icon" />
     <meta name="description" content="">
-    <meta name="author" content="">
-	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<script type="text/javascript" src="/static/js/jquery-1.6.3.min.js"></script>
     <script src="/static/js/ie-emulation-modes-warning.js"></script>
     <link href="/static/css/carousel.css" rel="stylesheet">
@@ -22,6 +21,13 @@
         });
       });
   </script>
+  <style type="text/css">
+ <style type="text/css">
+  .glyphicon{
+    margin-right: 10px;
+  }
+  </style>
+  </style>
   </head>
 <!-- NAVBAR
 ================================================== -->
@@ -41,24 +47,24 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="/denuncias/" class="active">Inicio</a></li>
-              	<li><a href="#modal2" >Quienes Somos</a></li>
-                <li class="active"><a href="#" id='denunciar'>Denunciar</a></li>
-                <li><a href="/denuncias/">Detalles</a></li>
+                <li><a href="/denuncias/" class="active"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+              	<li><a href="#modal2"><span class="glyphicon glyphicon-hand-right"></span>Quienes Somos</a></li>
+                <li class="active"><a href="#" id='denunciar'>
+                 <span class="glyphicons glyphicons-microphone"></span>Denunciar</a></li>
+                <li><a href="/denuncias/"><span class="glyphicon glyphicon-list"></span>Detalles</a></li>
                 <!-- <li><a href="#contact">Opciones</a></li> -->
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Consultas<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-check"></span>Consultas<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     
-                    <li><a href="/diciplinas/9/">Voleybol Varones</a></li>
+                    <li><a href="/diciplinas/9/">avisos</a></li>
                     
-                    <li><a href="/diciplinas/8/">Natacion</a></li>
-                    
-                    <li><a href="/diciplinas/7/">Ajedres</a></li> 
+                    <li><a href="/diciplinas/8/">informaciones</a></li>
                   </ul>
                 </li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Programas <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-info-sign"></span>Programas 
+                  <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="/">Deportes Representacion</a></li>
                      <li><a href="/">Deportes Curricular</a></li>
@@ -68,13 +74,13 @@
                   </ul>
                 </li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Mas<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <span class="glyphicon glyphicon-option-vertical"></span>Mas
+                    <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
 
                     <li><a href="/partidos/9/">Economia</a></li>
-                    <li><a href="/partidos/8/">Contabilidad</a></li>
-                    <li><a href="/partidos/7/">Ing, de Sistemas</a></li>
-                    
+                    <li><a href="/partidos/8/">Contabilidad</a></li>  
                   </ul>
                 </li>
               
@@ -169,7 +175,9 @@
 
    <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+     Just to make our placeholder images work. Don't actually copy the next line! -->
     <script src="/static/js/holder.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/static/js/ie10-viewport-bug-workaround.js"></script>

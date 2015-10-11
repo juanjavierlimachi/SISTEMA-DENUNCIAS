@@ -4,7 +4,7 @@ var io = require('socket.io').listen(server);
 var querystring = require('querystring');
 var usuarios=0;
 var denuncias=0;
-var notificacio=0;
+var notificacio=0; 
 //esta en la function k escucha en evento del lado del cliente
 io.on('connection', function(socket){
 	//aki escuchamos el 'nuevo comentario' de los envia el cliente
