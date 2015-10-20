@@ -25,7 +25,7 @@ $(document).ready(function(){
 	<h2>Inicie sesion</h2>
 	<script type="text/javascript">
 	$(document).ready(function(){
-		alert('Inicie sesion')
+		alert(window.location='/');
 	})
 	</script>
 	<style type="text/css">
@@ -60,7 +60,7 @@ $(document).ready(function(){
 	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" placeholder='Año-Mes-Dia' required />
 	<input type="button" id="lanzador" value="Eliga una fecha" /></td></tr>
 	<tr><th><label for="id_hora">Hora:</label></th><td>
-	<input id="id_hora" maxlength="12" name="hora" type="text"placeholder='Formato de 24 horas' required/></td></tr><br>
+	<input id="id_hora" type="time" name="hora" max="23:59:00" min="00:00:00" step="1" placeholder="Ejem:08:30" required></td></tr><br>
 	<button name='btn' id='bo'class="btn btn-primary">Notificar</button>
 </form>
 </div>

@@ -5,7 +5,6 @@
 {% else %}
 <link rel="stylesheet" type="text/css" href="/static/css/formulariosCliente.css">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
-<script type="text/javascript" src='{{STATIC_URL}}js/visibleForm.js'></script>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 <script type="text/javascript">
@@ -18,85 +17,169 @@
 		</audio>
 <div id='comentario'>
 	{% for comment in comments %}
-		<li><a  href="javascript:ventanaSecundaria('/DetalleDenuncias/{{comment.id}}/')">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
+		<li><a  href="javascript:ventanaSecundaria('/DetalleDenuncias/{{comment.id}}/')">
+			{{comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
 	{% endfor %}
-</div>
-<h2>Bienvenido: {{user}}<br>
+</div> 
+<h3>Bienvenido: {{user}}<br>
 Ud. esta en el negocio : {{codd.propietario}}</h2>
 <!-- <li>Negocio a denunciar::{{nego.propietario}}</li><br> -->
 <div class="row">
-<form method='POST' id='for'>{% csrf_token %}
-	<input type='hidden' name='name' id='name' value='{{user}}'>
-	<label>Escriba una denuncia</label>
-	<textarea id="id_comment" name="comment"></textarea> 
-	<input type='hidden' name='idNegocio' id='id_idNegocio' value='{{codd.id}}' required><br>
-	
-	<!-- <input type='text' name='paran' value=>
-	<input type='text' name='idNegocio' id='id_idNegocio'><br>
-	onclick="this.disabled=true; this.value='Enviando...'; this.form.submit()" -->
-	<button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
-</form> 
+<form method='POST'  id='for' enctype="multipart/form-data">{% csrf_token %}
+<tr><td><input id="id_user" name="user" type="hidden" value="{{user}}"/></td></tr>
+<tr><th><label for="id_Tipo_de_peticion">Tipo de peticion:</label></th></tr>
+<td><select id="id_Tipo_de_peticion" name="Tipo_de_peticion">
+	<option value='xx'>Eliga una Opcion</option>
+<option value="Falta de Higiene">Falta de Higiene</option>
+<option value="Denuncia por corrupcion">Denuncia por corrupcion</option>
+<option value="Horario No Establecido">Horario No Establecido</option>
+<option value="Maltratos">Maltratos</option>
+<option value="No Emite Factura">No Emite Factura</option>
+<option value="Reclamo">Reclamo</option>
+<option value="sugerencias">Sugerencia</option>
+<option value="Otros Casos">Otros Casos</option>
+</select></td><br>
+<div class="ayudas">
+<li id='xx'>Por favor seleccione una opcion</li>
+<li id="Higiene">Ud. aqui puede describir su reclamo sobre la falta de higiene que opservo en el lugar</li>
+<li id="corrupcion">Ud. deve describir una denuncia de manera concreta.</li>
+<li id="Establecido">Mencione si el negocio exede de las horas establecidas</li>
+<li id="Maltratos">Menciona los maltratos que observo ya sea fisico o psicologico</li>
+<li id="Factura">Menciona si este negocio no emite la factura correspondiente a una venta</li>
+<li id="Reclamo">Mencione su reclamo de alguna irregularidad</li>
+<li id="Sugerencia">Puede dar las superencias que a ud. la paresca una mejor opcion al negocio</li>
+<li id="Otros">Descriva algun tipo de irregularidad observada</li>
+</div> 
+<tr><th><label for="id_comment">Descipcion:</label></th><td><textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo">
+</textarea></td></tr>
+<tr><td><input id="id_idNegocio" name="idNegocio" type="hidden"  value="{{codd.id}}"/></td></tr>
+<br>
+<button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
+<span class="icon"><img src="{{STATIC_URL}}img/loader.gif"></span>
+</form>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="/static/js/jquery.min3.js"></script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-var socket = io.connect("http://localhost:3000");
-$('#boton').on('click',	Comentar);
-	function Comentar(e){
-		e.preventDefault();
-		var datos = {
-			user: $('#name').val(),
-			comment:$('#id_comment').val(),
-			idNegocio:$('#id_idNegocio').val()
-		}
-		//var info=datos.comment.length;
-		if(datos.user.length==0 || datos.comment.length<10 || datos.idNegocio.length == 0){
-			alert('Por favor Escriba una Denuncia....');
-			return false;
-		}
-		else{
-			socket.emit('nuevo comentario', datos);
-			navigator.geolocation.getCurrentPosition(ubicacion,error);
-			   function ubicacion(posicion)
-				{
-				    var contenedor = document.getElementById("ubicacion");
-				    var latitud = posicion.coords.latitude;
-				    var longitud = posicion.coords.longitude;
-				    var precision = posicion.coords.accuracy;
-				    coordenadas={
-				    	lat:posicion.coords.latitude,
-				    	lng:posicion.coords.longitude
-				    }
-				    socket.emit('UbicacionCliente', coordenadas);
-				     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
-				     alert("Notificacion enviada exitosamente");
-				}    
-				function error(error)
-			     {
-				     if(error.code == 0)
-				      alert("Error Desconocido");
-				     else if(error.code == 1)
-				      alert("No fue posible contactarte");
-				     else if(error.code == 2)
-				      alert("No hay una ubicacion disponible");
-				     else if(error.code == 3)
-				      alert("Tiempo agotado");
-				     else 
-				      alert("Error Desconocido");
-				  }
-		}
-	}
-	socket.on('devolviendo comentario', function(data){
-		var data =JSON.parse(data);
-		$("#comentario").prepend("<li>"+data.user+ "   Denuncio     " +data.comment+"     Cod    "+data.idNegocio+"</li>");
-			$("#id_comment").val("");
-		var playing = true;
-        $(this).toggleClass("down");
-        if (playing == true) {
-            document.getElementById('player').play();
-        }
+<script type="text/javascript" src="/static/js/denunciasAdmin.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.icon').hide();
+		$('#xx').hide();
+		$('#Higiene').hide();
+		$('#corrupcion').hide();
+		$('#Establecido').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+		$('#id_Tipo_de_peticion').on('change', Ayuda);
+		function Ayuda(){
+			var dato = $(this).val();
+			if(dato=='xx'){
+		$('#xx').show(1000);
+		$('#Higiene').hide();
+		$('#corrupcion').hide();
+		$('#Establecido').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+			}
+			if(dato=='Falta de Higiene'){
+				$('#Higiene').show(1000);
+		$('#xx').hide();
+		$('#corrupcion').hide();
+		$('#Establecido').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+			}
+			if(dato=='Denuncia por corrupcion'){
+				$('#corrupcion').show(1000);
+				$('#Higiene').hide();
+				$('#xx').hide();
+		$('#Establecido').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+			}
+			if(dato=='Horario No Establecido'){
+				$('#Establecido').show(1000);
+				$('#Higiene').hide();
+				$('#corrupcion').hide();
+				$('#xx').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+			}
+			if(dato=='Maltratos'){
+				$('#Maltratos').show(1000);
+				$('#Higiene').hide();
+				$('#corrupcion').hide();
+		$('#Establecido').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+		$('#xx').hide();
+			}
+			if(dato=='No Emite Factura'){
+				$('#Factura').show(1000);
+				$('#Higiene').hide();
+				$('#corrupcion').hide();
+				$('#Establecido').hide();
+				$('#Maltratos').hide();
+				$('#xx').hide();
+		$('#Reclamo').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+			}
+			if(dato=='Reclamo'){
+				$('#Reclamo').show(1000);
+				$('#Higiene').hide();
+		$('#corrupcion').hide();
+		$('#Establecido').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Sugerencia').hide();
+		$('#Otros').hide();
+		$('#xx').hide();
+			}
+			if(dato=='sugerencias'){
+				$('#Sugerencia').show(1000);
+				$('#Higiene').hide();
+		$('#corrupcion').hide();
+		$('#Establecido').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+		$('#xx').hide();
+		$('#Otros').hide();
+			}
+			if(dato=='Otros Casos'){
+				$('#xx').hide();
+				$('#Otros').show(1000);
+				$('#Higiene').hide();
+		$('#corrupcion').hide();
+		$('#Establecido').hide();
+		$('#Maltratos').hide();
+		$('#Factura').hide();
+		$('#Reclamo').hide();
+			$('#Sugerencia').hide();
 
-	}); 
+			}
+
+		}
+	});
 </script>
 {% endif %}
 {% endblock %}

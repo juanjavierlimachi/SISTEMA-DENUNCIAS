@@ -20,4 +20,6 @@ urlpatterns = patterns('',
 	#url(r'^vermas/$',vermas, name='vermas'),
 	url(r'^ConsultarDenunciaFecha/$',ConsultarDenunciaFecha.as_view(), name='ConsultarDenunciaFecha'),
 	url(r'^ConsultarDenunciaClienteFecha/$',ConsultarDenunciaClienteFecha.as_view(), name='ConsultarDenunciaClienteFecha'),
+	url(r'^Registertype/$',Registertype, name='Registertype'),
+
 )

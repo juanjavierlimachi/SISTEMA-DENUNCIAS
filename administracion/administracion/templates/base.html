@@ -28,6 +28,7 @@
         $('div.acordion> li').click(function(){
             $(this).next().slideToggle(90)  
         })
+        //para mi ventana modal
     });
     var socket = io.connect("http://localhost:3000");
     var usuario=document.getElementById('user');
@@ -51,6 +52,16 @@
         console.log('llego una Notificacion'+n);
         $('#notificacion').html('Notificaciones Recibidas:'+n);
     });
+
+    function Registertyp(){
+        $.ajax({
+                type:'GET',
+                url:'/Registertype/',
+                success:function(resp){
+                    $('#resultados').html(resp);
+                }
+            });
+    }
     </script>
     </head>
     <body>   
@@ -95,7 +106,7 @@
                             <img class="responsive-img" src="{{STATIC_URL}}img/logo.png">
                         </a>
 <form action="/buscar/" name="" id="fbuscar" method="post">{% csrf_token %}
-    <input id="id_texto" maxlength="50" name="texto" type="text" placeholder='Buscar Negocio' />
+    <input id="id_texto" maxlength="50" name="texto" type="search" placeholder='Buscar Negocio' />
 </form>
                     </li>
                     
@@ -113,7 +124,7 @@
                         <li class="active">Negocios</li>
                         <div>
                             <li><a href="/RegistroNegocio/">Registrar negocio</a></li>
-                            <li><a href="">Nuevo Usuario</a></li>
+                            <li><a href="#" onclick='Registertyp()'>Tipo Negocio</a></li>
                             <li><a href="/ListaNegocio/">Ver Negocios</a></li>
                         </div>
 
@@ -130,7 +141,7 @@
                             <li><a href="">Nuevo Usuario</a></li>
                             <li><a href="">Ver Usuarios</a></li>
                         </div>
-                        <li class="active">Reportes</li>
+                        <li class="active">Seguimientos</li>
                         <div>
                             <li><a href="/nuevo/">Nuevo Usuario</a></li>
                             <li><a href="">Nuevo Usuario</a></li>

@@ -31,7 +31,8 @@ class AvisosDenuncias(TemplateView):
 				#'ne':request.GET.get('id'),#asi mento el num envio en id del negocio mediante
 			'cont':cuantaDenuncias,
 			'form': Commentform(),
-			'comments':comments
+			'comments':comments,
+			'user':request.user
 		}
 		return render(request, 'inicio/denuncias.html', dic)
 		
@@ -154,3 +155,13 @@ class ConsultarDenunciaClienteFecha(TemplateView):
 		data = serializers.serialize('json', consulta,fields=('id','user','fecha_denuncia','comment'))
 		return HttpResponse(data, 'application/json')
 
+
+def Registertype(request):
+	if request.is_ajax:
+		print request.POST
+		forms=FormTipo(request.POST)
+		if forms.is_valid():
+			forms.save()
+			return HttpResponseRedirect('/Registertype/')
+	forms=FormTipo()
+	return render_to_response('inicio/Registertype.html',{'forms':forms},context_instance=RequestContext(request))

@@ -37,16 +37,28 @@ function ventanaSecundaria(URL){
 <div class="help">
 <div id="map_canvass"></div>
 </div>
-<!-- <li>Negocio a denunciar::{{nego.propietario}}</li><br> -->
 <div class="card">
-<form method='POST' id='for'>{% csrf_token %}
-	<input type='hidden' name='name' id='name' value='Admin' required>
-	<textarea id="id_comment" name="comment"> </textarea> 
-	<input type='text' name='idNegocio' id='id_idNegocio' required
-	placeholder='Ingrese al Codigo del negocio'><br>
-	<!-- <input type='text' name='paran' value=>
-	onclick="this.disabled=true; this.value='Enviando...'; this.form.submit()" -->
-	<button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
+
+
+<form method='POST'  id='for' enctype="multipart/form-data">{% csrf_token %}
+{{user}}
+<tr><td><input id="id_user" name="user" type="hidden" value="{{user}}"/></td></tr>
+<tr><th><label for="id_Tipo_de_peticion">Tipo de peticion:</label></th></tr>
+<td><select id="id_Tipo_de_peticion" name="Tipo_de_peticion">
+<option value="Falta de Higiene">Falta de Higiene</option>
+<option value="Denuncia por corrupcion">Denuncia por corrupcion</option>
+<option value="Horario No Establecido">Horario No Establecido</option>
+<option value="Maltratos">Maltratos</option>
+<option value="No Emite Factura">No Emite Factura</option>
+<option value="Reclamo">Reclamo</option>
+<option value="sugerencias">Sugerencia</option>
+<option value="Otros Casos">Otros Casos</option>
+</select></td><br> 
+<tr><th><label for="id_comment">Descipcion:</label></th><td><textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo">
+</textarea></td></tr>
+<tr><th><label for="id_idNegocio">IdNegocio:</label></th><td><input id="id_idNegocio" name="idNegocio" type="number" /></td></tr>
+<br>
+<button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
 </form>
 </div>
 <script src="/static/js/jquery.min3.js"></script>

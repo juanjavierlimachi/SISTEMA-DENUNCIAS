@@ -32,7 +32,7 @@ io.on('connection', function(socket){
 		//console.log('escucho el evento notificacion');escucho el evento
 		var values = querystring.stringify(data);
 		var options = {
-			hostname: 'localhost',
+			hostname: '0.0.0.0',
 			port: '8000',
 			path: '/crear-notificacion',
 			method: 'POST',
@@ -60,12 +60,13 @@ io.on('connection', function(socket){
 socket.on('nuevo comentario' ,function(data){//data son los datos que resivimos del servidor
 		var values = querystring.stringify(data);
 		var options = {
-			hostname: 'localhost',
+			hostname: '0.0.0.0',
 			port: '8000',
 			path: '/crear-comentario',
 			method: 'POST', 
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
+				//'enctype': 'multipart/form-data',
 				'Content-Length': values.length
 			}
 		};
@@ -73,6 +74,7 @@ socket.on('nuevo comentario' ,function(data){//data son los datos que resivimos 
 			response.setEncoding('utf8');
 			response.on('data',function(data){
 				//aki vienos los datos del cliente django
+				//console.log(data);
 				io.emit('devolviendo comentario', data);
 				denuncias=denuncias+1;
 				console.log('Denuncias'+denuncias)

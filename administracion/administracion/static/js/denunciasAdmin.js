@@ -1,15 +1,23 @@
+
 var socket = io.connect("http://localhost:3000");
 $('#boton').on('click',	Comentar);
 	function Comentar(e){
 		e.preventDefault();
+		document.getElementById('boton').value="Enviando...";
+		document.getElementById('boton').disabled=true;
+		$('.icon').show();
 		var datos = {
-			user: $('#name').val(),
+			user: $('#id_user').val(),
 			comment:$('#id_comment').val(),
-			idNegocio:$('#id_idNegocio').val()
+			idNegocio:$('#id_idNegocio').val(),
+			Tipo_de_peticion:$('#id_Tipo_de_peticion').val()
 		}
+		//console.log(datos);
 		//var info=datos.comment.length;
 		if(datos.user.length==0 || datos.comment.length<10 || datos.idNegocio.length == 0){
 			alert('Por favor Escriba una Denuncia....');
+			document.getElementById('boton').disabled=false;
+			$('.icon').hide();
 			return false;
 		}
 		else{
@@ -27,7 +35,9 @@ $('#boton').on('click',	Comentar);
 				    }
 				    socket.emit('UbicacionCliente', coordenadas);
 				     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
-				     alert("Notificacion enviada exitosamente");
+				     alert("Su reclamo fue enviada correctamente");
+				     document.getElementById('boton').disabled=false;
+				     $('.icon').hide();
 				}    
 				function error(error)
 			     {
@@ -70,7 +80,8 @@ $('#boton').on('click',	Comentar);
 	socket.on('devolviendo comentario', function(data){
 		var data =JSON.parse(data);
 		$("#comentario").prepend("<li>"+data.user+ "   Denuncio     " +data.comment+"     Cod    "+data.idNegocio+"</li>");
-			$("#id_comment").val("");
+		$("#id_comment").val("");
+
 		var playing = true;
         $(this).toggleClass("down");
         if (playing == true) {

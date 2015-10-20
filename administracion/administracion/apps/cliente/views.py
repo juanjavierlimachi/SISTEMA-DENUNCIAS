@@ -19,7 +19,7 @@ class clienteView(TemplateView):
 	def get(self, request, *args, **kwargs):
 		#idNe=request.GET.get('id')#puede ser una opcion para enviar el id del negocio
 		#nego=Negocio.objects.get(id=idNe)
-		#print "este es el negocio:",nego
+		#print "este es el negocio:",nego 
 		consult=request.session['Codigo']
 		consulta=Negocio.objects.get(id=consult)
 		if request.session.get('name'):
@@ -41,24 +41,29 @@ class clienteView(TemplateView):
 			return redirect('/cliente/')
 
 	def post(self, request, *args, **kwargs):
-		"""Comment.objects.create(
-				user = request.session['name'],
-				comment = request.POST['comment'],
-				idNegocio = request.POST['idNegocio']
-			)"""
+		# Comment.objects.create(
+		# 	user = request.POST['user'],
+		# 	comment= request.POST['comment'],
+		# 	idNegocio = request.POST['idNegocio'],
+		# 	Tipo_de_peticion = request.POST['Tipo_de_peticion'],
+		# 	archivo = request.FILES['archivo']
+		# )
 		return redirect('/cliente/')
 @csrf_exempt
 def create_comment(request):
-	#print request.POST
+	print "Estos son los datos?????";
+	print request.POST
 	Comment.objects.create(
 		user = request.POST['user'],
-		comment=request.POST['comment'],
-		idNegocio = request.POST['idNegocio']
+		comment= request.POST['comment'],
+		idNegocio = request.POST['idNegocio'],
+		Tipo_de_peticion = request.POST['Tipo_de_peticion']
 		)
 	cont=Comment.objects.all().count()
 	response= JsonResponse({'cont':cont,
 							'user': request.POST['user'],
 							'comment':request.POST['comment'],
-							'idNegocio':request.POST['idNegocio']})
+							'idNegocio':request.POST['idNegocio'],
+							'Tipo_de_peticion':request.POST['Tipo_de_peticion']})
 	#esto informacion mandamos al server 
 	return HttpResponse(response.content)

@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.db import models
 from django import forms
 from .models import *
+from administracion.apps.negocio.models import *
 from django.forms.extras.widgets import SelectDateWidget
 
 class FormCronograma(forms.ModelForm):
@@ -11,3 +12,6 @@ class FormCronograma(forms.ModelForm):
 	class Meta:
 		model=Cronograma
 		exclude=('Usuario',)
+class FormTipo(forms.ModelForm):
+	class Meta:
+		model=Categoria

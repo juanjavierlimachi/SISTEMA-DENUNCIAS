@@ -100,7 +100,8 @@ function ventanaSecundaria(URL){
 		<li>Descricion: {{i.descripcion}}</li>
 		<li>Fecha de Presentacion : {{i.fecha_presentacion}}   Hora: {{i.hora}}
 			<a href="javascript:ventanaSecundaria('/detDenuncias/{{i.id}}/')" title='Ver Comparendo'>Ver</a>| <a href="javascript:ventanaSecundaria('/ImprimirNotificacion/{{i.id}}/')">Imprimir</a></li>
-		</ul>	
+		</ul>
+			
 	{% endfor %}
 </div>
 {% else %}
