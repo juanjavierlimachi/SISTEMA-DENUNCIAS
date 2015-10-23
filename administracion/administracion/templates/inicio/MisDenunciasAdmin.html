@@ -1,0 +1,14 @@
+<div class="misdatos">
+{% for i in datos %}
+	<ul><label>{{i.Tipo_de_peticion}}.<br></label>
+	 Reclamo:{{i.comment}}
+	 {% for j in n %}
+		{% if i.idNegocio == j.id %}
+			Proprietario:{{j.propietario}}
+			Direccion:{{j.direccion}} 
+			Categoria:{{j.categoria}}
+	</ul>
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+</div>

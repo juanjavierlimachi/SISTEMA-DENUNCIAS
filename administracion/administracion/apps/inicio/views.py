@@ -154,14 +154,38 @@ class ConsultarDenunciaClienteFecha(TemplateView):
 		print 'Esta es la fecha:',consulta
 		data = serializers.serialize('json', consulta,fields=('id','user','fecha_denuncia','comment'))
 		return HttpResponse(data, 'application/json')
-
-
+@login_required(login_url='/')
 def Registertype(request):
-	if request.is_ajax:
+	if request.method=='POST':
 		print request.POST
 		forms=FormTipo(request.POST)
 		if forms.is_valid():
 			forms.save()
-			return HttpResponseRedirect('/Registertype/')
-	forms=FormTipo()
+			return HttpResponse("Registro Exitoso")
+	else:
+		forms=FormTipo()
 	return render_to_response('inicio/Registertype.html',{'forms':forms},context_instance=RequestContext(request))
+@login_required(login_url='/')
+def MisdatosAdmin(request):
+	user=request.user
+	if request.user.is_staff and request.user.is_active and request.user.is_superuser:
+		return render_to_response('inicio/MisdatosAdmin.html',{'user':user},context_instance=RequestContext(request))
+	else:
+		return HttpResponse("Ud no esta autorizado para ver la informacion.")
+@login_required(login_url='/')
+def MisDenunciasAdmin(request, id):
+	ind=int(id)
+	n=Negocio.objects.all().order_by('-id')
+	user=request.user
+	datos=Comment.objects.filter(idUser=ind).order_by('-id')
+	print datos
+	return render_to_response('inicio/MisDenunciasAdmin.html',{'datos':datos,'n':n},context_instance=RequestContext(request))
+#MisNotificacionesAdmin
+@login_required(login_url='/')
+def MisNotificacionesAdmin(request, id):
+	ind=int(id)
+	n=Negocio.objects.all().order_by('-id')
+	user=request.user
+	datos=multa.objects.filter(idUser=ind).order_by('-id')
+	print datos
+	return render_to_response('inicio/MisNotificacionesAdmin.html',{'datos':datos,'n':n},context_instance=RequestContext(request))

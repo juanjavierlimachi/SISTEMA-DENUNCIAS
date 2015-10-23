@@ -1,0 +1,14 @@
+<link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
+<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/styleLi.css">
+<div id="info">
+	<li>{{user.username}}, Estas son tus Notificaiones realizadas</li>
+<div class="row">
+{%  for i in notificaciones %}
+<ul>
+	<li><a href="/mas/{{i.id}}/">Fecha de notificaciones: {{i.fecha_notificacion}}  Descripcion:<br>
+		{{i.descripcion}}</a></li>
+</ul>
+{% endfor %}
+</div>
+</div>

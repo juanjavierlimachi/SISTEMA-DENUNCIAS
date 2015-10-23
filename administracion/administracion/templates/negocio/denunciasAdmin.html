@@ -1,0 +1,29 @@
+
+{% if user.is_authenticated and user.is_staff %}
+<!--<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">-->
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
+<div class='listas'>
+	<ul class="nn">
+		<li>Propietario: {{negocio.propietario}}</li>
+			{% for i in todasN %}
+				<li>{{i.user}}:
+					<label>Notificacion:</label><a href="/detDenunciasReclamos/{{i.id}}/">
+					{{i.Tipo_de_peticion}}</a>
+				<label>Reclamo:</label>{{i.comment}}</li>
+			{% endfor %}
+		<li><a href="/allNotDeUnNegocio/{{negocio.id}}/">Ver todos</a></li>
+	</ul>
+	
+</div>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+
+{% else %}
+<script type="text/javascript">
+$(document).ready(function(){
+	alert(window.location='/');
+});
+</script>
+<style type="text/css">
+html{display: none;}
+</style>
+{% endif %}

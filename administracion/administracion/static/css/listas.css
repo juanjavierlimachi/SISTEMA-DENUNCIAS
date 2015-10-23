@@ -1,20 +1,15 @@
 #leftt{display: none;}
-	.nn{width: 90%; height: auto; margin: auto;
-		margin-top: 10px;
-	}
-	.nn:hover{
-		background: #ddd;
-	}
-	.nn li{
-		list-style: none;
-	}
-.card p{width: auto;
+	.nn{width: 100%; margin: auto;margin-top: 10px;}
+.nn li{list-style: none;}
+.nn .li:hover{background: #ddd;}
+	.listas{background: white;width: 100%;margin: auto;margin-bottom: 10px;}
+.listas p{width: auto;
 	text-align: center;color: black;height: 30px;margin: auto;
 }
-.card p #fecha{
+.listas p #fecha{
 	width: 200px;float: left; margin-left: 20px;
 }
-.card #filtro{
+.listas #filtro{
 	width: auto;height: 30px;margin: auto;margin-left: 50px;margin-bottom: 20px;
 }
 #contend{
@@ -23,6 +18,4 @@
 
 #contend li{
 	width: auto;list-style: none;height:auto;}
-#contend li:hover{
-	background: #ddd;
-}
+

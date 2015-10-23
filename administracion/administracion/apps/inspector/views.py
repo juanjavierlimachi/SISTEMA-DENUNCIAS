@@ -132,10 +132,11 @@ class AvisosDenunciasCliente(TemplateView):
 				idNegocio = request.POST['idNegocio']
 			)"""
 		return redirect('/Denuncias-cliente/')
+
 @login_required(login_url='/')
-def VerDenunciasInspector(request,id):
+def VerDenunciasInspector(request,id):##esta en beta
 	user=User.objects.get(id=int(id))
-	notificacion=multa.objects.all()
+	notificacion=Comment.objects.all().order_by('-id')
 	return render_to_response('inspector/MisNotificaciones.html',{'notificacion':notificacion,'user':user},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def EditarNotificacion(request,id):
@@ -151,8 +152,12 @@ def EditarNotificacion(request,id):
 @login_required(login_url='/')
 def datosDenuncia(request,id):
 	nego=Negocio.objects.get(id=int(id))
-	datosN=multa.objects.filter(Codigo=int(id)).order_by('-id')[0:20]
+	datosN=multa.objects.filter(Codigo=int(id)).order_by('-id')[0:50]
 	return render_to_response('inspector/datosDenuncia.html',{'datosN':datosN,'nego':nego},context_instance=RequestContext(request))
+def datosDenunciaInspectorNot(request,id):
+	nego=Negocio.objects.get(id=int(id))
+	datosN=Comment.objects.filter(idNegocio=int(id)).order_by('-id')[0:50]
+	return render_to_response('inspector/datosDenunciaNot.html',{'datosN':datosN,'nego':nego},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def allNotDeUnNegocio(request,id):
 	negocio=Negocio.objects.get(id=int(id))
@@ -163,3 +168,9 @@ def detaDenuncias(request,id):
 	denuncia=multa.objects.filter(id=int(id))
 	nombre=Negocio.objects.all()
 	return render_to_response('inspector/DenunciaNegocioDetalle.html',{'denuncia':denuncia,'nombre':nombre},context_instance=RequestContext(request))
+def MisNotificaciones(request, id):
+	user=int(id)
+	notificaciones=multa.objects.filter(idUser=user).order_by("-id")
+	print notificaciones
+	return render_to_response('inspector/MisNotificacioness.html',{'notificaciones':notificaciones},context_instance=RequestContext(request))
+

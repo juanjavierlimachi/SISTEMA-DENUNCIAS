@@ -15,8 +15,9 @@ urlpatterns = patterns('',
 
 	url(r'^VerDenunciasInspector/(?P<id>\d+)/$',VerDenunciasInspector),
 	url(r'^EditarNotificacion/(?P<id>\d+)/$',EditarNotificacion),
-	
 	url(r'^datosDenunciaInspector/(?P<id>\d+)/$',datosDenuncia),
+	url(r'^datosDenunciaInspectorNot/(?P<id>\d+)/$',datosDenunciaInspectorNot),
 	url(r'^allNotDeUnNegocio/(?P<id>\d+)/$',allNotDeUnNegocio, name='allNotDeUnNegocio'),
-	url(r'^detaDenuncias/(?P<id>\d+)/$',detaDenuncias), 
+	url(r'^detaDenuncias/(?P<id>\d+)/$',detaDenuncias),
+	url(r'^MisNotificaciones/(?P<id>\d+)/$',MisNotificaciones),
 )

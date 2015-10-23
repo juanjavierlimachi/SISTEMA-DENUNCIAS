@@ -2,14 +2,13 @@
 	width: 100%;height: auto;margin: auto;padding: 0px;
 	
 }
-#info li{list-style: none;}
 #info .det{
 	width:100%;height: auto;margin: auto;
 	background: #81C784;border-radius: 3px;
 	margin-bottom: 50px;
 }
 	#info .det li a{
-		color: white;
+		color: white; text-decoration: none;
 	}
 	#info .det li{
 		width: 100%;list-style: none;text-align: center;
@@ -27,14 +26,11 @@
 	#leftt{
 		display: none;
 	}
-.row{background: #81C784;}
 .row li{
 	width: 100%;list-style: none;text-align: center;
 		height: auto;
 }
-.row li a{width: 100%;
-	text-decoration: none;color: white;
-}
+
 .row li a:hover{
 	color: #FF8C00;
 }

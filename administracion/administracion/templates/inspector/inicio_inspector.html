@@ -19,10 +19,9 @@
     <link href="/static/css/carousel.css" rel="stylesheet">
    <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
     <script type="text/javascript">
-     /* $(document).ready(function(){
-        var socket = io.connect("http://localhost:3000");
-        socket.emit('user');
-      });*/
+     $(document).ready(function(){
+        $('.formulario').hide();
+      });
     </script>
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script type="text/javascript">
@@ -36,15 +35,33 @@
         console.log('llego una denuncia'+resp)
         var d=resp.denun;
         de++;
-        $('#denuncia').html('Comercios: '+de);
+        $('#denuncia').html(de+': Comercios: ');
     });
     var n=0;;
     socket.on('nota',function(data){
         var notifica=data.noti;
         n++;
         console.log('llego una Notificacion'+n);
-        $('#notificacion').html('Infracion: '+n);
+        $('#notificacion').html(n+': Infracion: ');
     });
+    function VerNot(){
+      $.ajax({
+        type:'GET',
+        url:"/MisNotificaciones/"+{{user.id}}+"/",
+        success:function(resp){
+          $('#notiii').html(resp);
+        }
+      });
+    }
+    function VerDenuncias(){
+      $.ajax({
+        type:'GET',
+        url:"/VerDenunciasInspector/"+{{user.id}}+"/",
+        success:function(resp){
+          $('#notiii').html(resp);
+        }
+      });
+    }
     </script>
      <script type="text/javascript" src='/static/js/validar.js'></script>
   </head>
@@ -76,24 +93,23 @@
                 <li><a  href="/"><span class="glyphicon glyphicon-home"></span>Home</a></li>
               	<li><a  href="#modal2"><span class="glyphicon glyphicon-folder-open"></span>Actividades</a></li>
                 <li class="active"><a href="#"><span class="glyphicon glyphicon-list"></span> Denuncias</a></li>
-                <li><a href="/emitirInfraccion/" id='notificacion'><span class="glyphicon glyphicon-lock"></span>Infracion</a></li>
+                <li><a href="//" ><span class="glyphicon glyphicon-lock"></span>datos</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id='denuncia'><span class="glyphicon glyphicon-briefcase"></span>Comercios<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     
                     <li><a href="/Denuncias-cliente/"><span class="glyphicons glyphicons-microphone"></span>Denuncias</a></li>
                     
-                    <li><a href="/VerDenunciasInspector/{{user.id}}/"><span class="glyphicons glyphicons-eye-open"></span> Ver Denuncias</a></li>
+                    <li><a href="#" onclick="VerDenuncias()"><span class="glyphicons glyphicons-eye-open"></span> Ver Denuncias</a></li>
                     
                     <li><a href="/">Ajedres</a></li> 
                   </ul>
                 </li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-hand-right"></span>Inspecciones<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id='notificacion'><span class="glyphicon glyphicon-hand-right"></span>Inspecciones<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="/">Deportes Representacion</a></li>
-                     <li><a href="/">Deportes Curricular</a></li>
-                      
+                    <li><a href="/emitirInfraccion/" id='notificacion'><span class="glyphicon glyphicon-lock"></span>Registro</a></li>
+                    <li><a href="#" onclick="VerNot()"><span class="glyphicon glyphicon-lock"></span>Ver Notificaciones</a></li>
                   </ul>
                 </li>
                 <li class="dropdown">

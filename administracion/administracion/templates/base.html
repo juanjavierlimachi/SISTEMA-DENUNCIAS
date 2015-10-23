@@ -58,9 +58,19 @@
                 type:'GET',
                 url:'/Registertype/',
                 success:function(resp){
+                    console.log(resp);
                     $('#resultados').html(resp);
                 }
             });
+    }
+    function Negocios(){
+        $.ajax({
+            type:'GET',
+            url:'/ListaNegocio/',
+            success:function(respuesta){
+                $('#notiii').html(respuesta);
+            }
+        });
     }
     </script>
     </head>
@@ -93,6 +103,7 @@
         <li> <a href="/Cronograma/">Cronograma</a> </li>
         <li> <a href="/EnviarNotificacion/">Informar</a> </li>
         <li> <a href="/cerrar/">Salir</a> </li> 
+         <li> <a href="/MisdatosAdmin/">Mis Datos</a> </li> 
     </ul>
 </li>
 </ul>
@@ -125,7 +136,7 @@
                         <div>
                             <li><a href="/RegistroNegocio/">Registrar negocio</a></li>
                             <li><a href="#" onclick='Registertyp()'>Tipo Negocio</a></li>
-                            <li><a href="/ListaNegocio/">Ver Negocios</a></li>
+                            <li><a href="#" onclick="Negocios()">Ver Negocios</a></li>
                         </div>
 
                         <li class="active">Controles</li>

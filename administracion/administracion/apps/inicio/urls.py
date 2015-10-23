@@ -21,5 +21,8 @@ urlpatterns = patterns('',
 	url(r'^ConsultarDenunciaFecha/$',ConsultarDenunciaFecha.as_view(), name='ConsultarDenunciaFecha'),
 	url(r'^ConsultarDenunciaClienteFecha/$',ConsultarDenunciaClienteFecha.as_view(), name='ConsultarDenunciaClienteFecha'),
 	url(r'^Registertype/$',Registertype, name='Registertype'),
-
+	url(r'^MisdatosAdmin/$',MisdatosAdmin, name='MisdatosAdmin'),
+	#datos Admin MisNotificacionesAdmin
+	url(r'^MisDenunciasAdmin/(?P<id>\d+)/$',MisDenunciasAdmin, name='MisDenunciasAdmin'),
+	url(r'^MisNotificacionesAdmin/(?P<id>\d+)/$',MisNotificacionesAdmin),
 )

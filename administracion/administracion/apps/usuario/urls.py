@@ -16,5 +16,7 @@ urlpatterns = patterns('',
 
 	url(r'^editarperfilInspector/$',editar_perfil_Inspector),
 	url(r'^editarcontraceniaInspector/(?P<id>\d+)/$', EditarcontraceniaInspector, name='editarcontraceniaInspector'),
-
+	url(r'^ActivarCuenta/$',ActivarCuenta),
+	url(r'^DasactivarUser/$',DasactivarUser),
+	url(r'^VolverHavilitar/$',VolverHavilitar),
 )

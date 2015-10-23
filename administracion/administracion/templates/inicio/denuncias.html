@@ -56,7 +56,9 @@ function ventanaSecundaria(URL){
 </select></td><br> 
 <tr><th><label for="id_comment">Descipcion:</label></th><td><textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo">
 </textarea></td></tr>
-<tr><th><label for="id_idNegocio">IdNegocio:</label></th><td><input id="id_idNegocio" name="idNegocio" type="number" /></td></tr>
+<tr><th><label for="id_idNegocio">IdNegocio:</label></th><td>
+	<input id="id_idNegocio" name="idNegocio" type="number" /></td>
+<input id="id_idUser" name="idUser" type="hidden"  value="{{user.id}}"/></tr>
 <br>
 <button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
 </form>

@@ -3,13 +3,36 @@
 {% block inspecciones %}
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
-<div class="card">
-	<p>Detalles Del Negocio:</p>
+<div class="row">
+	<p>Detalles Del Negocio:{{negocio.propietario}}</p>
 	<ul>
-		<li><a href="/datosDenunciaInspector/{{negocio.id}}/">{{negocio.propietario}}  
-		 {{negocio.memorial_apertura}}</a>
-	</li>
+		<li>Propietario: {{negocio.propietario}}  
+		 {{negocio.memorial_apertura}}<br>
+		 <a href="#" onclick="Notificaiones()" class="btn btn-warning">Notificaciones</a>
+		 <a href="#" onclick="Denuncias()" class="btn btn-danger">Denuncias</a>
+		 <a href="" class="btn btn-info">Seguimientos</a>
+	</li> 
 		<!-- <li><a href="/eliminarN/{{negocio.id}}/">Eliminar</a></li> -->
 	</ul>
 </div>
+<script type="text/javascript">
+function Notificaiones(){
+	$.ajax({
+        type:'GET',
+        url:"/datosDenunciaInspector/"+{{negocio.id}}+"/",
+        success:function(resp){
+          $('#notiii').html(resp);
+        }
+      });
+}
+function Denuncias(){
+	$.ajax({
+        type:'GET',
+        url:"/datosDenunciaInspectorNot/"+{{negocio.id}}+"/",
+        success:function(resp){
+          $('#notiii').html(resp);
+        }
+      });
+}
+</script>
 {% endblock %}

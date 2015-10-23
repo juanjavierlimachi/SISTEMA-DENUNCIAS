@@ -1,7 +1,9 @@
-{% extends 'base.html' %}
-{% block contenidos %}
+
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
-	<div class='card'>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<script src="{{STATIC_URL}}js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+	<div class='listas'>
 		<a href="/busqueda/">Buscar Negocio</a>
 		<div>
 			<select>
@@ -11,34 +13,51 @@
 				{% endfor %}
 			</select>
 		</div>
+		<div class="datalles"></div>
+		<div class="info"></div>
 	{% for negosio in negosios %}
 		<ul class='nn'>
-			<li>PROPIETARIO: <a href="/detalleNegocio/{{negosio.id}}/">{{negosio.propietario}}{{negosio.id}}</a></li>
-		<li>MEMORIAL DE APERTURA:  {{negosio.memorial_apertura}}</li>
-		<li>RESOLUCION MUNICIPAL:  {{negosio.resolucion_municipal}}</li>
+		<li>PROPIETARIO: <a href="/detalleNegocio/{{negosio.id}}/">
+			{{negosio.propietario}}{{negosio.id}}</a>
+		MEMORIAL DE APERTURA:  {{negosio.memorial_apertura}} 
+		RESOLUCION MUNICIPAL:  {{negosio.resolucion_municipal}}</li>
 		</ul>	
 	{% endfor %}
 	</div>
-{% endblock %}
-{% block js %}
+	<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
 <script type="text/javascript">
+			/*renderizar=function(r){
+				$(".info").html(r)
+				$(".info").hide()
+				$(".info").show('slow')
+			}
+	$(".nn li a").click(function (e) {
+	var Url = $('.nn li a').attr("href");
+	console.log(Url);
+    e.preventDefault();
+    Consulta(Url);
+    function Consulta(dato){
+    	$.ajax({
+    		type:'GET',
+    		url:Url,
+    		success:function(resp){
+    			$('.datalles').html(resp);
+    		}
+    	});
+    }
+  });*/
+
 	$('select').on('change',inicio);
 	function inicio(){
 		var id = $(this).val();
 		console.log(id); //aki vemos k el id se esta inprimiendo
 		$.ajax({
-			data:{'id':id},
-			url:'/busqueda_ajax/',
-			type: 'get',
+			type: 'GET',
+			url:"/busqueda_ajax/"+id+"",
 			success: function(data){
-				//console.log(data);
-				var html=""
-				for(var i = 0; i<data.length; i++){
-					html += '<li>'+(i+1)+' .- '+data[i].fields.propietario+'<a href="/er/{{data.id}}/">'+data[i].fields.memorial_apertura+'</a></li>';
-				}
-				$('#resultados').html(html);
+				console.log(data);
+				$('.info').html(data);
 			}
 		});
 	}
 </script>
-{% endblock %}

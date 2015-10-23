@@ -1,4 +1,4 @@
-{% if user.is_authenticated and user.is_staff %}
+{% if user.is_authenticated %}
 <html>
 <head>
 	<title>Notificacion</title>
@@ -34,7 +34,7 @@
 		{% endfor %} 
 	{% endfor %}
 </table>
-<li> <a href="/ImprimirNotificacion/{{dni}}">Imprimir</a> </li>
+<li> <a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a> </li>
 </div>
 </body>
 </html>

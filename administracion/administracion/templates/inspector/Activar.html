@@ -1,0 +1,45 @@
+<html>
+<head>
+	<title>Activar Cuenta</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/img/escudo.jpg" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="/static/js/jquery.min3.js"></script>
+	<script type="text/javascript">
+	 $(document).ready(function(){
+        $('#activar').on('click', Verificar);
+        function Verificar(e){
+        	e.preventDefault();
+            var use= $('#ci').val();
+            $.ajax({
+                type:'get',
+                url:'/ActivarCuenta/',
+                data:{'use': use },
+                beforeSend: entesEnviar,
+                success:function (resp){
+                   $('.datos').html('<p>'+resp+'</p>');
+                }
+            });
+            function entesEnviar(){
+                $('.datos p').text("Verificando...")
+            }
+        }
+       
+    });
+	</script>
+</head>
+<body>
+<div class="formulario">
+<h4>{{usuario}}: Deves Activar Tu cuenta</h4>
+<p>Por favor ingrsa su numero de ci para activarlo.</p>
+<form method="get">{% csrf_token %}
+	<input type='text' id='ci'>
+	<input type='submit' value="Activar Cuenta" id='activar' class="btn btn-warning">
+    <a href="/cerrar/" class="btn btn-primary">Salir</a>
+</form>
+</div>
+<div class="datos"></div>
+</body>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</html>

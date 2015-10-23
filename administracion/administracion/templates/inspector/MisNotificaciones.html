@@ -1,5 +1,4 @@
-{% extends 'inspector/inicio_inspector.html' %}
-{% block inspecciones %}
+
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
 <link rel="stylesheet" type="text/css" href="/static/css/styleLi.css">
@@ -9,14 +8,16 @@ function ventanaSecundaria(URL){
 }
 </script>
 <div id='info'>
-	<li>{{user.username}}, Estas son tus notificaciones</li>
+	<li>{{user.username}}, Estas son tus Denuncias realizadas</li>
 <div class='row'>
 {% for i in notificacion %}
 	{% if user.id == i.idUser %}<li>
-	<a href="javascript:ventanaSecundaria('/EditarNotificacion/{{i.id}}/')">{{i.descripcion}}<br>
-	{{i.fecha_notificacion}}</a></li>
+	<a href="javascript:ventanaSecundaria('/EditarNotificacion/{{i.id}}/')">
+	{{i.Tipo_de_peticion}} Descripcion<br>
+	{{i.comment}}.
+	Fecha: {{i.fecha_denuncia|timesince}}
+	</a></li>
 	{% endif %}
 {% endfor %}
 </div>
 </div>
-{% endblock %}

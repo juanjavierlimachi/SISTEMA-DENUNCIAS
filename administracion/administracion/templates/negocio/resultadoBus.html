@@ -1,13 +1,14 @@
-{% extends 'base.html' %}
-{% block title %}.:Negocio:.{% endblock %}
-{% block contenidos %}
-<link rel="stylesheet" type="text/css" href="/static/css/styleLineg.css">
-<div id='info'>
-	<p>Detalles Del Negocio: {{negocio.propietario}}</p>
-	<ul>
-		<li><a href="/registros/{{negocio.id}}/">{{negocio.propietario}}   {{negocio.memorial_apertura}}</a>
+
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
+<div class='listas'>
+	<ul class='nn'>
+		<li><a href="/registros/{{negocio.id}}/">{{negocio.propietario}}
+			{{negocio.memorial_apertura}}</a>
 	</li>
-		<li><a href="/eliminarN/{{negocio.id}}/">Eliminar</a> | <a href="/datosDenuncia/{{negocio.id}}/">Datos</a></li>
+		<li><a href="/eliminarN/{{negocio.id}}/">Eliminar</a> | 
+			<a href="/datosDenuncia/{{negocio.id}}/">Notificaciones</a>|
+			<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a></li>
 	</ul>
 </div>
-{% endblock %}
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+

@@ -55,15 +55,17 @@ def create_comment(request):
 	print request.POST
 	Comment.objects.create(
 		user = request.POST['user'],
+		Tipo_de_peticion = request.POST['Tipo_de_peticion'],
 		comment= request.POST['comment'],
 		idNegocio = request.POST['idNegocio'],
-		Tipo_de_peticion = request.POST['Tipo_de_peticion']
+		idUser = request.POST['idUser']
 		)
 	cont=Comment.objects.all().count()
 	response= JsonResponse({'cont':cont,
 							'user': request.POST['user'],
+							'Tipo_de_peticion':request.POST['Tipo_de_peticion'],
 							'comment':request.POST['comment'],
 							'idNegocio':request.POST['idNegocio'],
-							'Tipo_de_peticion':request.POST['Tipo_de_peticion']})
+							'idUser':request.POST['idUser']})
 	#esto informacion mandamos al server 
 	return HttpResponse(response.content)

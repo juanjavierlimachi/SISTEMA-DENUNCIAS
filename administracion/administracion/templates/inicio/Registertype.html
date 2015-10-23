@@ -1,27 +1,23 @@
+
 <script type="text/javascript">
-$(document).ready(function(){
-	$('#btn').click(CrearForm);
-	function CrearForm(e){
+	$('#Tipo').submit(function(e){
 		e.preventDefault();
-		var dato=$('#id_categoria').val();
+		var dato=$(this).serialize();
 		console.log(dato);
 		$.ajax({
 			type:'POST',
 			url:'/Registertype/',
-			data:dato,
+			data: dato,
 			success:function(resp){
-				$('#resultados').html("Registro Exitoso");
+				console.log(resp);
+				$('#resultados').html(resp);
 			}
 		});
-		
-	}
-});
-
+	});
 </script>
 
-<div class="miventana" >
-<form metho="POST" id="Tipo">{% csrf_token %}
+<form method="POST" id="Tipo">
+	{% csrf_token %}
 	{{forms}}
 	<input type='submit' id='btn'  value='Guardar'>
 </form>
-</div>

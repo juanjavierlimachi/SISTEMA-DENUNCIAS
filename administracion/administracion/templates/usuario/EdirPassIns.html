@@ -4,11 +4,14 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/formularios.css">
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
+<style type="text/css">
+#btn{height: 32px;}
+</style>
 <div class="card">
 <p>Actulizar la Contraceña de : {{id_user|upper}} {{id_user.first_name|upper}}  {{id_user.last_name|upper}}</p>
 <form method='POST'>{% csrf_token %}
 	{{forms}}
-	<input type='submit' name='btn' value='Guardar'>
+	<input type='submit' name='btn' value='Guardar' class="btn btn-primary" id='btn'>
 </form>
 </div>
 {% else %}

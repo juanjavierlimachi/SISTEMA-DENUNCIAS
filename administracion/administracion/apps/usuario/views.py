@@ -50,11 +50,13 @@ def ingreso(request):
 	else:
 		#user.is_staff decimoe q el administrador le dio el permiso para subsustema secretria
 		if request.user.is_active and request.user.is_staff:
-			return render_to_response('secretaria/inicio_secretaria.html',{'usuario':usuario},context_instance=RequestContext(request))
+			return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario},context_instance=RequestContext(request))
 		else:
-			if request.user.is_active:
-				conogramas=Cronograma.objects.all().order_by('-id')[0:1]
-				return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario,'conogramas':conogramas},context_instance=RequestContext(request))
+			
+			return render_to_response('inspector/Activar.html',{'usuario':usuario},context_instance=RequestContext(request))
+			# if request.user.is_active:
+			# 	conogramas=Cronograma.objects.all().order_by('-id')[0:1]
+			# 	return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario,'conogramas':conogramas},context_instance=RequestContext(request))
 
 class nuevoUser(FormView):
 	#usuario=request.cleaned_data['username']
@@ -79,8 +81,9 @@ class nuevoUser(FormView):
 def Datos(request,id):
 	user=request.user
 	usuario=User.objects.filter(id=id)
+	aux=int(id)
 	dato=Perfiles.objects.all()
-	return render_to_response('usuario/datos.html',{'usuario':usuario,'dato':dato},context_instance=RequestContext(request))
+	return render_to_response('usuario/datos.html',{'usuario':usuario,'dato':dato,'aux':aux},context_instance=RequestContext(request))
  
 @login_required(login_url='/')
 def serrar(request):
@@ -118,7 +121,7 @@ def verificacion(request):
 	use=request.GET['use']
 	try:
 		us=User.objects.get(username=use)
-		return HttpResponse("El Usuario ya exsiste")
+		return HttpResponse("El Usuario ya exsiste Intente con otro nombre.")
 	except User.DoesNotExist:
 		return HttpResponse()
 @login_required(login_url='/')
@@ -143,9 +146,9 @@ def buscarUsuario(request):
 @login_required(login_url='/')
 def datosUsuario(request, id):
 	usuario=User.objects.filter(id=id)
-	print usuario
+	userr=request.user
 	dato=Perfiles.objects.all()
-	return render_to_response('usuario/datos.html',{'usuario':usuario,'dato':dato},context_instance=RequestContext(request))
+	return render_to_response('usuario/datos.html',{'usuario':usuario,'dato':dato,'userr':userr},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def editarcontracenia(request,id):
 	#id_user=int(id)
@@ -180,3 +183,47 @@ def EditarcontraceniaInspector(request,id):
 	return render_to_response('usuario/EdirPassIns.html',{'id_user':id_user,'forms':forms},context_instance=RequestContext(request))
 
 
+@login_required(login_url='/')
+def ActivarCuenta(request):
+	user=request.user
+	use=request.GET['use']
+	try:
+		us=Perfiles.objects.get(ci=use)
+		user.is_staff=True
+		#user.is_active=True
+		user.save()
+		if not user.is_active:
+			return HttpResponse("Su cuenta a sido Deshabilitado. consulte con el administrador")
+		return HttpResponseRedirect('/privado/')
+	except Perfiles.DoesNotExist:
+		return HttpResponse("El Usuario de esta activo en el sistema por favor Verifique sus datos o de lo cantrario consulte con el administrador del sistema, Gracias.")
+@login_required(login_url='/')
+def DasactivarUser(request):
+	try:
+		nombre=request.GET['nombre']
+		staff=request.GET['staff']
+		user=User.objects.get(username=nombre)
+		if staff=='on':
+			user.is_staff=False
+			user.is_active=False
+			user.save()
+			return HttpResponse("El usuario a sido Deshabilitado")
+		else:
+			return HttpResponse("Haga click en la casilla para Desactivar esta cuenta")
+	except User.DoesNotExist:
+		return HttpResponse("Haga click en la casilla para Desactivar esta cuenta")
+@login_required(login_url='/')
+def VolverHavilitar(request):
+	try:
+		nombre=request.GET['nombre']
+		staff=request.GET['activo']
+		user=User.objects.get(username=nombre)
+		if staff =='on':
+			user.is_staff=True
+			user.is_active=True
+			user.save()
+			return HttpResponse("El usuario a sido Habilitado.")
+		else:
+			return HttpResponse("Haga click en la casilla para Habilitado esta cuenta")
+	except User.DoesNotExist:
+		return HttpResponse("Haga click en la casilla para Habilitado esta cuenta")		

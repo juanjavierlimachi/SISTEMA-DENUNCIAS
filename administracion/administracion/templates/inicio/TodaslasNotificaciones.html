@@ -45,7 +45,7 @@
 						console.log(data);
 						var html=""
 						for(var i = 0; i<data.length; i++){
-							html += '<li>      '+(i+1)+' .- '+data[i].fields.Usuario+':  Descricion:  '+data[i].fields.descripcion+'</li>';
+							html += '<li>      '+(i+1)+' .- '+data[i].fields.id+data[i].fields.Usuario+':  Descricion:  '+data[i].fields.descripcion+'</li>';
 						}
 							$('#contend').html(html);
 						}

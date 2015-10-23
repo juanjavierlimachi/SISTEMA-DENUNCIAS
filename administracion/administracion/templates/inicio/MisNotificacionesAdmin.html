@@ -1,0 +1,16 @@
+<div class="misdatos">
+{% for i in datos %}
+	<ul>Fecha:{{i.fecha_notificacion}}
+		<a href="/ImprimirNotificacion/{{i.id}}" target="_blank">Imprimir</a><br>
+		Descripcion:{{i.descripcion}}.</label>
+		Fecha Presentacion:{{i.fecha_presentacion}}
+	 {% for j in n %}
+		{% if i.Codigo == j.id %}
+			Proprietario:{{j.propietario}}
+			Direccion:{{j.direccion}} 
+			Categoria:{{j.categoria}}
+	</ul>
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+</div>

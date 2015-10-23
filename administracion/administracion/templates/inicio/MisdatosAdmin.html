@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block contenidos %}
+<style type="text/css">
+#leftt{display: none;}
+.nn{width: 45%;height: 25px; margin: auto;margin-top: 10px;margin-bottom: 10px;}
+.nn li{float: left;margin-left: 10px;margin: auto; list-style: none;}
+.infoAdmin{margin-top: 50px;}
+</style>
+	<div class="card">
+		<ul class="nn">
+			Hola:{{user}}<br>
+			<li>
+				<a href="/MisDenunciasAdmin/{{user.id}}/" class="waves-effect waves-light btn">Denuncias</a>
+			</li>
+			<li>
+				<a href="/MisNotificacionesAdmin/{{user.id}}/" class="waves-effect waves-light btn">Notificaciones</a>
+			</li>
+			<li>
+				<a href="/datos/{{user.id}}/" class="waves-effect waves-light btn">Perfil</a>
+			</li>
+		</ul>
+		<div class="infoAdmin"></div>
+	</div>
+{% endblock %} 
+
+{% block js %}
+<script type="text/javascript">
+	$('.nn li a').click(function(e){
+		e.preventDefault();
+		var Url=$(this).attr("href");
+		$.ajax({
+			type:'GET',
+			url:Url,
+			success:function(resp){
+				console.log(resp);
+				$('.infoAdmin').html(resp);
+			}
+		});
+	});
+</script>
+{% endblock %}

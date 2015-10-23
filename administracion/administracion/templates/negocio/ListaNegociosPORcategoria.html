@@ -1,0 +1,9 @@
+<div class="infor">
+{% for i in elecion %}
+<ul>
+	<li>PROPIETARIO: <a href="/detalleNegocio/{{i.id}}/">{{i.propietario}}{{i.id}}</a></li>
+		<li>MEMORIAL DE APERTURA:  {{i.memorial_apertura}}</li>
+		<li>RESOLUCION MUNICIPAL:  {{i.resolucion_municipal}}</li>
+</ul>
+{% endfor %}
+</div>

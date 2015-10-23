@@ -33,6 +33,10 @@ class busquedaAjaxView(TemplateView):
         print elecion
         data = serializers.serialize('json', elecion,fields=('id','propietario','memorial_apertura'))
         return HttpResponse(data, 'application/json')
+def Filtro(request,id):
+    elecion = Negocio.objects.filter(categoria=int(id)).order_by('propietario')
+
+    return render_to_response('negocio/ListaNegociosPORcategoria.html',{'elecion':elecion},context_instance=RequestContext(request))
 """def buscar(request):
 	if request.method=='POST':
 		formulario=buscarForm(request.POST)
@@ -79,9 +83,22 @@ def buscar(request):
 @login_required(login_url='/')
 def DetallesNegocioBus(request,id):
     negocio=Negocio.objects.get(id=id)
+    print negocio
     return render_to_response('negocio/resultadoBus.html',{'negocio':negocio},context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def registros(request,id):
 	quejas=Comment.objects.filter(idNegocio=int(id)).order_by("-id")[0:30]
 	return render_to_response('negocio/quejas.html',{'quejas':quejas},context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def denunciasAdmin(request, id):
+    negocio=Negocio.objects.get(id=int(id))
+    todasN=Comment.objects.filter(idNegocio=int(id)).order_by('-id')
+    print todasN
+    return render_to_response('negocio/denunciasAdmin.html',{'todasN':todasN,'negocio':negocio},context_instance=RequestContext(request))
+def detDenunciasReclamos(request, id):
+    dni=int(id)
+    reclamos=Comment.objects.filter(id=int(id))
+    negocio=Negocio.objects.all()
+    return render_to_response('negocio/reclamosAdmin.html',{'reclamos':reclamos,'negocio':negocio},context_instance=RequestContext(request))

@@ -6,6 +6,7 @@ class Comment(models.Model):
 	Tipo_de_peticion=models.CharField(max_length=100)
 	comment = models.TextField()
 	idNegocio=models.IntegerField()
+	idUser = models.IntegerField(blank=True,null=True)
 	#archivo=models.ImageField(upload_to='imagenes',blank=True,null=True,help_text='Puede agregar una Imagen o Archivo')
 	fecha_denuncia=models.DateTimeField(auto_now=True)
 	def __unicode__(self):

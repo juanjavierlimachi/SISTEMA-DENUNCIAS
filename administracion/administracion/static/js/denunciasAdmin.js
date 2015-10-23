@@ -10,6 +10,7 @@ $('#boton').on('click',	Comentar);
 			user: $('#id_user').val(),
 			comment:$('#id_comment').val(),
 			idNegocio:$('#id_idNegocio').val(),
+			idUser:$('#id_idUser').val(),
 			Tipo_de_peticion:$('#id_Tipo_de_peticion').val()
 		}
 		//console.log(datos);
