@@ -14,4 +14,9 @@ urlpatterns = patterns('',
 	url(r'^detalleNegocio/(?P<id>\d+)/$',DetallesNegocioBus),
 	url(r'^denunciasAdmin/(?P<id>\d+)/$',denunciasAdmin),
 	url(r'^detDenunciasReclamos/(?P<id>\d+)/$',detDenunciasReclamos),
+	url(r'^saveFiles/$', saveFiles),
+
+	url(r'^seguimientosDenuncia/$', seguimientosDenuncia),
+	url(r'^seguimientosNotificacion/$', seguimientosNotificacion),
+	url(r'^seguimiento/$', seguimiento),
 )

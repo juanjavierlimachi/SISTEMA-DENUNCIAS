@@ -1,0 +1,16 @@
+
+<div class="">
+	<p>Seguimiento de Denuncias</p>
+	<ul class="nn">
+{% for item in datos %}
+
+	
+	<li>
+		Inspector:{{item.user}}, Realizo el control al negocio: {{item.neg}} en fecha:{{item.fecha}},
+		    <span><img src="/static/img/icon_success.gif"></span>
+	</li>
+
+
+{% endfor %}
+</ul>
+</div>

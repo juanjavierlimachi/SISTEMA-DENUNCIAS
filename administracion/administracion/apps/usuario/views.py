@@ -12,6 +12,8 @@ from django.views.generic import TemplateView, FormView,ListView,CreateView
 from django.core.urlresolvers import reverse_lazy
 from administracion.apps.inicio.models import Cronograma
 from django.db.models import Q
+from administracion.apps.cliente.models import *
+from administracion.apps.negocio.models import *
 # Create your views here.
 def Usuario(request):
 	if not request.user.is_anonymous():
@@ -57,6 +59,28 @@ def ingreso(request):
 			# if request.user.is_active:
 			# 	conogramas=Cronograma.objects.all().order_by('-id')[0:1]
 			# 	return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario,'conogramas':conogramas},context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
+	usuario=request.user
+	idNegocio=int(id)
+	print "Este es el id negocio",idNegocio
+	inspector=request.user.id
+	print "id inspector",inspector
+	seg=Seguimiento()
+	seg.user_id=inspector
+	seg.neg_id=idNegocio
+	seg.save()
+	if request.user.is_staff and request.user.is_active and request.user.is_superuser:
+		#denuncias=Comment.objects.all().order_by('-id')
+		return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
+	else:
+		#user.is_staff decimoe q el administrador le dio el permiso para subsustema secretria
+		if request.user.is_active and request.user.is_staff:
+			return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario},context_instance=RequestContext(request))
+		else:
+			
+			return render_to_response('inspector/Activar.html',{'usuario':usuario},context_instance=RequestContext(request))
 
 class nuevoUser(FormView):
 	#usuario=request.cleaned_data['username']
@@ -226,4 +250,45 @@ def VolverHavilitar(request):
 		else:
 			return HttpResponse("Haga click en la casilla para Habilitado esta cuenta")
 	except User.DoesNotExist:
-		return HttpResponse("Haga click en la casilla para Habilitado esta cuenta")		
+		return HttpResponse("Haga click en la casilla para Habilitado esta cuenta")
+@login_required(login_url='/')
+def verUsers(request):
+	perfil=Perfiles.objects.all()
+	user=User.objects.all()
+	tota_user=Perfiles.objects.all().count()
+	cli=request.user
+	return render_to_response('usuario/todos_usuarios.html',{'cli':cli,'perfil':perfil,'user':user,'tota_user':tota_user},context_instance=RequestContext(request))
+
+def datosRegistroUser(request, id):
+	user=User.objects.get(id=int(id))
+	name=request.user
+	return render_to_response('usuario/datosRegistroUser.html',{'user':user,'name':name},context_instance=RequestContext(request))
+def UserDenuncias(request, id):
+	denuncias=Comment.objects.filter(idUser=id)
+	print denuncias
+	return render_to_response('usuario/UserDenuncias.html',{'denuncias':denuncias},context_instance=RequestContext(request))
+def UserNotificaciones(request, id):
+	noti=multa.objects.filter(idUser=int(id))
+	print noti
+	return render_to_response('usuario/UserNotificaciones.html',{'noti':noti},context_instance=RequestContext(request))
+
+
+
+import datetime
+import os
+from subprocess import Popen, PIPE, STDOUT
+def crearBackup(request):
+	try:
+		command = "mysqldump -h localhost -u root -p  "
+		#command= Popen('mysqldump -h localhost -P 3306 -u -root denuncia | mysql -h localhost -P 3306 -u root denuncia', shell=True)
+		today = datetime.date.today()
+		fecha = today.strftime("%Y % m % d")
+		print "esta es la fecha",fecha
+	#ficheor de salida
+		file="backup_servidor_"+fecha
+		command = command+"> C:/Users/PAVILION/Downloads/"+file+".sql"
+		return HttpResponse(os.system(command))
+	except:
+		return HttpResponse("Error")
+
+

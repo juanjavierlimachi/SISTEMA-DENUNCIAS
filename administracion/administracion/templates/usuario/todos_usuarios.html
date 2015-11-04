@@ -1,0 +1,22 @@
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+
+<div class="">
+	<p>Total de usuarios Registrodos en el sistema: {{tota_user}}   <a href="/imprimirUser/" target="_blank">Imprimir</a></p>
+	<ul class="nn">
+{% for j in user %}
+	{% for i in perfil %}
+			{% if j.id == i.usuario_id %}
+				<li>User:{{j.username}},Nombre:{{j.first_name}}  {{j.last_name}} User:{{i.usuario}} Ci:{{i.ci}}
+				Registro:{{j.date_joined}}/Ultima fecha de Ingreso:{{j.last_login}}
+				<a href="/UserDenuncias/{{j.id}}/">Den</a>
+				<a href="/UserNotificaciones/{{j.id}}/">Not</a>
+			</li>
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+		</ul>
+		
+</div>
+<div class="info"></div>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

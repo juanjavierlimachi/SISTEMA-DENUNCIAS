@@ -64,11 +64,75 @@
             });
     }
     function Negocios(){
+        $('.card').hide();
+        $('#map_canvas').hide();
         $.ajax({
             type:'GET',
             url:'/ListaNegocio/',
             success:function(respuesta){
                 $('#notiii').html(respuesta);
+            }
+        });
+    }
+    function MisDenuncias(){
+        $('.card').hide();
+        $.ajax({
+            type:'GET',
+            url:"/VerDenunciasInspector/"+{{user.id}}+"/",
+            success:function(data){
+                console.log(data);
+                $('#notiii').html(data);
+            }
+        });
+    }//VerNotificacionesInspector
+    function MisNotificaciones(){
+        $('.card').hide();
+        $.ajax({
+            type:'GET',
+            url:"/MisNotificaciones/"+{{user.id}}+"/",
+            success:function(data){
+                console.log(data);
+                $('#notiii').html(data);
+            }
+        });
+    }
+    function VerUsers(){
+        $('.card').hide();
+        $.ajax({
+            type:'GET',
+            url:"/verUsers/",
+            success:function(data){
+                console.log(data);
+                $('#notiii').html(data);
+            }
+        });
+    }
+    function segDenuncias(){
+        $('.card').hide();
+        $.ajax({
+            type:'GET',
+            url:'/seguimientosDenuncia/',
+            success:function(resp){
+                $('#notiii').html(resp);
+            }
+        });
+    }
+    function segNotificaciones(){
+        $('.card').hide();
+        $.ajax({
+            type:'GET',
+            url:'/seguimientosNotificacion/',
+            success:function(resp){
+                $('#notiii').html(resp);
+            }
+        });
+    }
+    function seguimientos(){
+        $.ajax({
+            type:'GET',
+            url:'/seguimiento/',
+            success:function(resp){
+                $('#notiii').html(resp);
             }
         });
     }
@@ -97,13 +161,13 @@
  <a href="#">Inicio</a> 
     <ul>
         <li> <a href="/">Inicio</a> </li>
-        <li> <a href="/VerNotificacionesInspector/{{user.id}}/">Notificaciones</a> </li> 
+        <li> <a href="#">assssss</a> </li> 
         <li> <a href="/AvisosDenuncias/">Denucias</a> </li>
         <li> <a href="/AvisosNotificaciones/" >Notificar</a> </li>
         <li> <a href="/Cronograma/">Cronograma</a> </li>
         <li> <a href="/EnviarNotificacion/">Informar</a> </li>
         <li> <a href="/cerrar/">Salir</a> </li> 
-         <li> <a href="/MisdatosAdmin/">Mis Datos</a> </li> 
+         <li> <a href="/MisdatosAdmins/">Ultimos</a> </li> 
     </ul>
 </li>
 </ul>
@@ -125,12 +189,12 @@
             <li class="active" id='denuncia'>Denuncias Recibidas</li>
             
                         <div>
-                            <li><a href="/RegistroNegocio/">Registrar negocio</a></li>
+                            <li><a href="#" onclick='MisDenuncias()'>Mis denuncias</a></li>
                         </div>
             <li class="active" id='notificacion'>Notificaciones Recividas</li>
             
                         <div>
-                            <li><a href="#">Informar</a></li>
+                            <li><a href="#" onclick='MisNotificaciones()'>Mis notificaciones</a></li>
                         </div>
                         <li class="active">Negocios</li>
                         <div>
@@ -139,24 +203,24 @@
                             <li><a href="#" onclick="Negocios()">Ver Negocios</a></li>
                         </div>
 
-                        <li class="active">Controles</li>
+                        <li class="active">Seguimientos</li>
                         <div>
-                            <li><a href="">Nuevo Usuario</a></li>
-                            <li><a href="">Nuevo Usuario</a></li>
-                            <li><a href="">Ver Usuarios</a></li>
+                            <li><a href="#" onclick='segDenuncias()'>Denuncias</a></li>
+                            <li><a href="#" onclick='segNotificaciones()'>Notificaciones</a></li>
+                          <li><a href="#" onclick='seguimientos()'>Seguimientos</a></li>
                         </div>
 
                         <li class="active" id='user'>Usuarios Conectados</li>
                         <div>
                             <li><a href="/nuevo/">Nuevo Usuario</a></li>
-                            <li><a href="">Nuevo Usuario</a></li>
-                            <li><a href="">Ver Usuarios</a></li>
+                         
+                            <li><a href="#" onclick="VerUsers()">Ver Usuarios</a></li>
                         </div>
-                        <li class="active">Seguimientos</li>
+                        <li class="active">Sanciones</li>
                         <div>
-                            <li><a href="/nuevo/">Nuevo Usuario</a></li>
-                            <li><a href="">Nuevo Usuario</a></li>
+                             <li><a href="/seguimiento/"></a></li>
                             <li><a href="">Ver Usuarios</a></li>
+                            <li><a href="/crearBackup/">Crear Backup</a></li>
                         </div>
                  </div> 
                 </ul>
@@ -169,7 +233,7 @@
 </main>
 <script type="text/javascript">
     if (navigator.appVersion.indexOf("Win")!=-1) {
-        document.write('<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/robotofix.css">');
+       // document.write('<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/robotofix.css">');
     }
 
     $(function() {

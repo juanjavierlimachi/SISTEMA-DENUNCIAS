@@ -1,17 +1,21 @@
 
 {% if user.is_authenticated and user.is_staff %}
 <!--<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">-->
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
-<div class='listas'>
+<style type="text/css">
+#leftt{display: none;}
+</style>
+<div class=''>
 	<ul class="nn">
-		<li>Propietario: {{negocio.propietario}}</li>
+		Propietario: {{negocio.propietario}}
 			{% for i in todasN %}
 				<li>{{i.user}}:
-					<label>Notificacion:</label><a href="/detDenunciasReclamos/{{i.id}}/">
+					Denuncio:<a href="/detDenunciasReclamos/{{i.id}}/">
 					{{i.Tipo_de_peticion}}</a>
-				<label>Reclamo:</label>{{i.comment}}</li>
+				</li>
+				{% empty %}
+		<p>No hay registros</p>
 			{% endfor %}
-		<li><a href="/allNotDeUnNegocio/{{negocio.id}}/">Ver todos</a></li>
+	<a href="/allNotDeUnNegocio/{{negocio.id}}/">Ver todos</a>
 	</ul>
 	
 </div>

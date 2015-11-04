@@ -12,15 +12,21 @@
       alert('Dejo un campo en blanco');
       return false;
     }
+    else{
+      alert("Registro Exitoso");
+    }
   }
+  function ventanaSecundaria(URL){
+                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
+            } 
 </script>
  <div class="card">
             <form method="POST" action="" onsubmit='return verificar()'>{% csrf_token %} 
               {{formulario}}<br>
               <button class="waves-effect waves-light btn" type="submit"
        onsubmit='verificar()'>Guardar</button> 
-  <!--onclick="this.disabled=true; this.value='Guardando...!'; this.form.submit()"-->
             </form>
+<a href="javascript:ventanaSecundaria('/saveFiles/')">Guardar desde un archivo</a>
 </div>
 <script type="text/javascript">
 $(document).ready(function(){

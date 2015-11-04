@@ -12,6 +12,10 @@ class formNegocio(forms.ModelForm):
 	#tipo=forms.ChoiceField(widget=forms.RadioSelect, choices=TIPO)
 	class Meta:
 		model=Negocio
+		exclude=('user',)
 
 class buscarForm(forms.Form):
 	buscar=forms.CharField()
+
+class regisArchivoForm(forms.Form):
+	csv=forms.FileField()

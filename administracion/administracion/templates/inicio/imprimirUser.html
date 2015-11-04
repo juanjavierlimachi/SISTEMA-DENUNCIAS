@@ -1,0 +1,17 @@
+<html>
+<head>
+	<title>Reportes Usuario</title>
+</head>
+<body>
+<div class="card">
+{% for j in user %}
+	{% for i in perfil %}
+			{% if j.id == i.usuario_id %}
+				<li>Nombre:{{j.username}}, {{j.first_name}}  {{j.last_name}} User:{{i.usuario}} Ci:{{i.ci}}</li>
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+<p>Total de usuarios Registrodos en el sistema: {{tota_user}}</p>
+</div>
+</body>
+</html>

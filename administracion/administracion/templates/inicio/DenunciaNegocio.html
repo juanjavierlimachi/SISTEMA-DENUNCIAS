@@ -1,19 +1,9 @@
 {% if user.is_authenticated %}
-<html>
-<head>
-	<title>Notificacion</title>
 	<style type="text/css">
-		.card{
-			width: 100%;
-		}
-		.card table{
-			width: 100%;
-			border-collapse: collapse;
-		}
+		.card{width: 100%;}
+		.card table{width: 100%;border-collapse: collapse;}
 	</style>
-</head>
-<body>
-<div class="card">
+<div class="">
 	<!-- <li>Nombre Inspector:{{denuncia.Usuario}}</li>
 	<li>Fecha de notificacion: {{denuncia.fecha_notificacion}}</li>
 	<li>Objeto: {{denuncia.descripcion}}</li>
@@ -36,8 +26,7 @@
 </table>
 <li> <a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a> </li>
 </div>
-</body>
-</html>
+
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){

@@ -3,22 +3,19 @@
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
 
 <style type="text/css">
-	#leftt{
-		display: none;
-	}
+	#leftt{display: none;}
 </style>
-<div id='info'>
+<div class='infoo'>
 	<ul class="nn">
-		<li>Propietario: {{nego.propietario}}</li>
+		<li>Notifacaciones: Propietario: {{nego.propietario}}</li>
 {% for i in datosN %}
 		<li>{{i.Usuario}}   <label>: Fecha de Notificacion:</label>
 		<a href="/detDenuncias/{{i.id}}/">{{i.fecha_notificacion}}</a></li>
 {% endfor %}
-<li><a href="/allNotDeUnNegocio/{{nego.id}}/">Ver todos</a>
-</li>
+<a href="/allNotDeUnNegocio/{{nego.id}}/">Ver todos</a>
 	</ul>
 </div>
-	<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+	<script type="text/javascript" src="/static/js/miventanaUi.js"></script> 
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){

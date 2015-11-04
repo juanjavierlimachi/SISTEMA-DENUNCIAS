@@ -1,14 +1,22 @@
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
-<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<!-- <link rel="stylesheet" type="text/css" href="/static/css/formularios.css"> -->
 <link rel="stylesheet" type="text/css" href="/static/css/styleLi.css">
-<div id="info">
-	<li>{{user.username}}, Estas son tus Notificaiones realizadas</li>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+
+	<li>{{user.username}}, Estas son tus Notificaiones realizadas Total:{{cont}}</li>
 <div class="row">
+	<ul class='nn'>
 {%  for i in notificaciones %}
-<ul>
-	<li><a href="/mas/{{i.id}}/">Fecha de notificaciones: {{i.fecha_notificacion}}  Descripcion:<br>
-		{{i.descripcion}}</a></li>
-</ul>
+	<li><a href="/detDenuncias/{{i.id}}/">Fecha de notificacion: {{i.fecha_notificacion}}  Descripcion:<br>
+		{{i.descripcion}}</a>
+		<a href="/EditNotificacion/{{i.id}}/">Edit</a>
+		<a href="/DeleteNotificacion/{{i.id}}/">Eliminar</a></li>
 {% endfor %}
+</ul>
 </div>
-</div>
+<div class="info"></div>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+
+
+

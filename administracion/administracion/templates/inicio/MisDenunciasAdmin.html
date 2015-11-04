@@ -1,14 +1,23 @@
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<script src="{{STATIC_URL}}js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
 <div class="misdatos">
+	<ul class='nn'>
 {% for i in datos %}
-	<ul><label>{{i.Tipo_de_peticion}}.<br></label>
-	 Reclamo:{{i.comment}}
+	{{i.Tipo_de_peticion}}, 
+	 <li>Reclamo:{{i.comment}}
 	 {% for j in n %}
 		{% if i.idNegocio == j.id %}
 			Proprietario:{{j.propietario}}
 			Direccion:{{j.direccion}} 
 			Categoria:{{j.categoria}}
-	</ul>
+			<a href="/EditReclamo/{{i.id}}/">Edit</a>|
+			<a href="/deleteReclamo/{{i.id}}/">Eliminar</a></li>
+			<a href="/InprecionReclamo/{{i.id}}/" target='_blank'>Imprimir</a>
 		{% endif %}
 	{% endfor %}
 {% endfor %}
+</ul>
 </div>
+<div class="info"></div>

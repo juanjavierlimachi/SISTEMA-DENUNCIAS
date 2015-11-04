@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.db import models
 from django import forms
 from administracion.apps.negocio.models import *
+from administracion.apps.cliente.models import *
 #from django.forms.extras.widgets import SelectDateWidget
 
 class FormMulta(ModelForm):
@@ -13,3 +14,8 @@ class FormMultaEditar(ModelForm):
 	class Meta:
 		model=multa
 		exclude=('idUser','Usuario',)
+
+class EdirDenuncia(ModelForm):
+	class Meta:
+		model=Comment
+		exclude=('idUser','user',)

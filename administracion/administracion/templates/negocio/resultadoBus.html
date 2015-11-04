@@ -1,14 +1,20 @@
 
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
-<div class='listas'>
-	<ul class='nn'>
-		<li><a href="/registros/{{negocio.id}}/">{{negocio.propietario}}
+{% extends 'base.html' %}
+{% block contenidos %}
+<style type="text/css">
+#leftt{display: none;}
+</style>
+<div class='infor'>
+		<li><a href="/editarnegocio/{{negocio.id}}/">{{negocio.propietario}}
 			{{negocio.memorial_apertura}}</a>
 	</li>
+	<ul class='nn'>
 		<li><a href="/eliminarN/{{negocio.id}}/">Eliminar</a> | 
 			<a href="/datosDenuncia/{{negocio.id}}/">Notificaciones</a>|
 			<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a></li>
 	</ul>
 </div>
+<div class="info"></div>
 <script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+{% endblock %}
 

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.forms import User
 # Create your models here.
 class Categoria(models.Model):
 	categoria=models.CharField(max_length=50)
@@ -7,12 +7,13 @@ class Categoria(models.Model):
 		return self.categoria
 
 class Negocio(models.Model):
+	user = models.ForeignKey(User, blank=True, null=True)
 	propietario = models.CharField(max_length=100)
 	memorial_apertura = models.CharField(max_length=20)
 	resolucion_municipal = models.CharField(max_length=20)
-	#categoria=models.CharField(max_length=50)
 	direccion=models.CharField(max_length=80)
-	categoria=models.ForeignKey(Categoria)
+	categoria=models.ForeignKey(Categoria,help_text='Seleccione una Categoria')
+	fecha_registro = models.DateTimeField(auto_now=True)
 	def __unicode__(self):
 		return self.propietario
 
@@ -27,8 +28,6 @@ class multa(models.Model):
 	hora=models.CharField(max_length=12)
 	def __unicode__(self):
 		return self.Usuario
-
-#class Multa_Pago(models.Model):
 
 
 

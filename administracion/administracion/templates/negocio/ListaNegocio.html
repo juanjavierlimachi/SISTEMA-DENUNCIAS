@@ -1,10 +1,8 @@
 
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
-<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
-<script src="{{STATIC_URL}}js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
-	<div class='listas'>
-		<a href="/busqueda/">Buscar Negocio</a>
+
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
+<div class=''>
+	
 		<div>
 			<select>
 				<option>Seleccione una categoria</option>
@@ -13,39 +11,54 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="datalles"></div>
-		<div class="info"></div>
+		 <div class="datalles"></div>
+		 <div class="info"></div>
+		 <!--<a href="/detalleNegocio/{{negosio.id}}/">-->
+	<ul class='nn'>
 	{% for negosio in negosios %}
-		<ul class='nn'>
-		<li>PROPIETARIO: <a href="/detalleNegocio/{{negosio.id}}/">
+		<li>Propietario: <a href="/editarNegocio/{{negosio.id}}/">
 			{{negosio.propietario}}{{negosio.id}}</a>
-		MEMORIAL DE APERTURA:  {{negosio.memorial_apertura}} 
-		RESOLUCION MUNICIPAL:  {{negosio.resolucion_municipal}}</li>
-		</ul>	
+		Meorial de Apertura:  {{negosio.memorial_apertura}} 
+		Resolucion Municipal:  {{negosio.resolucion_municipal}}
+	<a href="/eliminarN/{{negosio.id}}/">Eliminar</a> | 
+			<a href="/datosDenuncia/{{negosio.id}}/">Notif</a>|
+			<a href="/denunciasAdmin/{{negosio.id}}/">Denun</a></li></li>	
 	{% endfor %}
-	</div>
-	<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+	</ul>
+</div>
+
 <script type="text/javascript">
-			/*renderizar=function(r){
-				$(".info").html(r)
-				$(".info").hide()
-				$(".info").show('slow')
+$('.card').hide();
+$(".nn li a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$(".info").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio:",
+			position: "center"
+		});	
+	});
+cargarFormularios=function(url){
+				$.ajax({
+						url: url,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$(".info").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
 			}
-	$(".nn li a").click(function (e) {
-	var Url = $('.nn li a').attr("href");
-	console.log(Url);
-    e.preventDefault();
-    Consulta(Url);
-    function Consulta(dato){
-    	$.ajax({
-    		type:'GET',
-    		url:Url,
-    		success:function(resp){
-    			$('.datalles').html(resp);
-    		}
-    	});
-    }
-  });*/
 
 	$('select').on('change',inicio);
 	function inicio(){
@@ -56,8 +69,9 @@
 			url:"/busqueda_ajax/"+id+"",
 			success: function(data){
 				console.log(data);
-				$('.info').html(data);
+				$('.datalles').html(data);
 			}
 		});
 	}
 </script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

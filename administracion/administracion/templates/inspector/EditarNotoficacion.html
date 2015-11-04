@@ -1,13 +1,20 @@
-<html>
-<head>
-	<title>Editar</title>
-</head>
-<body>
-<div class="card">
-	<form method='POST'>{% csrf_token %}
-		<table>{{form}}</table>
+<script type="text/javascript">
+$('#form').submit(function(e){
+	e.preventDefault();
+	var dato=$(this).serialize();
+	$.ajax({
+		type:'POST',
+		url:'/EdirNotificacion/'+{{con}}+'/',
+		data:dato,
+		success:function(res){
+			$('.info').html(res);
+		}
+	});
+});
+</script>
+	<div class="info">
+	<form method='POST' id='form'>{% csrf_token %}
+		<table>{{forms}}</table>
 		<input type='submit' value='Guardar Canbios' class='btn btn-primary'>
 	</form>
-</div>	
-</body>
-</html>
+	</div>

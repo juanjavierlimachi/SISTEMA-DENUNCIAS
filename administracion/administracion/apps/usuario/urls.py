@@ -5,6 +5,8 @@ from .views import *#aki ay estoy importando todas las mis vistas //
 urlpatterns = patterns('',
 	url(r'^$', Usuario),
 	url(r'^privado/$', ingreso),
+	url(r'^privado/(?P<id>\d+)/$',ingresoQR),
+
 	url(r'^cerrar/$', serrar),
 	url(r'^datos/(?P<id>\d+)/$',Datos),
 	url(r'^editarperfil/$',editar_perfil),
@@ -19,4 +21,11 @@ urlpatterns = patterns('',
 	url(r'^ActivarCuenta/$',ActivarCuenta),
 	url(r'^DasactivarUser/$',DasactivarUser),
 	url(r'^VolverHavilitar/$',VolverHavilitar),
+	url(r'^verUsers/$',verUsers),
+	url(r'^datosRegistroUser/(?P<id>\d+)/$', datosRegistroUser, name='datosRegistroUser'),
+	url(r'^UserDenuncias/(?P<id>\d+)/$', UserDenuncias, name='UserDenuncias'),
+	url(r'^UserNotificaciones/(?P<id>\d+)/$', UserNotificaciones, name='UserNotificaciones'),
+
+	url(r'^crearBackup/$',crearBackup),
+
 )

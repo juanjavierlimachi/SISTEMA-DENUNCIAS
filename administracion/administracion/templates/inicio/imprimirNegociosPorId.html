@@ -1,0 +1,17 @@
+<html>
+<head>
+	<title>Reporte</title>
+</head>
+<body>
+<div class="infor">
+	<p>Total Negocios: {{aux}}</p>
+{% for i in elecion %}
+
+	<li>Propietario: {{i.propietario}}{{i.id}}
+		Memorial de apertura:  {{i.memorial_apertura}}
+		Rresolucion Municipal:  {{i.resolucion_municipal}}</li>
+
+{% endfor %}
+</div>
+</body>
+</html>

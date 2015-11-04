@@ -134,21 +134,71 @@ class AvisosDenunciasCliente(TemplateView):
 		return redirect('/Denuncias-cliente/')
 
 @login_required(login_url='/')
-def VerDenunciasInspector(request,id):##esta en beta
+def VerDenunciasInspector(request,id):
 	user=User.objects.get(id=int(id))
 	notificacion=Comment.objects.all().order_by('-id')
-	return render_to_response('inspector/MisNotificaciones.html',{'notificacion':notificacion,'user':user},context_instance=RequestContext(request))
+	cont=Comment.objects.filter(idUser=int(id)).count()
+	return render_to_response('inspector/MisNotificaciones.html',{'cont':cont,'notificacion':notificacion,'user':user},context_instance=RequestContext(request))
 @login_required(login_url='/')
-def EditarNotificacion(request,id):
+def EditarNotificacion(request,id):#no funciona
 	notificacion=multa.objects.get(id=int(id))
 	if request.method=='POST':
 		form=FormMultaEditar(request.POST,instance=notificacion)
 		if form.is_valid():
 			form.save()
-			#return HttpResponseRedirect('/')
+			return HttpResponseRedirect('/')
 	else:
 		form=FormMultaEditar(instance=notificacion)
 	return render_to_response('inspector/EditarNotoficacion.html',{'form':form},context_instance=RequestContext(request))
+@login_required(login_url='/')
+def EditReclamo(request, id):
+	con=int(id)
+	denucia=Comment.objects.get(id=int(id))
+	print "Dennuncia",denucia
+	if request.method=='POST':
+		forms=EdirDenuncia(request.POST, instance=denucia)
+		if forms.is_valid():
+			forms.save()
+			return HttpResponse('Se modifico el registro')
+			#return HttpResponseRedirect('/exito/')
+			#return HttpResponse(json.dumps({"result":True}),"application/json")
+	else:
+		forms=EdirDenuncia(instance=denucia)
+	return render_to_response('inspector/EditReclamo.html',{'forms':forms,'con':con},context_instance=RequestContext(request))
+@login_required(login_url='/')
+def deleteReclamo(request, id):
+	denuncia=Comment.objects.get(id=int(id))
+	denuncia.delete()
+	return HttpResponse("Se elimino el registro")
+
+
+
+@login_required(login_url='/')
+def EditNotificacion(request, id):
+	con=int(id)
+	denucia=multa.objects.get(id=int(id))
+	print "Dennuncia",denucia
+	if request.method=='POST':
+		forms=FormMultaEditar(request.POST, instance=denucia)
+		if forms.is_valid():
+			forms.save()
+			return HttpResponse('Se modifico el registro')
+			#return HttpResponseRedirect('/exito/')
+			#return HttpResponse(json.dumps({"result":True}),"application/json")
+	else:
+		forms=FormMultaEditar(instance=denucia)
+	return render_to_response('inspector/EditarNotoficacion.html',{'forms':forms,'con':con},context_instance=RequestContext(request))
+@login_required(login_url='/')
+def DeleteNotificacion(request, id):
+	denuncia=multa.objects.get(id=int(id))
+	denuncia.delete()
+	return HttpResponse("Se Elimino el registro")
+
+
+
+
+
+
 @login_required(login_url='/')
 def datosDenuncia(request,id):
 	nego=Negocio.objects.get(id=int(id))
@@ -168,9 +218,10 @@ def detaDenuncias(request,id):
 	denuncia=multa.objects.filter(id=int(id))
 	nombre=Negocio.objects.all()
 	return render_to_response('inspector/DenunciaNegocioDetalle.html',{'denuncia':denuncia,'nombre':nombre},context_instance=RequestContext(request))
+@login_required(login_url='/')
 def MisNotificaciones(request, id):
 	user=int(id)
 	notificaciones=multa.objects.filter(idUser=user).order_by("-id")
-	print notificaciones
-	return render_to_response('inspector/MisNotificacioness.html',{'notificaciones':notificaciones},context_instance=RequestContext(request))
+	cont=multa.objects.filter(idUser=user).count()
+	return render_to_response('inspector/MisNotificacioness.html',{'cont':cont,'notificaciones':notificaciones},context_instance=RequestContext(request))
 

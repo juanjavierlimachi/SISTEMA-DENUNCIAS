@@ -1,0 +1,11 @@
+
+<div class="">
+	<p>Seguimiento de Denuncias</p>
+	<ul class="nn">
+{% for i in lista %}
+	{% for a,i in i.items %}
+		Comtidad de Denuncias Recividas:{{a}} del Negocio:{{i}}              <span><img src="/static/img/icon_error.gif"></span><br>
+	{%  endfor %}
+{% endfor %}
+</ul>
+</div>

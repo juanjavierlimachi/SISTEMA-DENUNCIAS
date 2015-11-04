@@ -1,23 +1,25 @@
 
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
-<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<!-- <link rel="stylesheet" type="text/css" href="/static/css/formularios.css"> -->
 <link rel="stylesheet" type="text/css" href="/static/css/styleLi.css">
-<script type="text/javascript">
-function ventanaSecundaria(URL){
-                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=400");
-}
-</script>
-<div id='info'>
-	<li>{{user.username}}, Estas son tus Denuncias realizadas</li>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+
+	<li>{{user.username}}, Estas son tus Denuncias realizadas Total:{{cont}}</li>
 <div class='row'>
+	<ul class="nn">
 {% for i in notificacion %}
-	{% if user.id == i.idUser %}<li>
-	<a href="javascript:ventanaSecundaria('/EditarNotificacion/{{i.id}}/')">
+	{% if user.id == i.idUser %}
+	<li><a href="/detDenunciasReclamos/{{i.id}}/">Hace: {{i.fecha_denuncia|timesince}}     
 	{{i.Tipo_de_peticion}} Descripcion<br>
 	{{i.comment}}.
-	Fecha: {{i.fecha_denuncia|timesince}}
-	</a></li>
+	</a>
+	<a href="/EditReclamo/{{i.id}}/">Edit</a>
+	<a href="/deleteReclamo/{{i.id}}/">Eliminar</a>
+	</li>
 	{% endif %}
 {% endfor %}
+</ul>
 </div>
-</div>
+<div class="info"></div>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

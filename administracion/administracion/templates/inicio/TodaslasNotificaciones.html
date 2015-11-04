@@ -66,7 +66,19 @@
     });
 function ventanaSecundaria(URL){
                 window.open(URL,"Editar","width=700,height=400,scrollbars=NO top=150 left=450");
-            } 
+            }
+$("#ImprimirDatos").on('click',Datoss);
+function Datoss(){
+	var ini=$("#campo_fecha").val();
+	var fin=$("#campo_fecha_fin").val();
+	if (ini==""||fin==""){
+		alert("Seleciones una Fecha");
+		return false;
+	}
+	else{
+	window.open("/ImprecionDenuncia/"+ini+"/"+fin);
+	}
+}
 </script>
 <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
   <!-- librería principal del calendario -->
@@ -89,17 +101,20 @@ function ventanaSecundaria(URL){
 			<form method='get' id='filtro'>{% csrf_token %}
 				<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
 				<input type="button" id="lanzador" value="..." />
+
 				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'>
 				<input type="button" id="lanzador2" value="..." />
+
 				<button id='fer'>Ver</button>
+				<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>
 			</form>
 		<div id="contend"></div>
 	{%  for i in ns %}
 		<ul class='nn'>
-			<li>Nombre de Usuario:  {{i.Usuario}}      Fecha de Notificacion: {{i.fecha_notificacion}}</li>
+			<li>Nombre de Usuario:  {{i.Usuario}}      hace: {{i.fecha_notificacion|timesince}}</li>
 		<li>Descricion: {{i.descripcion}}</li>
 		<li>Fecha de Presentacion : {{i.fecha_presentacion}}   Hora: {{i.hora}}
-			<a href="javascript:ventanaSecundaria('/detDenuncias/{{i.id}}/')" title='Ver Comparendo'>Ver</a>| <a href="javascript:ventanaSecundaria('/ImprimirNotificacion/{{i.id}}/')">Imprimir</a></li>
+			<a href="javascript:ventanaSecundaria('/detDenuncias/{{i.id}}/')" title='Ver Comparendo'>Ver</a>|<a href="javascript:ventanaSecundaria('/ImprimirNotificacion/{{i.id}}/')">Imprimir</a></li>
 		</ul>
 			
 	{% endfor %}

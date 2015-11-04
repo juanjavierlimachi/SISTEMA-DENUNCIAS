@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% block contenidos %}
+
 <style type="text/css">
 #leftt{display: none;}
-.nn{width: 45%;height: 25px; margin: auto;margin-top: 10px;margin-bottom: 10px;}
-.nn li{float: left;margin-left: 10px;margin: auto; list-style: none;}
+.datos{width: 45%;height: 25px; margin: auto;margin-top: 10px;margin-bottom: 10px;}
+.datos li{float: left;margin-left: 10px;margin: auto; list-style: none;}
 .infoAdmin{margin-top: 50px;}
+.perfil{width: 10%; float: left; list-style: none; margin-left: 10px;}
 </style>
 	<div class="card">
-		<ul class="nn">
+		<ul class="datos">
 			Hola:{{user}}<br>
 			<li>
 				<a href="/MisDenunciasAdmin/{{user.id}}/" class="waves-effect waves-light btn">Denuncias</a>
@@ -15,17 +17,14 @@
 			<li>
 				<a href="/MisNotificacionesAdmin/{{user.id}}/" class="waves-effect waves-light btn">Notificaciones</a>
 			</li>
-			<li>
-				<a href="/datos/{{user.id}}/" class="waves-effect waves-light btn">Perfil</a>
-			</li>
+			
 		</ul>
-		<div class="infoAdmin"></div>
+		
+				<a href="/datos/{{user.id}}/" class="waves-effect waves-light btn">Perfil</a>
+		
 	</div>
-{% endblock %} 
-
-{% block js %}
-<script type="text/javascript">
-	$('.nn li a').click(function(e){
+	<script type="text/javascript">
+	$('.datos li a').click(function(e){
 		e.preventDefault();
 		var Url=$(this).attr("href");
 		$.ajax({
@@ -33,9 +32,10 @@
 			url:Url,
 			success:function(resp){
 				console.log(resp);
-				$('.infoAdmin').html(resp);
+				$('#notiii').html(resp);
 			}
 		});
 	});
 </script>
-{% endblock %}
+{% endblock %} 
+

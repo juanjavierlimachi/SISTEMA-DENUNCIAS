@@ -20,6 +20,8 @@
 		<ul>
 			{% for queja in quejas %}
 			<li>Cliente:{{queja.user}}    Informo:{{queja.comment}}</li>
+			{% empty %}
+		<p>No hay registros</p>
 			{% endfor %}
 		</ul>
 	</div>

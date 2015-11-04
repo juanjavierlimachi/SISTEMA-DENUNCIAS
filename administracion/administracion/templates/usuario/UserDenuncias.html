@@ -1,0 +1,14 @@
+
+<div class="">
+	<ul class="nn">
+{% for i in denuncias %}
+		<li>
+			<a href="/detDenunciasReclamos/{{i.id}}/">hace:{{i.fecha_denuncia|timesince}}{{i.Tipo_de_peticion}}</a> 
+		</li>
+		{% empty %}
+		<p>No hay registros</p>
+{%  endfor %}
+</ul>
+</div>
+
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>

@@ -35,10 +35,29 @@
 		        button         :    "lanzador2"   // el id del botón que lanzará el calendario
 		    });
 		
-    });
+    }); 
+$("#ImprimirDatos").on('click',Datoss);
+function Datoss(){
+	var ini=$("#campo_fecha").val();
+	var fin=$("#campo_fecha_fin").val();
+	if (ini==""||fin==""){
+		alert("Seleciones una Fecha");
+		return false;
+	}
+	else{
+	window.open("/ImprecionDenunciaClientes/"+ini+"/"+fin);
+	}
+}
 function ventanaSecundaria(URL){
                 window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
-            } 
+    }
+    function Vermas(){
+    	var cont=1;
+    	if (cont>=1){
+    		cont++;
+    		alert(cont);
+    	}
+    }
 </script> 
 <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
   <!-- librería principal del calendario -->
@@ -51,18 +70,6 @@ function ventanaSecundaria(URL){
 {% block contenidos %}
 {% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
-<script type="text/javascript">
-function ventanaSecundaria(URL){
-                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
-    }
-    function Vermas(){
-    	var cont=1;
-    	if (cont>=1){
-    		cont++;
-    		alert(cont);
-    	}
-    }
-</script>
 <div class="card">
 	<p>Lista de Denuncias Gestion: {% now "Y" %}</p>
 	<form method='get' id='filtro'>{% csrf_token %}
@@ -70,15 +77,16 @@ function ventanaSecundaria(URL){
 				<input type="button" id="lanzador" value="..." />
 				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'><input type="button" id="lanzador2" value="..." />
 				<button id='fer'>Ver</button>
+				<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>
 	</form>
 	<div id="contend"></div>
 	{%  for i in cs %}
 		<ul class='nn'>
 			<li>Cliente:  {{i.user}} 
-		<!-- <li>Denuncio: {{i.comment}}</li>
-		<li>Cod Negocio: {{i.idNegocio}}</li> -->
+		 Denuncio: {{i.comment}}
 		hace:{{i.fecha_denuncia|timesince}}
-			<a href="javascript:ventanaSecundaria('/DetalleDenuncias/{{i.id}}/')">Ver</a>
+			<a href="javascript:ventanaSecundaria('/detDenunciasReclamos/{{i.id}}/')">Ver</a>|
+			<a href="javascript:ventanaSecundaria('/InprecionReclamo/{{i.id}}/')">Imprimir</a>
 			</li>
 		</ul>	 
 	{% endfor %}

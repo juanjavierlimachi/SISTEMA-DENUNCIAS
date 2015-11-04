@@ -1,9 +1,18 @@
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+
 <div class="infor">
+	<p>Total Negocios: {{aux}}|<a href="/imprimirNegociosPorId/{{c}}/" target="_blank">Imprimir</a></p>
+<ul class='nn'>
 {% for i in elecion %}
-<ul>
-	<li>PROPIETARIO: <a href="/detalleNegocio/{{i.id}}/">{{i.propietario}}{{i.id}}</a></li>
-		<li>MEMORIAL DE APERTURA:  {{i.memorial_apertura}}</li>
-		<li>RESOLUCION MUNICIPAL:  {{i.resolucion_municipal}}</li>
-</ul>
+	<li>Propietario:<a href="/editarNegocio/{{i.id}}/">{{i.propietario}}{{i.id}}</a>
+		Memorial de Apertura:  {{i.memorial_apertura}}
+		Resolucion Municipal:  {{i.resolucion_municipal}}
+		<a href="/datosDenuncia/{{i.id}}/">Not</a>|
+		<a href="/denunciasAdmin/{{i.id}}/">Den</a></li>
+		{% empty %}
+		<p>No hay registros</p>
 {% endfor %}
+</ul>
 </div>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>

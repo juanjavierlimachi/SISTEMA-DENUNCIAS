@@ -1,0 +1,28 @@
+<html>
+<head>
+	<title>reportes</title>
+	<style type="text/css">
+		table tr{
+			vertical-align:bottom;
+		}
+	</style>
+</head>
+<body>
+<h5>Reportes de Comparendos</h5>
+	{% for i in denuncia %}
+	<table border=1>
+	<tr><td>H.G.M.P </td><td>Nro:1</td></tr>
+	<tr><td colspan="2" align='center'>COMPARENDO</td></tr>
+		<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
+		{% for j in nombre %}
+			{% if j.id == i.Codigo %}
+				<tr><td colspan="2">Sr(s):{{j.propietario}}</td></tr>
+				<tr><td colspan="2">Direccion: {{j.direccion}}</td></tr>
+				<tr><td>Fecha de Presentacion en Oficina: {{i.fecha_presentacion}} </td><td>Horas: {{i.hora}}</td></tr>
+				<tr><td colspan="2">Fecha de Notificacion: {{i.fecha_notificacion}}</td></tr>
+			{% endif %}
+		{% endfor %}
+	</table><br>
+	{% endfor %}
+</body>
+</html>

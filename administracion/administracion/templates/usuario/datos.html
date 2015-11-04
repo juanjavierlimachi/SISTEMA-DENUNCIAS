@@ -17,7 +17,7 @@
         width: 45%;margin: auto;float: left;margin-left: 15px;list-style: none;
     }
     .card a{
-        margin-left: 50px;
+        margin-left: 50px;float: left;margin-left: 5px;
     }
     #staff{width: 10%;height: 25px;float: left;}
    #userr{float:left;margin-right: 15px;height: 25px;}
@@ -51,7 +51,7 @@
         {% endfor %}
     {% endfor %}
     {% if user.id == aux %}
-        <a class="btn btn-primary" href="/editarcontracenia/{{user.id}}/">Editar Password</a>
+         <a class="btn btn-primary" href="/editarcontracenia/{{user.id}}/">Editar Password</a>
       <a class="btn btn-primary" href="/editarperfil/">Editar Datos</a>
       {% else %}
     <p></p>

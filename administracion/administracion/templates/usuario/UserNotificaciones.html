@@ -1,0 +1,12 @@
+<div class="">
+	<ul class="nn">
+{% for i in noti %}
+<li>
+	<a href="/detDenuncias/{{i.id}}/">{{i.fecha_notificacion|timesince}}</a>
+</li>
+	{% empty %}
+		<p>No hay registros</p>
+{% endfor %}
+</ul>
+</div>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>

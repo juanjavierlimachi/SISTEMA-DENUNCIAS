@@ -5396,14 +5396,14 @@ small {
     .card .card-title.activator {
       cursor: pointer; }
   .card a {
-    color: #ffab40;
+    color: blue;
     margin-right: 20px;
     -webkit-transition: color 0.3s ease;
     -moz-transition: color 0.3s ease;
     -o-transition: color 0.3s ease;
     -ms-transition: color 0.3s ease;
     transition: color 0.3s ease;
-    text-transform: uppercase; }
+    /*text-transform: uppercase;*/ }
     .card a:hover {
       color: #ffd8a6; }
   .card.small, .card.medium, .card.large {

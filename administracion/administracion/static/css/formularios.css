@@ -35,7 +35,7 @@
     .card #id_tipo label input{width: 100px;
        float: right;
     }
-.card form .helptext{display: none;}
+.card form .helptext{width: 250px; float: right; margin-top: -50px;margin-right: 100px;}
     #comentario{
         width: 100%;height: auto;margin: auto;
         background:#eee;margin-top: 10px;margin-bottom: 50px;

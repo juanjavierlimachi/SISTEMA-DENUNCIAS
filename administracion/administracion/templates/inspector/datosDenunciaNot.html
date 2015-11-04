@@ -1,15 +1,23 @@
 
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<script src="{{STATIC_URL}}js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
 	<div class='card' id="comentario">
 		<p>Denuncias</p>
-	<li>
 	{% for i in datosN %}
-			<li><label>{{i.user}}  :</label> Fecha:
+			<ul class="nn">
+				<li><a href="/detDenunciasReclamos/{{i.id}}/">
+					{{i.user}}  : hace:
 				{{i.fecha_denuncia|timesince}}
-			Objeto:{{i.Tipo_de_peticion}}<br>
-			Descripcion:{{i.comment}}
-			</li>
+				Objeto:{{i.Tipo_de_peticion}}
+				Descripcion:{{i.comment}}
+				</a>
+				</li>
+			</ul>
 	{% endfor %}
-	<li><a href="javascript:ventanaSecundaria('/allNotDeUnNegocio/{{nego.id}}/')">Ver todos</a>
+	<a href="javascript:ventanaSecundaria('/allNotDeUnNegocio/{{nego.id}}/')">Ver todos</a>
+		<div class="info"></div>
 	</div>

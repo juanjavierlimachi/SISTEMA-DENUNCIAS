@@ -1,0 +1,15 @@
+<div id="regArchivo">
+	<b>
+		REGISTRAR NEGOCIOS DESDE UN ARCHIVO
+	</b>
+	<form action="" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ formulario }}
+		<input type="submit" value="Enviar"/>
+	</form>
+</div>
+<div>
+{% if resultado %}
+<h3>Registro Guardado Exitosamente...!!!</h3>
+{% endif%}
+</div>

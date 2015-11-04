@@ -9,8 +9,9 @@ from administracion.apps.cliente.forms import Commentform
 from .forms import *
 from administracion.apps.negocio.models import multa
 from administracion.apps.inspector.forms import *
+from administracion.apps.inspector.forms import *
 from django.core import serializers
-
+from administracion.apps.usuario.models import *
 import os
 import datetime
 import StringIO
@@ -87,7 +88,7 @@ def RegistroCronograma(request):
 @login_required(login_url='/')
 def datosDenuncia(request,id):
 	nego=Negocio.objects.get(id=int(id))
-	datosN=multa.objects.filter(Codigo=int(id)).order_by('-id')[0:20]
+	datosN=multa.objects.filter(Codigo=int(id)).order_by('-id')[0:50]
 	return render_to_response('inicio/DatosNegocio.html',{'datosN':datosN,'nego':nego},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def allNotDeUnNegocio(request,id):
@@ -100,11 +101,11 @@ def detDenuncias(request,id):
 	denuncia=multa.objects.filter(id=int(id))
 	nombre=Negocio.objects.all()
 	return render_to_response('inicio/DenunciaNegocio.html',{'denuncia':denuncia,'nombre':nombre,'dni':dni},context_instance=RequestContext(request))
-@login_required
+@login_required(login_url='/')
 def ImprimirNotificacion(request,id):
 	denuncia=multa.objects.filter(id=int(id))
 	nombre=Negocio.objects.all()
-	html=render_to_string("inicio/imprecion.html",{'pagesize':'A4','denuncia':denuncia,'nombre':nombre},context_instance=RequestContext(request))
+	html=render_to_string("inicio/reportesDiarios.html",{'pagesize':'A4','denuncia':denuncia,'nombre':nombre},context_instance=RequestContext(request))
 	return generar_pdf(html)
 def generar_pdf(html):
 	resultado=StringIO.StringIO()
@@ -112,6 +113,39 @@ def generar_pdf(html):
 	if not pdf.err:
 		return HttpResponse(resultado.getvalue(),'application/pdf')
 	return HttpResponse("Error al generar el reporte")
+@login_required(login_url='/')
+def imprimirNegociosPorId(request, id):
+	aux=Negocio.objects.filter(categoria=int(id)).count()
+	elecion = Negocio.objects.filter(categoria=int(id)).order_by('propietario')
+	html=render_to_string('inicio/imprimirNegociosPorId.html',{'pagesize':'A4','elecion':elecion,'aux':aux},context_instance=RequestContext(request))
+	return generar_pdf(html)
+def imprimirUser(request):
+	perfil=Perfiles.objects.all()
+	user=User.objects.all()
+	tota_user=Perfiles.objects.all().count()
+	html=render_to_string('inicio/imprimirUser.html',{'pagesize':'A4','perfil':perfil,'user':user,'tota_user':tota_user},context_instance=RequestContext(request))
+	return generar_pdf(html)
+def ImprecionDenuncia(request, id, fin):
+	i=id
+	f=fin
+	denuncia = multa.objects.filter(fecha_notificacion__range=(i,f))
+	nombre=Negocio.objects.all()
+	html=render_to_string('inicio/reportesDiarios.html',{'pagesize':'A4','i':i,'f':f,'denuncia':denuncia,'nombre':nombre},context_instance=RequestContext(request))
+	return generar_pdf(html)
+
+def ImprecionDenunciaClientes(request, id, fin):
+	inicio=id
+	fin=fin
+	reclamos=Comment.objects.filter(fecha_denuncia__range=(inicio,fin))
+	negocio=Negocio.objects.all()
+	html = render_to_string('negocio/reclamosAdmin.html',{'pagesize':'A4','inicio':inicio,'fin':fin,'reclamos':reclamos,'negocio':negocio},context_instance=RequestContext(request))
+	return generar_pdf(html)
+def InprecionReclamo(request, id):
+	reclamos=Comment.objects.filter(id=int(id))
+	negocio=Negocio.objects.all()
+	html = render_to_string('negocio/reclamosAdmin.html',{'pagesize':'A4','reclamos':reclamos,'negocio':negocio},context_instance=RequestContext(request))
+	return generar_pdf(html)
+
 
 @login_required(login_url='/')
 def DetalleDenuncias(request, id):
@@ -189,3 +223,6 @@ def MisNotificacionesAdmin(request, id):
 	datos=multa.objects.filter(idUser=ind).order_by('-id')
 	print datos
 	return render_to_response('inicio/MisNotificacionesAdmin.html',{'datos':datos,'n':n},context_instance=RequestContext(request))
+
+
+
