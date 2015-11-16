@@ -15,24 +15,23 @@
 {% else %}
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/newUi.js"></script>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
-<script type="text/javascript">
-	function ventanaSecundaria(URL){
-        window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
-    }
-</script>
 </head>
 <audio id="player" src="/static/tonos/sonidoUno.mp3">
 		</audio>
 <div id='comentario'>
+	<p id="datos">
 	{% for comment in comments %}
-		<li><a  href="javascript:ventanaSecundaria('/DetalleDenuncias/{{comment.id}}/')">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
+		<li><a  href="/detDenunciasReclamos/{{comment.id}}/">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
 	{% endfor %} 
-
+	</p>
 </div>
 <!-- <li>Negocio a denunciar::{{nego.propietario}}</li><br> -->
-<div id="map_canvass"></div>
+<div id="map_canvas"></div>
 <div class="row">
 <form method='POST'  id='for' enctype="multipart/form-data">{% csrf_token %}
 {{user}}
@@ -48,18 +47,21 @@
 <option value="sugerencias">Sugerencia</option>
 <option value="Otros Casos">Otros Casos</option>
 </select></td><br> 
-<tr><th><label for="id_comment">Descipcion:</label></th><td><textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo">
+<tr><th><label for="id_comment">Descipcion:</label></th>
+	<td><textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo" required>
 </textarea></td></tr>
 <tr><th><label for="id_idNegocio">IdNegocio:</label></th><td>
 	<input id="id_idNegocio" name="idNegocio" type="number" /></td>
-<input id="id_idUser" name="idUser" type="hidden"  value="{{user.id}}"/></tr>
+<input id="id_idUser" name="idUser" type="hidden" required  value="{{user.id}}"/></tr>
 <br>
 <button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
 </form> 
-</div> 
-
+</div>
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script src="/static/js/jquery.min3.js"></script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="/static/js/denunciasAdmin.js"></script>
 {% endif %}
+{% endblock %}
+{% block js %}
 {% endblock %}

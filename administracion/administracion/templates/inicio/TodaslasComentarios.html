@@ -15,10 +15,11 @@
 				url:'/ConsultarDenunciaClienteFecha/',
 				data: fecha,
 				success:function(data){
-					//console.log(data);
+					$('#contend').text("Procesando!!!");
 					var html=""
 					for(var i = 0; i<data.length; i++){
-						html += '<li>'+(i+1)+' .- '+data[i].fields.user+':  Fecha:  '+data[i].fields.fecha_denuncia+'  Descricion:  '+data[i].fields.comment+'</li>';
+						html += '<li>'+(i+1)+' .- '+data[i].fields.user+'  Denunció:  '+data[i].fields.comment+
+						'Fecha:'+data[i].fields.fecha_denuncia+'Cod:'+data[i].fields.idNegocio+'</li>';
 					}
 					$('#contend').html(html);
 				}
@@ -48,19 +49,54 @@ function Datoss(){
 	window.open("/ImprecionDenunciaClientes/"+ini+"/"+fin);
 	}
 }
+$("#repExcelD").on('click',ExcelD);
+function ExcelD(){
+	var ini=$("#campo_fecha").val();
+	var fin=$("#campo_fecha_fin").val();
+	if (ini==""||fin==""){
+		alert("Seleciones una Fecha");
+		return false;
+	}
+	else{
+	window.open("/ReporteExcelDenuncias/"+ini+"/"+fin);
+	}
+}
+
 function ventanaSecundaria(URL){
                 window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
     }
-    function Vermas(){
-    	var cont=1;
-    	if (cont>=1){
-    		cont++;
-    		alert(cont);
-    	}
-    }
+window.onload = function(){
+	var contador=0;
+	document.getElementById("Ante").onclick=function(){
+	contador++;
+	console.log(contador);
+	$.ajax({
+		type:'GET',
+		url:'/VerPorDiaDenuncias/'+contador+'/',
+		success:function(resp){
+			console.log(resp);
+			$('#contend').html(resp);
+		}
+	});
+	}
+
+
+	document.getElementById("Siguiente").onclick=function(){
+		contador--;
+		console.log(contador);
+		$.ajax({
+		type:'GET',
+		url:'/VerPorDiaDenuncias/'+contador+'/',
+		success:function(resp){
+			console.log(resp);
+			$('#contend').html(resp);
+		}
+	});
+
+	}
+}
 </script> 
 <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
-  <!-- librería principal del calendario -->
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
   <!-- librería para cargar el lenguaje deseado -->
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
@@ -70,17 +106,22 @@ function ventanaSecundaria(URL){
 {% block contenidos %}
 {% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
+<style type="text/css">
+.card{background: #eee;}
+</style>
 <div class="card">
 	<p>Lista de Denuncias Gestion: {% now "Y" %}</p>
 	<form method='get' id='filtro'>{% csrf_token %}
 				<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
-				<input type="button" id="lanzador" value="..." />
-				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'><input type="button" id="lanzador2" value="..." />
+				<input type="button" id="lanzador" value="<Desde" />
+				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'><input type="button" id="lanzador2" value="Hasta>" />
 				<button id='fer'>Ver</button>
-				<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>
+				<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>|
+				<a href="#" target="_blank" id="repExcelD">Excel</a>
 	</form>
 	<div id="contend"></div>
-	{%  for i in cs %}
+	<hr>
+	{%  for i in datos %}
 		<ul class='nn'>
 			<li>Cliente:  {{i.user}} 
 		 Denuncio: {{i.comment}}
@@ -90,7 +131,7 @@ function ventanaSecundaria(URL){
 			</li>
 		</ul>	 
 	{% endfor %}
-	<li><a href="#" onclick='Vermas()' id='mas'>Ver Mas</a></li>
+	<a href="#"  id='Ante'>Anterior</a>|<a href="#" id="Siguiente">Siguiente</a>
 </div>
 {% else %}
 <script type="text/javascript">

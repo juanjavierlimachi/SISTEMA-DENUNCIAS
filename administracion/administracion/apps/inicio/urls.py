@@ -7,7 +7,6 @@ urlpatterns = patterns('',
 	url(r'^EnviarNotificacion/$',EnviarNotificacion, name='EnviarNotificacion'),
 	url(r'^Notiicaciones/(?P<id>\d+)/$',Notiicaciones, name='Notiicaciones'),
 	url(r'^Cronograma/$',RegistroCronograma, name='RegistroCronograma'),
-
 	url(r'^datosDenuncia/(?P<id>\d+)/$',datosDenuncia),
 	url(r'^allNotDeUnNegocio/(?P<id>\d+)/$',allNotDeUnNegocio, name='allNotDeUnNegocio'),
 	url(r'^detDenuncias/(?P<id>\d+)/$',detDenuncias, name='detDenuncias'),#DenunciaNegocio.html
@@ -32,5 +31,8 @@ urlpatterns = patterns('',
 	#url(r'^ImprecionDenuncia/(?P<inicio>\d+)/(?P<fin>\d+)$',ImprecionDenuncia),
 	url(r'^ImprecionDenuncia/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ImprecionDenuncia),
 	url(r'^ImprecionDenunciaClientes/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ImprecionDenunciaClientes),
+	url(r'^soloActivos/$',soloActivos, name='soloActivos'),
 
+	url(r'^VerPorDia/(?P<id>\d+)/$',VerPorDia),
+	url(r'^VerPorDiaDenuncias/(?P<id>\d+)/$',VerPorDiaDenuncias),
 )

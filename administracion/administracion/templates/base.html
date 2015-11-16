@@ -19,7 +19,7 @@
         <script src="{{STATIC_URL}}js/materialize.js"></script>
         <script src="{{STATIC_URL}}js/script.js"></script>
         <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/deIndex.css" >
-       <!-- -->
+       <!-- onmouseOver="activo()"-->
        <script type="text/javascript" src='/static/js/validar.js'></script>
        <script src="http://localhost:3000/socket.io/socket.io.js"></script>
         <script type="text/javascript">
@@ -28,8 +28,38 @@
         $('div.acordion> li').click(function(){
             $(this).next().slideToggle(90)  
         })
-        //para mi ventana modal
+        bbbb();
+function bbbb(){
+   var moviendo= false;
+   document.onmousemove = function(){
+          moviendo= true;
+   }
+   setInterval (function() {
+      if (!moviendo) {
+         
+          //alert("no hay movimiento");
+          document.location.href='/cerrar/';
+      } else {
+          moviendo=false;
+          console.log('en Movimiento');
+      }
+   }, 600000) 
+}
+
     });
+/* function activo(){
+        var hora_actual = new Date();
+        hora_actual=hora_actual.getMinutes();
+        var aux;
+        aux=hora_actual
+        //var result=aux-hora_actual
+        //console.log(result);
+        console.log("actual:"+hora_actual);
+        console.log('pasado:'+aux)
+        //var ac=true;
+        //bbbb();
+
+}*/
     var socket = io.connect("http://localhost:3000");
     var usuario=document.getElementById('user');
 
@@ -57,84 +87,124 @@
         $.ajax({
                 type:'GET',
                 url:'/Registertype/',
+                beforeSend: entesEnviar,
                 success:function(resp){
                     console.log(resp);
                     $('#resultados').html(resp);
                 }
             });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }
     function Negocios(){
         $('.card').hide();
+        $('.help').hide();
         $('#map_canvas').hide();
         $.ajax({
             type:'GET',
             url:'/ListaNegocio/',
+            beforeSend: entesEnviar,
             success:function(respuesta){
                 $('#notiii').html(respuesta);
             }
         });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }
     function MisDenuncias(){
         $('.card').hide();
+      $('.help').hide();
         $.ajax({
             type:'GET',
             url:"/VerDenunciasInspector/"+{{user.id}}+"/",
+            beforeSend: entesEnviar,
             success:function(data){
                 console.log(data);
                 $('#notiii').html(data);
             }
         });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }//VerNotificacionesInspector
     function MisNotificaciones(){
         $('.card').hide();
+      $('.help').hide();
         $.ajax({
             type:'GET',
             url:"/MisNotificaciones/"+{{user.id}}+"/",
+            beforeSend: entesEnviar,
             success:function(data){
                 console.log(data);
                 $('#notiii').html(data);
             }
         });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }
     function VerUsers(){
         $('.card').hide();
+          $('.help').hide();
         $.ajax({
             type:'GET',
             url:"/verUsers/",
+            beforeSend: entesEnviar,
             success:function(data){
                 console.log(data);
                 $('#notiii').html(data);
             }
         });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }
     function segDenuncias(){
         $('.card').hide();
+          $('.help').hide();
         $.ajax({
             type:'GET',
             url:'/seguimientosDenuncia/',
+            beforeSend: entesEnviar,
             success:function(resp){
                 $('#notiii').html(resp);
             }
         });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }
     function segNotificaciones(){
         $('.card').hide();
+          $('.help').hide();
         $.ajax({
             type:'GET',
             url:'/seguimientosNotificacion/',
+            beforeSend: entesEnviar,
             success:function(resp){
                 $('#notiii').html(resp);
             }
         });
+         function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }
     function seguimientos(){
+        $('.card').hide();
+          $('.help').hide();
         $.ajax({
             type:'GET',
             url:'/seguimiento/',
+            beforeSend: entesEnviar,
             success:function(resp){
                 $('#notiii').html(resp);
             }
         });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
     }
     </script>
     </head>
@@ -161,7 +231,7 @@
  <a href="#">Inicio</a> 
     <ul>
         <li> <a href="/">Inicio</a> </li>
-        <li> <a href="#">assssss</a> </li> 
+        <!-- <li> <a href="#">assssss</a> </li>  -->
         <li> <a href="/AvisosDenuncias/">Denucias</a> </li>
         <li> <a href="/AvisosNotificaciones/" >Notificar</a> </li>
         <li> <a href="/Cronograma/">Cronograma</a> </li>
@@ -178,7 +248,7 @@
                 <ul id="nav-mobile" class="side-nav fixed">
                     <li class="logo">
                         <a id="logo-container" href="/admin">
-                            <img class="responsive-img" src="{{STATIC_URL}}img/logo.png">
+                            <img class="responsive-img" src="{{STATIC_URL}}img/escudo.jpg">
                         </a>
 <form action="/buscar/" name="" id="fbuscar" method="post">{% csrf_token %}
     <input id="id_texto" maxlength="50" name="texto" type="search" placeholder='Buscar Negocio' />
@@ -218,8 +288,8 @@
                         </div>
                         <li class="active">Sanciones</li>
                         <div>
-                             <li><a href="/seguimiento/"></a></li>
-                            <li><a href="">Ver Usuarios</a></li>
+                            <!--  <li><a href="/seguimiento/"></a></li> -->
+                            <li><a href="#">Ver Usuarios</a></li>
                             <li><a href="/crearBackup/">Crear Backup</a></li>
                         </div>
                  </div> 
@@ -228,7 +298,7 @@
         </header>
         <main>
             <div class="resultados" id="resultados"> </div>
-{% block contenidos %} {% endblock %}   {% block js %}  {% endblock %}
+{% block contenidos %}  {% endblock %}   {% block js %}  {% endblock %}
 <div id="notiii"></div>
 </main>
 <script type="text/javascript">

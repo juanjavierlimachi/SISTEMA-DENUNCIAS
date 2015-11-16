@@ -1,22 +1,63 @@
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
 
 <div class="">
-	<p>Total de usuarios Registrodos en el sistema: {{tota_user}}   <a href="/imprimirUser/" target="_blank">Imprimir</a></p>
-	<ul class="nn">
+	<p>Total de usuarios Registrodos en el sistema: {{tota_user}}   <a href="/imprimirUser/" target="_blank">Imprimir</a> |<a href="/soloActivos/" target="_blank">Activos</a>|<a href="/UserdeBaja/" target="_blank">No Activos</a></p>
+	<table border=1>
+		<tr>
+			<td>Usuario</td><td>Nombre</td><td>Apellido</td><td>Nro. CI.</td><td>Fecha registro</td><td>Ultimo Ingreso</td><td>Estado</td><td>Opciones</td>
+		</tr>
+	
 {% for j in user %}
 	{% for i in perfil %}
 			{% if j.id == i.usuario_id %}
-				<li>User:{{j.username}},Nombre:{{j.first_name}}  {{j.last_name}} User:{{i.usuario}} Ci:{{i.ci}}
-				Registro:{{j.date_joined}}/Ultima fecha de Ingreso:{{j.last_login}}
-				<a href="/UserDenuncias/{{j.id}}/">Den</a>
-				<a href="/UserNotificaciones/{{j.id}}/">Not</a>
-			</li>
+<tr><td>{{j.username}}</td><td>{{j.first_name}}</td><td>{{j.last_name}}</td><td>{{i.ci}}</td><td>{{j.date_joined}}</td><td>{{j.last_login|timesince}}</td><td>
+{% if j.is_active %}
+				<span><a href="/datosUsuari/{{j.id}}/"><img src="/static/img/icon_success.gif"></a></span>
+				{% else %}
+				<span><a href="/datosUsuari/{{j.id}}/"><img src="/static/img/icon_error.gif"></a></span>
+				{% endif %}
+</td><td><a href="/UserDenuncias/{{j.id}}/">Den</a>|
+				<a href="/UserNotificaciones/{{j.id}}/">Not</a></td>
+				</tr>
 			{% endif %}
 		{% endfor %}
 	{% endfor %}
-		</ul>
 		
+	</table>	
 </div>
-<div class="info"></div>
-<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<div id="infoUsers"></div>
+<script type="text/javascript">
+
+$("table tr td a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$("#infoUsers").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio:",
+			position: "center"
+		});	
+	});
+cargarFormularios=function(url){
+				$.ajax({
+						url: url,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$("#infoUsers").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+</script>
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

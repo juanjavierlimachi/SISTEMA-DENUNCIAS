@@ -13,9 +13,9 @@ class FormMulta(ModelForm):
 class FormMultaEditar(ModelForm):
 	class Meta:
 		model=multa
-		exclude=('idUser','Usuario',)
+		exclude=('idUser','Usuario','Codigo',)
 
 class EdirDenuncia(ModelForm):
 	class Meta:
 		model=Comment
-		exclude=('idUser','user',)
+		exclude=('idUser','user','idNegocio',)

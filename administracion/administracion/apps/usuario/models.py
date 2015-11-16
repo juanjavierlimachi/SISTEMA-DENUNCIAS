@@ -4,7 +4,7 @@ from administracion.apps.negocio.models import *
 # Create your models here.
 class Perfiles(models.Model):
 	usuario = models.OneToOneField(User, unique=True, related_name='perfil')
-	ci = models.IntegerField(max_length=10)
+	ci = models.IntegerField(max_length=8)
 	#telefono = models.IntegerField(max_length=8)
 	def __unicode__(self):
 		return self.usuario.username

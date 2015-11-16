@@ -45,7 +45,8 @@
 						console.log(data);
 						var html=""
 						for(var i = 0; i<data.length; i++){
-							html += '<li>      '+(i+1)+' .- '+data[i].fields.id+data[i].fields.Usuario+':  Descricion:  '+data[i].fields.descripcion+'</li>';
+							html += '<li>      '+(i+1)+' .- '+data[i].fields.Usuario+':  Descricion:  '+data[i].fields.descripcion+'. fecha_presentacion:'+data[i].fields.fecha_presentacion+'   hora:'+data[i].fields.hora+
+							'</li>';
 						}
 							$('#contend').html(html);
 						}
@@ -79,6 +80,46 @@ function Datoss(){
 	window.open("/ImprecionDenuncia/"+ini+"/"+fin);
 	}
 }
+$("#repExcel").on('click',Excel);
+function Excel(){
+	var ini=$("#campo_fecha").val();
+	var fin=$("#campo_fecha_fin").val();
+	if (ini==""||fin==""){
+		alert("Seleciones una Fecha");
+		return false;
+	}
+	else{
+	window.open("/ReporteExcel/"+ini+"/"+fin);
+	}
+}
+window.onload = function(){
+	var contador=0;
+	document.getElementById("Ante").onclick=function(){
+	contador++;
+	console.log(contador);
+	$.ajax({
+		type:'GET',
+		url:'/VerPorDia/'+contador+'/',
+		success:function(resp){
+			console.log(resp);
+			$('#contend').html(resp);
+		}
+	});
+	}
+	document.getElementById("Siguiente").onclick=function(){
+		contador--;
+		console.log(contador);
+		$.ajax({
+		type:'GET',
+		url:'/VerPorDia/'+contador+'/',
+		success:function(resp){
+			console.log(resp);
+			$('#contend').html(resp);
+		}
+	});
+	}
+}
+
 </script>
 <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
   <!-- librería principal del calendario -->
@@ -89,36 +130,75 @@ function Datoss(){
   <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
 {% endblock %}
 {% block contenidos %}
-{% if user.is_authenticated and user.is_staff %}
+{% if user.is_authenticated and user.is_staff and user.is_active %}
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
+<!-- <script type="text/javascript" src="{{STATIC_URL}}js/newUi.js"></script> -->
+<style type="text/css">
+.card{background: #eee;}
+</style>
 <div class="card">
-	<p>Lista de Notificaciones Gestion : {% now "Y" %}</p>
-			<!-- <select id='fecha'><option>Año</option>
-					<option value='2015-07-11'>2015-07-11</option>
-					<option value='2015-07-04'>2015-07-04</option>
-					<option value='2014-07-04'>2014-07-04</option>
-			</select> -->
-			<form method='get' id='filtro'>{% csrf_token %}
-				<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
-				<input type="button" id="lanzador" value="..." />
+	<p>Notificacones de hoy {{hoy}}  total:{{conta}}</p>
+	
+<form method='get' id='filtro'>{% csrf_token %}
+	<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
+	<input type="button" id="lanzador" value="Desde" />
 
-				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'>
-				<input type="button" id="lanzador2" value="..." />
+	<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'>
+	<input type="button" id="lanzador2" value="Hasta" />
 
-				<button id='fer'>Ver</button>
-				<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>
-			</form>
+	<button id='fer'>Ver</button>
+	<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>|
+ 	<a href="#" target="_blank" id='repExcel'>Excel</a> 
+</form>
 		<div id="contend"></div>
-	{%  for i in ns %}
+		<a href="#"  id='Ante'>Anterior</a>|<a href="#" id="Siguiente">Siguiente</a>
+		<hr>
 		<ul class='nn'>
-			<li>Nombre de Usuario:  {{i.Usuario}}      hace: {{i.fecha_notificacion|timesince}}</li>
-		<li>Descricion: {{i.descripcion}}</li>
+	{%  for i in datos %}
+			 <li>Usuario:  {{i.Usuario}} 
+		Descricion: {{i.descripcion}}</li>
 		<li>Fecha de Presentacion : {{i.fecha_presentacion}}   Hora: {{i.hora}}
-			<a href="javascript:ventanaSecundaria('/detDenuncias/{{i.id}}/')" title='Ver Comparendo'>Ver</a>|<a href="javascript:ventanaSecundaria('/ImprimirNotificacion/{{i.id}}/')">Imprimir</a></li>
-		</ul>
-			
+<a href="/detDenuncias/{{i.id}}/" title='Ver Comparendo'>Ver</a>|
+<a href="/sanciones/{{i.id}}/">Sanciones</a></li>
+<a href="/ImprimirNotificacion/{{i.id}}/" target="_blank">Imprimir</a>
 	{% endfor %}
+	</ul>
 </div>
+
+<script type="text/javascript">
+$(".nn li a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$("#notiii").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio.",
+			position: "center"
+		});	
+	}); 
+cargarFormularios=function(urla){
+				$.ajax({
+						url: urla,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$("#notiii").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+</script>
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){

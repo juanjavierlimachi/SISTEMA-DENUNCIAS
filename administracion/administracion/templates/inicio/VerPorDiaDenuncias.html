@@ -1,0 +1,11 @@
+Total de Notificaciones: {{conta}}  En fecha:{{result}}
+	{%  for i in datos %}
+		<ul class='nn'>
+			<li>Cliente:  {{i.user}} 
+		 Denuncio: {{i.comment}}
+		hace:{{i.fecha_denuncia|timesince}}
+			<a href="javascript:ventanaSecundaria('/detDenunciasReclamos/{{i.id}}/')">Ver</a>|
+			<a href="javascript:ventanaSecundaria('/InprecionReclamo/{{i.id}}/')">Imprimir</a>
+			</li>
+		</ul>	 
+	{% endfor %}

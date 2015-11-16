@@ -12,7 +12,7 @@ class Negocio(models.Model):
 	memorial_apertura = models.CharField(max_length=20)
 	resolucion_municipal = models.CharField(max_length=20)
 	direccion=models.CharField(max_length=80)
-	categoria=models.ForeignKey(Categoria,help_text='Seleccione una Categoria')
+	categoria=models.ForeignKey(Categoria)
 	fecha_registro = models.DateTimeField(auto_now=True)
 	def __unicode__(self):
 		return self.propietario
@@ -29,6 +29,12 @@ class multa(models.Model):
 	def __unicode__(self):
 		return self.Usuario
 
+class Cobro(models.Model):
+	monto=models.FloatField()
+	idNotificacion=models.ForeignKey(multa)
+	fecha=models.DateTimeField(auto_now=True)
 
+	def __unicode__(self):
+		return "%s"%self.idNotificacion
 
 

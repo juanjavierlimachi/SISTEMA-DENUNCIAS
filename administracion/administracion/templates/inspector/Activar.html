@@ -25,14 +25,13 @@
                 $('.datos p').text("Verificando...")
             }
         }
-       
     });
 	</script>
 </head>
 <body>
 <div class="formulario">
 <h4>{{usuario}}: Deves Activar Tu cuenta</h4>
-<p>Por favor ingrsa su numero de ci para activarlo.</p>
+<p>Por favor ingresa su numero de CI. para activarlo.</p>
 <form method="get">{% csrf_token %}
 	<input type='text' id='ci'>
 	<input type='submit' value="Activar Cuenta" id='activar' class="btn btn-warning">

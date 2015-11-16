@@ -45,6 +45,9 @@
         $('#notificacion').html(n+': Infracion: ');
     });
     function VerNot(){
+      $('.row').hide();
+      $('#map_canvas').hide();
+      $('#comentario').hide();
       $.ajax({
         type:'GET',
         url:"/MisNotificaciones/"+{{user.id}}+"/",
@@ -54,6 +57,9 @@
       });
     }
     function VerDenuncias(){
+      $('.row').hide();
+      $('#map_canvas').hide();
+      $('#comentario').hide();
       $.ajax({
         type:'GET',
         url:"/VerDenunciasInspector/"+{{user.id}}+"/",
@@ -98,18 +104,17 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id='denuncia'><span class="glyphicon glyphicon-briefcase"></span>Comercios<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     
-                    <li><a href="/Denuncias-cliente/"><span class="glyphicons glyphicons-microphone"></span>Denuncias</a></li>
+                    <li><a href="/Denuncias-cliente/"><span class="glyphicons glyphicons-microphone"></span>Registrar Denuncia</a></li>
                     
-                    <li><a href="#" onclick="VerDenuncias()"><span class="glyphicons glyphicons-eye-open"></span> Ver Denuncias</a></li>
+                    <li><a href="#" onclick="VerDenuncias()"><span class="glyphicons glyphicons-eye-open"></span> Mis Denuncias</a></li>
                     
-                    <li><a href="/">Ajedres</a></li> 
                   </ul>
                 </li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id='notificacion'><span class="glyphicon glyphicon-hand-right"></span>Inspecciones<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="/emitirInfraccion/" id='notificacion'><span class="glyphicon glyphicon-lock"></span>Registro</a></li>
-                    <li><a href="#" onclick="VerNot()"><span class="glyphicon glyphicon-lock"></span>Ver Notificaciones</a></li>
+                    <li><a href="/emitirInfraccion/" id='notificacion'><span class="glyphicon glyphicon-lock"></span>Registrar Notificacion</a></li>
+                    <li><a href="#" onclick="VerNot()"><span class="glyphicon glyphicon-lock"></span>Mis Notificaciones</a></li>
                   </ul>
                 </li>
                 <li class="dropdown">
@@ -119,7 +124,7 @@
                     
                     <li><a href="/perfil/{{user.id}}/"><span class="glyphicon glyphicon-ok-sign"></span>Perfil</a></li>
                     
-                    <li><a href="/privado/"><span class="glyphicon glyphicon-send"></span>inicio</a></li>
+                    <li><a href="/privado/"><span class="glyphicon glyphicon-send"></span>Inicio</a></li>
                     
                     <li><a href="/cerrar/"><span class="glyphicon glyphicon-remove-sign"></span>Salir</a></li>
                   </ul>

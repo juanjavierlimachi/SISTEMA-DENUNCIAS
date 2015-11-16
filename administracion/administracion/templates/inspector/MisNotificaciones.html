@@ -1,7 +1,7 @@
 
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
-<!-- <link rel="stylesheet" type="text/css" href="/static/css/formularios.css"> -->
-<link rel="stylesheet" type="text/css" href="/static/css/styleLi.css">
+<!-- <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/styleLi.css"> -->
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
 
 	<li>{{user.username}}, Estas son tus Denuncias realizadas Total:{{cont}}</li>
@@ -13,13 +13,44 @@
 	{{i.Tipo_de_peticion}} Descripcion<br>
 	{{i.comment}}.
 	</a>
-	<a href="/EditReclamo/{{i.id}}/">Edit</a>
+	<a href="/EditReclamo/{{i.id}}/">Edit</a>  |
 	<a href="/deleteReclamo/{{i.id}}/">Eliminar</a>
 	</li>
 	{% endif %}
 {% endfor %}
 </ul>
 </div>
-<div class="info"></div>
-<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<div id="infoData"></div>
+<script type="text/javascript">
+$(".nn li a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$("#infoData").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio:",
+			position: "center"
+		});	
+	});
+cargarFormularios=function(direccion){
+				$.ajax({
+						url: direccion,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$("#infoData").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+</script>
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

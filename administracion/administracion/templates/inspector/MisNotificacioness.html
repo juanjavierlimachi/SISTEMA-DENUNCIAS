@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <!-- <link rel="stylesheet" type="text/css" href="/static/css/formularios.css"> -->
-<link rel="stylesheet" type="text/css" href="/static/css/styleLi.css">
+
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
 
 	<li>{{user.username}}, Estas son tus Notificaiones realizadas Total:{{cont}}</li>
@@ -14,8 +14,39 @@
 {% endfor %}
 </ul>
 </div>
-<div class="info"></div>
-<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<div id="infoDataN"></div>
+<script type="text/javascript">
+$(".nn li a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$("#infoDataN").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio:",
+			position: "center"
+		});	
+	});
+cargarFormularios=function(direccion){
+				$.ajax({
+						url: direccion,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$("#infoDataN").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+</script>
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
 
 

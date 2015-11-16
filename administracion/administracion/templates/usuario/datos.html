@@ -34,8 +34,18 @@
                     <li><label>Primer Nombre:</label>{{user.first_name}}</li>
                     <li><label>Apellido:</label>{{user.last_name}}</li>
                    <li> <label>Numero de Ci:</label>{{info.ci}}</li>
-                    <li><label>Estado:</label>{{user.is_staff}}</li>
-                    <li><label>Estado:</label>{{user.is_active}}</li>
+                    <li><label>Inspector activo:</label>{% if user.is_staff %}
+                        <span><img src="/static/img/icon_success.gif"></span>
+                        {% else %}
+                        <span><img src="/static/img/icon_error.gif"></span>
+                        {% endif %}
+                    </li>
+                    <li><label>Usuario del sistema:</label>{% if user.is_active %}
+                        <span><img src="/static/img/icon_success.gif"></span>
+                        {% else %}
+                          <span><img src="/static/img/icon_error.gif"></span>
+                        {% endif %}
+                    </li>
                     <form method='GET' id='form'>{% csrf_token %}
                         <input type='hidden' id='nombre' value='{{user.username}}'>
                         <input type='checkbox' name='staff' id='staff' >

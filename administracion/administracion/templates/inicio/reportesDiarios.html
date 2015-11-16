@@ -1,17 +1,13 @@
 <html>
 <head>
 	<title>reportes</title>
-	<style type="text/css">
-		table tr{
-			vertical-align:bottom;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
 </head>
-<body>
+<body> 
 <h5>Reportes de Comparendos</h5>
 	{% for i in denuncia %}
-	<table border=1>
-	<tr><td>H.G.M.P </td><td>Nro:1</td></tr>
+	<table border=1> 
+	<tr><td>H.G.M.P </td><td>Nro:{{cod}}</td></tr>
 	<tr><td colspan="2" align='center'>COMPARENDO</td></tr>
 		<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
 		{% for j in nombre %}

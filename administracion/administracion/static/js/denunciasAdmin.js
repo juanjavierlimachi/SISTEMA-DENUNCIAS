@@ -4,7 +4,7 @@ $('#boton').on('click',	Comentar);
 	function Comentar(e){
 		e.preventDefault();
 		document.getElementById('boton').value="Enviando...";
-		document.getElementById('boton').disabled=true;
+		//document.getElementById('boton').disabled=true;
 		$('.icon').show();
 		var datos = {
 			user: $('#id_user').val(),
@@ -15,9 +15,21 @@ $('#boton').on('click',	Comentar);
 		}
 		//console.log(datos);
 		//var info=datos.comment.length;
+		if (datos.comment.length==0){
+			alert("Deve introsucir su reclamo");
+				$('#id_comment').focus()
+				$('.icon').hide();
+				return false;
+			}
+		if (datos.idNegocio.length == 0){
+			alert("Deve introdicir el Codigo del negocio");
+			$('#id_idNegocio').focus()
+			return false;
+		}
 		if(datos.user.length==0 || datos.comment.length<10 || datos.idNegocio.length == 0){
-			alert('Por favor Escriba una Denuncia....');
-			document.getElementById('boton').disabled=false;
+			alert('Error en los datos Verifique por favor');
+			$('#id_comment').focus()
+			//document.getElementById('boton').disabled=false;
 			$('.icon').hide();
 			return false;
 		}
@@ -36,8 +48,8 @@ $('#boton').on('click',	Comentar);
 				    }
 				    socket.emit('UbicacionCliente', coordenadas);
 				     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
-				     alert("Su reclamo fue enviada correctamente");
-				     document.getElementById('boton').disabled=false;
+				     alert("Su reclamo fue enviada correctamente pronto daremos una solucion!!!");
+				    // document.getElementById('boton').disabled=false;
 				     $('.icon').hide();
 				}    
 				function error(error)
@@ -69,7 +81,7 @@ $('#boton').on('click',	Comentar);
 			zoom: 15,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
-		var map = new google.maps.Map(document.getElementById("map_canvass"),mapOptions);
+		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 		var pos = new google.maps.LatLng(ubicacion.lat, ubicacion.lng);
 		marker = new google.maps.Marker({
             position: pos,

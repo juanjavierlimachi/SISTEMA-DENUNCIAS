@@ -1,9 +1,10 @@
 
 {% if user.is_authenticated and user.is_staff %}
-	<div class="d1">
+<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
+	<div>
 		{% for i in reclamos %}
 	<table border=1>
-	<tr><td>H.G.M.P </td><td>Nro:1</td></tr>
+	<tr><td>H.G.M.P </td><td>Nro:{{dni}}</td></tr>
 	<tr><td colspan="2" align='center'>Reclamo</td></tr>
 		<tr><td>Reclamo:{{i.Tipo_de_peticion}}</td> <td colspan="2">{{i.comment}}</td></tr>
 		{% for j in negocio %}

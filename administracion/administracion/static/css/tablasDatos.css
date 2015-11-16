@@ -1,0 +1,9 @@
+table {
+border: 1px solid #000;margin: auto
+}
+table tr, td{
+	text-align: left; vertical-align: top; border: 1px solid #000; border-collapse: collapse; padding: 0.3em; caption-side: bottom;
+}
+p{
+	text-align: center;
+}

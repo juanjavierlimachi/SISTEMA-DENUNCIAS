@@ -1,16 +1,20 @@
 
 <div class="">
-	<p>Seguimiento de Denuncias</p>
+	<p>Acciones realizadas por los Inspectores</p>
 	<ul class="nn">
+		{% for i in Por_dia %}
+		<li>Inspector:{{i.user}}, Realisó el seguimiento al negocio:{{i.neg}} en fecha:{{i.fecha}}</li>
+		{% empty %}
+		<a href="#">No hay Registros de hoy</a>
+		{% endfor %}
+		<hr>
 {% for item in datos %}
-
-	
 	<li>
-		Inspector:{{item.user}}, Realizo el control al negocio: {{item.neg}} en fecha:{{item.fecha}},
+		Inspector:{{item.user}}, Realisó el control al negocio: {{item.neg}} en fecha:{{item.fecha}},
 		    <span><img src="/static/img/icon_success.gif"></span>
 	</li>
-
-
-{% endfor %}
+{% empty %}
+		<p>No hay registros</p>
 </ul>
+{% endfor %}
 </div>

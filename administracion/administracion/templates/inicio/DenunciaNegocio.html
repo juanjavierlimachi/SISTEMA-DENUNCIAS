@@ -1,8 +1,5 @@
 {% if user.is_authenticated %}
-	<style type="text/css">
-		.card{width: 100%;}
-		.card table{width: 100%;border-collapse: collapse;}
-	</style>
+<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
 <div class="">
 	<!-- <li>Nombre Inspector:{{denuncia.Usuario}}</li>
 	<li>Fecha de notificacion: {{denuncia.fecha_notificacion}}</li>
@@ -10,7 +7,7 @@
 	<li>Fecha de presentacion: {{denuncia.fecha_presentacion}}</li>
 	<li>Hora de presentacion: {{denuncia.hora}}</li> -->
 <table border=1>
-	<tr><td>H.G.M.P </td><td>Nro:1</td></tr>
+	<tr><td>H.G.M.P </td><td>Nro.{{dni}}</td></tr>
 	<tr><td colspan="2" align='center'>COMPARENDO</td></tr>
 	{% for i in denuncia %}
 		<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
@@ -24,7 +21,7 @@
 		{% endfor %} 
 	{% endfor %}
 </table>
-<li> <a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a> </li>
+<a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a>
 </div>
 
 {% else %}

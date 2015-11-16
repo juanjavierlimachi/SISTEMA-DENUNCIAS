@@ -1,25 +1,26 @@
-$(".nn li a").on("click",function(e){
+$("#datos li a").on("click",function(e){
 		e.preventDefault()
 		var urla=$(this).attr("href");  
 		console.log(urla);
 		cargarFormularios(urla)
-		$(".infoo").dialog({
+		$("#notiii").dialog({
 			modal:true,
 			show:"blind",
-			width: 600,
+			width: 450,
 			hide:"explode",
 			title:"Detalles del Negocio.",
 			position: "center"
 		});	
 	});
-cargarFormularios=function(urla){
+cargarFormularios=function(url){
 				$.ajax({
-						url: urla,
+						url: url,
 						type: 'GET',
 						data: {}
 					})
 					.done(function(response) {
-						$(".infoo").html(response);
+						console.log(response);
+						$("#notiii").html(response);
 					})
 					.fail(function() {
 						console.log("error");

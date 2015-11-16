@@ -55,8 +55,7 @@ html{display: none;}
         }
        $('#buscarUser').click(buscarUsuario);
        function buscarUsuario(){
-            $('#fbuscarUser').show(1000);
-            
+            $('#fbuscarUser').show(1000);    
        }
        
     });
@@ -70,6 +69,9 @@ function verificar(){
             if (user==''||pass==''||repass==''||nombre==''||ape==''||ci=='' || isNaN(ci)){
                 alert('Error no deve dejar casillas en blanco');
                 return false;
+            }
+            else{
+                alert("Usuario Registrodo Exitosamente");
             }
         }
 </script>

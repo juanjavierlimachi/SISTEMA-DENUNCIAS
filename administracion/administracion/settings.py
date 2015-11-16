@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'administracion.apps.cliente',
     'administracion.apps.inspector',
     'administracion.apps.negocio',
+    'import_export',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -99,7 +100,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/denuncias/?nex'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/denuncias/'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '555872831219590'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'a4c388bdda0b65cadde0227cfa849c1f'

@@ -14,6 +14,7 @@ from administracion.apps.inicio.models import Cronograma
 from django.db.models import Q
 from administracion.apps.cliente.models import *
 from administracion.apps.negocio.models import *
+from datetime import datetime
 # Create your views here.
 def Usuario(request):
 	if not request.user.is_anonymous():
@@ -37,7 +38,8 @@ def Usuario(request):
 						if acceso.is_active:
 							login(request,acceso)
 							return HttpResponseRedirect('/privado/')
-					#return render_to_response('usuario/noactivo.html',context_instance=RequestContext(request))
+						else:
+							return render_to_response('usuario/noactivo.html',context_instance=RequestContext(request))
 			else:
 				return render_to_response('usuario/nousuario.html',context_instance=RequestContext(request))
 	else:
@@ -46,6 +48,16 @@ def Usuario(request):
 @login_required(login_url='/')
 def ingreso(request):
 	usuario=request.user
+	hoy=datetime.now()
+	hoy = hoy.time()
+	hoy=hoy.strftime('%M')
+	ingreso_ultimo=usuario.last_login.time()
+	ingreso_ultimo=ingreso_ultimo.strftime('%M')
+	tiempo_espera = int(hoy) - int(ingreso_ultimo)
+	#tiempo_espera=tiempo_espera
+	print 'jajajaj',tiempo_espera
+	#if tiempo_espera>=5:
+		#return HttpResponseRedirect('/cerrar/')
 	if request.user.is_staff and request.user.is_active and request.user.is_superuser:
 		#denuncias=Comment.objects.all().order_by('-id')
 		return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
@@ -54,33 +66,58 @@ def ingreso(request):
 		if request.user.is_active and request.user.is_staff:
 			return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario},context_instance=RequestContext(request))
 		else:
+			USER=request.user.id
+			print "Este es el Perfil:",USER
+			try:
+				dto=Perfiles.objects.get(usuario=USER)
+				if dto:
+					return render_to_response('inspector/Activar.html',{'usuario':usuario},context_instance=RequestContext(request))
+				else:
+					return HttpResponse("Posisione su camara al Codigo QR")
+			except Perfiles.DoesNotExist:
+				return HttpResponse("Posisione su camara al Codigo QR")
 			
-			return render_to_response('inspector/Activar.html',{'usuario':usuario},context_instance=RequestContext(request))
+			#return render_to_response('inspector/Activar.html',{'usuario':usuario},context_instance=RequestContext(request))
 			# if request.user.is_active:
 			# 	conogramas=Cronograma.objects.all().order_by('-id')[0:1]
 			# 	return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario,'conogramas':conogramas},context_instance=RequestContext(request))
 
-@login_required(login_url='/')
 def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
-	usuario=request.user
-	idNegocio=int(id)
-	print "Este es el id negocio",idNegocio
-	inspector=request.user.id
-	print "id inspector",inspector
-	seg=Seguimiento()
-	seg.user_id=inspector
-	seg.neg_id=idNegocio
-	seg.save()
-	if request.user.is_staff and request.user.is_active and request.user.is_superuser:
-		#denuncias=Comment.objects.all().order_by('-id')
-		return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
+	if request.user.is_anonymous() and not request.user.is_authenticated():
+		cod=int(id)
+		uu=request.user
+		return render_to_response('cliente/cliente.html',{'cod':cod,'uu':uu},context_instance=RequestContext(request))
 	else:
+		if request.user.is_authenticated() and request.user.is_staff:
+			cod=int(id)
+			usuario=request.user
+			idNegocio=int(id)
+			inspector=request.user.id
+			seg=Seguimiento()
+			seg.user_id=inspector
+			seg.neg_id=idNegocio
+			seg.save()
+			if request.user.is_staff and request.user.is_active and request.user.is_superuser:
+		#denuncias=Comment.objects.all().order_by('-id')
+				return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
+			else:
 		#user.is_staff decimoe q el administrador le dio el permiso para subsustema secretria
-		if request.user.is_active and request.user.is_staff:
-			return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario},context_instance=RequestContext(request))
-		else:
-			
-			return render_to_response('inspector/Activar.html',{'usuario':usuario},context_instance=RequestContext(request))
+				if request.user.is_active and request.user.is_staff:
+					return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario},context_instance=RequestContext(request))
+				else:
+					USER=request.user.id
+					try:
+						dto=Perfiles.objects.get(usuario=USER)
+						if dto:
+							return render_to_response('inspector/Activar.html',{'usuario':usuario},context_instance=RequestContext(request))
+						else:
+							return HttpResponse("Posisione su camara al Codigo QR")
+					except Perfiles.DoesNotExist:
+						return HttpResponse("Posisione su camara al Codigo QR")
+		else:#Viene aki si el usuario ya realizo una denuncia algunaves!!!
+			cod=int(id)
+			uu=request.user
+			return render_to_response('cliente/cliente.html',{'cod':cod,'uu':uu},context_instance=RequestContext(request))
 
 class nuevoUser(FormView):
 	#usuario=request.cleaned_data['username']
@@ -220,7 +257,7 @@ def ActivarCuenta(request):
 			return HttpResponse("Su cuenta a sido Deshabilitado. consulte con el administrador")
 		return HttpResponseRedirect('/privado/')
 	except Perfiles.DoesNotExist:
-		return HttpResponse("El Usuario de esta activo en el sistema por favor Verifique sus datos o de lo cantrario consulte con el administrador del sistema, Gracias.")
+		return HttpResponse("El Usuario no esta activo en el sistema por favor Verifique sus datos o de lo cantrario consulte con el administrador del sistema, Gracias.")
 @login_required(login_url='/')
 def DasactivarUser(request):
 	try:
@@ -274,21 +311,50 @@ def UserNotificaciones(request, id):
 
 
 
-import datetime
+# from datetime import datetime
+# import os
+# from subprocess import Popen, PIPE, STDOUT
+# def crearBackup(request):
+# 	#try:
+# 	command = "mysqldump -h localhost -u root --password="" denuncia"
+# 		#command= Popen('mysqldump -h localhost -P 3306 -u -root denuncia | mysql -h localhost -P 3306 -u root denuncia', shell=True)
+# 	today = datetime.now()
+# 	fecha = today.strftime("%d %m %Y")
+# 	#print "esta es la fecha",fecha
+# 	#ficheor de salida
+# 	file="backup_servidor_"+fecha
+# 	command = command+file+".sql"
+# 	os.system(command)
+# 	#except:
+# 	return HttpResponse()
+
+
+import ConfigParser
 import os
-from subprocess import Popen, PIPE, STDOUT
+import time
+import getpass
+
 def crearBackup(request):
-	try:
-		command = "mysqldump -h localhost -u root -p  "
-		#command= Popen('mysqldump -h localhost -P 3306 -u -root denuncia | mysql -h localhost -P 3306 -u root denuncia', shell=True)
-		today = datetime.date.today()
-		fecha = today.strftime("%Y % m % d")
-		print "esta es la fecha",fecha
-	#ficheor de salida
-		file="backup_servidor_"+fecha
-		command = command+"> C:/Users/PAVILION/Downloads/"+file+".sql"
-		return HttpResponse(os.system(command))
-	except:
-		return HttpResponse("Error")
+    #print "Enter user:"
+    user = "root"
+
+    #print "Password will not be visible:"
+    #password = getpass.getpass()
+    password = ""
+
+    #print "Enter host:"
+    host = "localhost:8080"
+
+    #print "Enter database name:"
+    database = "denuncia"
+
+
+    filestamp = time.strftime('%Y-%m-%d')
+    #os.popen("mysqldump -u %s -p%s -h %s -e --opt -c %s | sql -G > %s.sql" % (user,password,host,database,database+"_"+filestamp))
+    comant=os.popen("mysqldump -h 127.0.0.1 --u=root --password="" denuncia >copias"+filestamp+".sql")
+    #comant=filestamp+".sql"
+    #print command
+    #os.system(comant)
+    return HttpResponse()
 
 

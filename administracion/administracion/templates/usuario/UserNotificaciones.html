@@ -9,4 +9,36 @@
 {% endfor %}
 </ul>
 </div>
-<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<script type="text/javascript">
+$(".nn li a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$("#infoUsers").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio:",
+			position: "center"
+		});	
+	});
+cargarFormularios=function(url){
+				$.ajax({
+						url: url,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$("#infoUsers").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+</script>
+</script>

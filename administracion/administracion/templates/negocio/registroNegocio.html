@@ -1,16 +1,31 @@
 {% extends 'base.html' %}
 {% block title %}.:Nuevo:.{% endblock %}
 {% block contenidos %}
-{% if user.is_authenticated and user.is_staff %}
-<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+{% if user.is_authenticated and user.is_staff and user.is_active %}
+
 <script type="text/javascript">
   function verificar(){
     var pro= $('#id_propietario').val();
     var memorial=$('#id_memorial_apertura').val();
     var resolucion=$('#id_resolucion_municipal').val();
+    var dir=$('#id_direccion').val();
     if (pro=='' || memorial=='' || resolucion ==''){
-      alert('Dejo un campo en blanco');
+      alert('Datos Incorrectos Verifique por favor..');
+      $('#id_propietario').focus()
       return false;
+    }
+    if (!isNaN(pro)){
+        alert("No deve ser numero");
+        $('#id_propietario').focus()
+        return false;
+    }
+    if (pro==''){
+        $('#id_propietario').focus()
+        return false;
+    }
+    if (dir == ''){
+        $('#id_direccion').focus()
+        return false;
     }
     else{
       alert("Registro Exitoso");
@@ -20,23 +35,34 @@
                 window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
             } 
 </script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
  <div class="card">
+  <p>Registro Negocio</p>
             <form method="POST" action="" onsubmit='return verificar()'>{% csrf_token %} 
-              {{formulario}}<br>
+              {{formulario}}<br><br>
               <button class="waves-effect waves-light btn" type="submit"
        onsubmit='verificar()'>Guardar</button> 
             </form>
-<a href="javascript:ventanaSecundaria('/saveFiles/')">Guardar desde un archivo</a>
+<a href="javascript:ventanaSecundaria('/saveFiles/')">Guardar desde un archivo</a>|
+<a href="javascript:ventanaSecundaria('/admin/negocio/negocio/export/')">Exportar</a>|
+<a href="javascript:ventanaSecundaria('/admin/negocio/negocio/import/')">Importar</a>
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#lista').hide();
-	$('#ver').click(function(){
-		$('#lista').show(1000);
-	});
+    $('#id_propietario').blur(ejecutar);
+    function ejecutar(){
+        var use= $('#id_propietario').val();
+
+        if (!isNaN(user)){
+            alert('Error');
+           // return false;
+        }
+
+    }
 
 });
 </script>
+
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){
@@ -46,6 +72,5 @@ $(document).ready(function(){
 <style type="text/css">
 html{display: none;}
 </style>
-
 {% endif %}
 {% endblock %}

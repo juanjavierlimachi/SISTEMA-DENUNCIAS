@@ -1,0 +1,26 @@
+#leftt{
+        display: none;
+    }
+    .card{
+        width: 50%;height: auto;margin: auto;margin-top: 10px;border-radius: 5px;
+        margin-bottom: 50px;
+    }
+    .card p{
+        text-align: center;color: black;
+    }
+    .card form{
+        width: 95%;height: auto;margin-top: 5px;margin: auto;
+    }
+    .card form label{
+        width: 150px;margin-left: 0px;display: inline-block;
+       
+    }
+    .card form input{
+        height: 20px;margin-left: 0px;display: inline-block;width:90%;
+        margin-bottom: 10px;
+    }
+    #id_memorial_apertura li{list-style: none; width: 30%;float: left; margin-left: 55px;}
+    #id_memorial_apertura li label input{width: 15px; float: right;}
+    #id_resolucion_municipal li{list-style: none; width: 30%;float: left;margin-left: 55px;}
+    #id_resolucion_municipal li label input{width: 15px; float: right;}
+    .select-wrapper{width: 60%;float: right; margin-right: 50px;}

@@ -1,0 +1,19 @@
+<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
+<div class="">
+	<p>Usuarios activos en el sistema: {{tota_user}}</p>
+	<table border=1 id='datos'>
+		<tr>
+			<td>Usuario</td><td>Nombre</td><td>Apellido</td><td>Nro. CI.</td><td>Fecha registro</td><td>Ultimo Ingreso</td>
+		</tr>
+	
+{% for j in user %}
+	{% for i in perfil %}
+			{% if j.id == i.usuario_id %}
+<tr><td>{{j.username}}</td><td>{{j.first_name}}</td><td>{{j.last_name}}</td><td>{{i.ci}}</td><td>{{j.date_joined}}</td><td>{{j.last_login|timesince}}</td>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+		
+	</table>
+</div>

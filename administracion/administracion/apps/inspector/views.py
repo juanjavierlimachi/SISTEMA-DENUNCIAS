@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from administracion.apps.negocio.models import multa
 from django.views.generic import TemplateView, FormView
 from django.contrib.auth.forms import User
-from administracion.apps.usuario.models import Perfiles
+from administracion.apps.usuario.models import *
 from .forms import *
 from django.db.models import Q
 from administracion.apps.negocio.models import Negocio
@@ -198,7 +198,6 @@ def DeleteNotificacion(request, id):
 
 
 
-
 @login_required(login_url='/')
 def datosDenuncia(request,id):
 	nego=Negocio.objects.get(id=int(id))
@@ -224,4 +223,10 @@ def MisNotificaciones(request, id):
 	notificaciones=multa.objects.filter(idUser=user).order_by("-id")
 	cont=multa.objects.filter(idUser=user).count()
 	return render_to_response('inspector/MisNotificacioness.html',{'cont':cont,'notificaciones':notificaciones},context_instance=RequestContext(request))
-
+@login_required(login_url='/')
+def inspeccionesDato(request ,id):
+	ind=int(id)
+	dato=Seguimiento.objects.filter(neg=ind)
+	print "dato inspecicpn",dato
+	cont=Seguimiento.objects.filter(neg=ind).count()
+	return render_to_response('inspector/inpeciones.html',{'dato':dato,'cont':cont},context_instance=RequestContext(request))

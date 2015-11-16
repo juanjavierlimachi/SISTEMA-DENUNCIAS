@@ -1,7 +1,11 @@
 {% extends 'cliente/denuncia.html' %}
 {% block cliente %}
 {% if not user.is_authenticated %}
-	<h2>Inicie sesion</h2>
+	<div id="contenidos">
+<p class="errornote">
+  Por favor Ingrese con su cuenta de de Facebook a la aplicacion Web para realizar una denuncia al Negocio.</p>
+<h2>Inicie Session  <a href="{% url 'social:begin' 'facebook' %}">Facebook</a></h2>
+	</div>
 {% else %}
 <link rel="stylesheet" type="text/css" href="/static/css/formulariosCliente.css">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
@@ -21,12 +25,13 @@
 			{{comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
 	{% endfor %}
 </div> 
+<h1>Bienvenido :{{uu}}</h1>
 <h3>Bienvenido: {{user}}<br>
 Ud. esta en el negocio : {{codd.propietario}}</h2>
 <!-- <li>Negocio a denunciar::{{nego.propietario}}</li><br> -->
 <div class="row">
 <form method='POST'  id='for' enctype="multipart/form-data">{% csrf_token %}
-<tr><td><input id="id_user" name="user" type="hidden" value="{{user}}"/></td></tr>
+<tr><td><input id="id_user" name="user" type="hidden" value="{{uu}}" required/></td></tr>
 <tr><th><label for="id_Tipo_de_peticion">Tipo de peticion:</label></th></tr>
 <td><select id="id_Tipo_de_peticion" name="Tipo_de_peticion">
 	<option value='xx'>Eliga una Opcion</option>
@@ -50,10 +55,11 @@ Ud. esta en el negocio : {{codd.propietario}}</h2>
 <li id="Sugerencia">Puede dar las superencias que a ud. la paresca una mejor opcion al negocio</li>
 <li id="Otros">Descriva algun tipo de irregularidad observada</li>
 </div> 
-<tr><th><label for="id_comment">Descipcion:</label></th><td><textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo">
+<tr><th><label for="id_comment">Descipcion:</label></th>
+	<td><textarea cols="40" id="id_comment" name="comment" rows="10" required placeholder="Introdusca su reclamo">
 </textarea></td></tr>
-<tr><td><input id="id_idNegocio" name="idNegocio" type="hidden"  value="{{codd.id}}"/></td></tr>
-<input id="id_idUser" name="idUser" type="hidden"  value="{{user.id}}"/>
+<tr><td><input id="id_idNegocio" name="idNegocio" type="hidden" required  value="{{cod}}"/></td></tr>
+<input id="id_idUser" name="idUser" type="hidden"  value="{{uu.id}}"/>
 <br>
 <button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
 <span class="icon"><img src="{{STATIC_URL}}img/loader.gif"></span>

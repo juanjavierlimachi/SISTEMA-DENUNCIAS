@@ -6459,12 +6459,7 @@ input[type=checkbox]:not(:disabled) ~ .lever:active:after {
 .select-label {
   position: absolute; }
 
-.select-wrapper {
-  position: relative;
-  margin-top: -20px; }
-  .select-wrapper input.select-dropdown {
-    
-    display: none; }
+
   .select-wrapper .mdi-navigation-arrow-drop-down {
     right: 0;
     top: 0;

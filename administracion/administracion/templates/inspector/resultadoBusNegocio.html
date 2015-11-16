@@ -10,7 +10,7 @@
 		 {{negocio.memorial_apertura}}<br>
 		 <a href="#" onclick="Notificaiones()" class="btn btn-warning">Notificaciones</a>
 		 <a href="#" onclick="Denuncias()" class="btn btn-danger">Denuncias</a>
-		 <a href="" class="btn btn-info">Seguimientos</a>
+		 <a href="#" onclick="SeguimientoDelNegocio()" class="btn btn-info">Seguimientos</a>
 	</li> 
 		<!-- <li><a href="/eliminarN/{{negocio.id}}/">Eliminar</a></li> -->
 	</ul>
@@ -20,19 +20,40 @@ function Notificaiones(){
 	$.ajax({
         type:'GET',
         url:"/datosDenunciaInspector/"+{{negocio.id}}+"/",
+        beforeSend: entesEnviar,
         success:function(resp){
           $('#notiii').html(resp);
         }
       });
+	function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
 }
 function Denuncias(){
 	$.ajax({
         type:'GET',
         url:"/datosDenunciaInspectorNot/"+{{negocio.id}}+"/",
+        beforeSend: entesEnviar,
         success:function(resp){
           $('#notiii').html(resp);
         }
       });
+	function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
+}
+function SeguimientoDelNegocio(){
+	$.ajax({
+		type:'GET',
+		url:"/inspeccioness/"+{{negocio.id}}+"/",
+		beforeSend: entesEnviar,
+		success:function(resp){
+			$('#notiii').html(resp);
+		}
+	});
+	function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
 }
 </script>
 {% endblock %}

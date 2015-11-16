@@ -1,0 +1,9 @@
+<link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
+<div class="row">
+	<a href="#">Total de Inspeciones realizadas al lugar:{{cont}}</a>
+{% for i in dato %}
+	<p>Usuario:{{i.user}}, Realizo una inspecion al negocio:{{i.neg}} hace:{{i.fecha|timesince}}</p>
+{% empty %}
+<p>No hay Registros</p>
+{% endfor %}
+</div>

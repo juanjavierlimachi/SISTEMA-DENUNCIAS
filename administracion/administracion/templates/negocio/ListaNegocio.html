@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
 
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
 <div class=''>
@@ -12,29 +12,34 @@
 			</select>
 		</div>
 		 <div class="datalles"></div>
-		 <div class="info"></div>
+		 <div class="infoNegocio"></div>
 		 <!--<a href="/detalleNegocio/{{negosio.id}}/">-->
-	<ul class='nn'>
+	
+<table border=1>
+	<tr>
+		<td>Codigo</td><td>Nombre Propietario</td><td>Memorial de Apertura</td><td>Resolucion Municipal</td><td>Not.|Den.</td><td>Opciones</td>
+	</tr>
 	{% for negosio in negosios %}
-		<li>Propietario: <a href="/editarNegocio/{{negosio.id}}/">
-			{{negosio.propietario}}{{negosio.id}}</a>
-		Meorial de Apertura:  {{negosio.memorial_apertura}} 
-		Resolucion Municipal:  {{negosio.resolucion_municipal}}
-	<a href="/eliminarN/{{negosio.id}}/">Eliminar</a> | 
-			<a href="/datosDenuncia/{{negosio.id}}/">Notif</a>|
-			<a href="/denunciasAdmin/{{negosio.id}}/">Denun</a></li></li>	
+	<tr>
+		<td>{{negosio.id}}</td><td>{{negosio.propietario}}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td><td>
+			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>|
+			<span><a href="/denunciasAdmin/{{negosio.id}}/"><img src="/static/img/icon_error.gif "></a></span>
+		</td>
+		<td><span><a href="/eliminarN/{{negosio.id}}/"><img src="/static/img/eli.gif"></a></span> |
+	<span><a href="/EditarNegocio/{{negosio.id}}/"><img src="/static/img/edit.png"></a></span> </td>
 	{% endfor %}
-	</ul>
+	</td>
+	</tr>
+	</table>
 </div>
-
 <script type="text/javascript">
 $('.card').hide();
-$(".nn li a").on("click",function(e){
+$("table tr td a").on("click",function(e){
 		e.preventDefault()
 		var urla=$(this).attr("href");  
 		console.log(urla);
 		cargarFormularios(urla)
-		$(".info").dialog({
+		$(".infoNegocio").dialog({
 			modal:true,
 			show:"blind",
 			width: 600,
@@ -50,7 +55,7 @@ cargarFormularios=function(url){
 						data: {}
 					})
 					.done(function(response) {
-						$(".info").html(response);
+						$(".infoNegocio").html(response);
 					})
 					.fail(function() {
 						console.log("error");

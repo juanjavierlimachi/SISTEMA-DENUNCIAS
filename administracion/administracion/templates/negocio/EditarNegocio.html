@@ -1,0 +1,22 @@
+<script type="text/javascript">
+$('#form').submit(function(e){
+	e.preventDefault();
+	var dato=$(this).serialize();
+	$.ajax({
+		type:'POST',
+		url:'/EditarNegocio/'+{{con}}+'/',
+		data:dato,
+		success:function(res){
+			$('.formu').html(res);
+		}
+	});
+});
+</script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
+
+	<div class="formu">
+	<form method='POST' id='form'>{% csrf_token %}
+		{{forms}}<br><br>
+		<button  class="waves-effect waves-light btn" type="submit">Guardar Canbios</button>
+	</form>
+	</div>

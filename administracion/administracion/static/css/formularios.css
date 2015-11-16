@@ -2,7 +2,7 @@
         display: none;
     }
     .card{
-        width: 60%;height: auto;margin: auto;margin-top: 10px;border-radius: 5px;
+        width: 50%;height: auto;margin: auto;margin-top: 10px;border-radius: 5px;
         margin-bottom: 50px;
     }
     .card p{
@@ -49,6 +49,7 @@
     #comentario li{
         width: auto;height: auto;list-style: none;
         border-collapse: collapse;margin-bottom: 0px;margin-top: 0px;
+       
     }
     #comentario li a{
         width: 98%;

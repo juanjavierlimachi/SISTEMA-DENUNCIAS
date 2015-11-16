@@ -1,20 +1,41 @@
 
 {% extends 'base.html' %}
 {% block contenidos %}
+
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
 <style type="text/css">
-#leftt{display: none;}
+.infoNegocio{width: 92%;margin: auto;}
+.nn li{list-style: none;}
+.card{background: #eee;}
 </style>
-<div class='infor'>
-		<li><a href="/editarnegocio/{{negocio.id}}/">{{negocio.propietario}}
-			{{negocio.memorial_apertura}}</a>
-	</li>
+<div class='card'>
+		<p><label>Propietario:</label>{{negocio.propietario}}
+			{{negocio.memorial_apertura}}
+	</p>
 	<ul class='nn'>
-		<li><a href="/eliminarN/{{negocio.id}}/">Eliminar</a> | 
+		<li><a href=""></a>
+			<a href="/eliminarN/{{negocio.id}}/">Eliminar</a> | 
+				<a href="/EditarNegocio/{{negocio.id}}/">Editar</a>|
 			<a href="/datosDenuncia/{{negocio.id}}/">Notificaciones</a>|
-			<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a></li>
+	<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a></li>
+
 	</ul>
+	<div class="infoNegocio"></div>
 </div>
-<div class="info"></div>
-<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>
+<script type="text/javascript">
+	$('.nn li a').click(function(e){
+		e.preventDefault();
+		var urla=$(this).attr("href"); 
+		console.log(urla);
+		$.ajax({
+			type:'GET',
+			url:urla,
+			success:function(resp){
+				console.log(resp);
+				$('.infoNegocio').html(resp);
+			}
+		});
+	});
+</script>
 {% endblock %}
 
