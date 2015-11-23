@@ -97,6 +97,7 @@ def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
 			seg.user_id=inspector
 			seg.neg_id=idNegocio
 			seg.save()
+			Negocio.objects.filter(id=id).update(estadoD=0)
 			if request.user.is_staff and request.user.is_active and request.user.is_superuser:
 		#denuncias=Comment.objects.all().order_by('-id')
 				return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
@@ -151,6 +152,10 @@ def serrar(request):
 	logout(request)
 	return HttpResponseRedirect('/')
 @login_required(login_url='/')
+def Finalizar(request):
+	logout(request)
+	return HttpResponse("Muchas gracias por usar nuestra Pagina Web, Vuelve pronto!!!")
+@login_required(login_url='/')
 def editar_perfil(request):
 	if request.method=='POST':
 		user_form=UserForms(request.POST,instance=request.user)
@@ -182,7 +187,7 @@ def verificacion(request):
 	use=request.GET['use']
 	try:
 		us=User.objects.get(username=use)
-		return HttpResponse("El Usuario ya exsiste Intente con otro nombre.")
+		return HttpResponse("El Nombre de Usuario ya exsiste Intente con otro nombre.")
 	except User.DoesNotExist:
 		return HttpResponse()
 @login_required(login_url='/')
@@ -268,7 +273,7 @@ def DasactivarUser(request):
 			user.is_staff=False
 			user.is_active=False
 			user.save()
-			return HttpResponse("El usuario a sido Deshabilitado")
+			return HttpResponse("El Usuario a sido Deshabilitado")
 		else:
 			return HttpResponse("Haga click en la casilla para Desactivar esta cuenta")
 	except User.DoesNotExist:
@@ -283,7 +288,7 @@ def VolverHavilitar(request):
 			user.is_staff=True
 			user.is_active=True
 			user.save()
-			return HttpResponse("El usuario a sido Habilitado.")
+			return HttpResponse("El Usuario a sido Habilitado.")
 		else:
 			return HttpResponse("Haga click en la casilla para Habilitado esta cuenta")
 	except User.DoesNotExist:

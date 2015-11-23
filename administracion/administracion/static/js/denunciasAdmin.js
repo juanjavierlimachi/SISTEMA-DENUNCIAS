@@ -48,7 +48,8 @@ $('#boton').on('click',	Comentar);
 				    }
 				    socket.emit('UbicacionCliente', coordenadas);
 				     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
-				     alert("Su reclamo fue enviada correctamente pronto daremos una solucion!!!");
+				     alert("Su reclamo fue enviada correctamente pronto daremos una solucion!!!<br>
+				     	Vuelva ha situar su camara para realizar otra Denuncia gracias.");
 				    // document.getElementById('boton').disabled=false;
 				     $('.icon').hide();
 				}    
@@ -92,12 +93,13 @@ $('#boton').on('click',	Comentar);
 	}
 	socket.on('devolviendo comentario', function(data){
 		var data =JSON.parse(data);
+		console.log(data)
 		$("#comentario").prepend("<li>"+data.user+ "   Denuncio     " +data.comment+"     Cod    "+data.idNegocio+"</li>");
 		$("#id_comment").val("");
-
+		 $("#cuenta").html('Denuncias registradas:'+data.cont+"<a href='/TodaslasDenuncias/'>  Ver Todos</a>");
 		var playing = true;
         $(this).toggleClass("down");
         if (playing == true) {
-            document.getElementById('player').play();
+            //document.getElementById('player').play();
         }
 	});

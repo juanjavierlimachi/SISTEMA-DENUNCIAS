@@ -67,9 +67,7 @@ class emitirInfraccion(TemplateView):
 		}
 			#una ves optenido el nombre enviamos al templete cliente.html
 		return render(request, 'inspector/formMultas.html', dic)
-		
 	def post(self, request, *args, **kwargs):
-		#print 'isiste un POST'
 		multa.objects.create(
 				idUser = request.POST['idUser'],
 				Usuario = request.POST['Usuario'],
@@ -82,15 +80,7 @@ class emitirInfraccion(TemplateView):
 		return redirect('/emitirInfraccion/')
 
 @csrf_exempt
-def crear_notificacion(request):#no estoy llegando aki 
-	print "estoy en Django:"
-	print request.POST
-	'''multa.objects.create(
-				hora = request.POST['hora'],
-				descripcion = request.POST['descripcion'],
-				Codigo = request.POST['Codigo'],
-				fecha_presentacion=request.POST['fecha_presentacion']
-		)'''
+def crear_notificacion(request):
 	m=multa()
 	m.idUser=request.POST['idUser']
 	m.Usuario=request.POST['Usuario']
@@ -99,8 +89,9 @@ def crear_notificacion(request):#no estoy llegando aki
 	m.fecha_presentacion=request.POST['fecha_presentacion']
 	m.hora=request.POST['hora']
 	m.save()
+	ddd=int(request.POST['Codigo'])
+	print ddd
 	cont=multa.objects.all().count()
-	print 'cuante las multas',cont
 	response = JsonResponse({'cont':cont,
 							'idUser':request.POST['idUser'],
 							'Usuario':request.POST['Usuario'],
@@ -109,7 +100,8 @@ def crear_notificacion(request):#no estoy llegando aki
 							'fecha_presentacion':request.POST['fecha_presentacion'],
 							'hora': request.POST['hora']})
 	#esto informacion mandamos al server 
-	#print response
+	Negocio.objects.filter(id=ddd).update(estadoN=1)
+	#up.save()
 	return HttpResponse(response.content)
 class AvisosDenunciasCliente(TemplateView):
 	def get(self, request, *args, **kwargs):

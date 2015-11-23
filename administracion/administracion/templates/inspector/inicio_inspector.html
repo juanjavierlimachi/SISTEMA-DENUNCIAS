@@ -11,7 +11,7 @@
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <script src="/static/js/jquery.min3.js"></script>
-	
+	<audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
   <!-- <script src="static/js/jquery-2.1.1.min.js"><script type="text/javascript" src="/static/js/jquery-1.6.3.min.js"></script>
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">-->
        <script src="/static/js/ScriptBusqueda.js"></script>
@@ -35,14 +35,16 @@
         console.log('llego una denuncia'+resp)
         var d=resp.denun;
         de++;
-        $('#denuncia').html(de+': Comercios: ');
+        $('#denuncia').html(de+': Comercios ');
+        document.getElementById('player').play();
     });
     var n=0;;
     socket.on('nota',function(data){
         var notifica=data.noti;
         n++;
         console.log('llego una Notificacion'+n);
-        $('#notificacion').html(n+': Infracion: ');
+        $('#notificacion').html(n+': Inspecciones ');
+        document.getElementById('player').play();
     });
     function VerNot(){
       $('.row').hide();

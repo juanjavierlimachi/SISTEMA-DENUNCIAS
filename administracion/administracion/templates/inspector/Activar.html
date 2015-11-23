@@ -31,9 +31,9 @@
 <body>
 <div class="formulario">
 <h4>{{usuario}}: Deves Activar Tu cuenta</h4>
-<p>Por favor ingresa su numero de CI. para activarlo.</p>
+<p>Por favor ingresa tu numero de CI. para activar tu cuenta.</p>
 <form method="get">{% csrf_token %}
-	<input type='text' id='ci'>
+	<input type='text' id='ci' placeholder="Ejem: 123456">
 	<input type='submit' value="Activar Cuenta" id='activar' class="btn btn-warning">
     <a href="/cerrar/" class="btn btn-primary">Salir</a>
 </form>

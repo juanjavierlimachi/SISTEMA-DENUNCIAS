@@ -4786,6 +4786,8 @@ span.badge {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px; }
+.row .nn li{list-style: none;}
+.row .nn{width: 95%;margin: auto;}
   .row:after {
     content: "";
     display: table;

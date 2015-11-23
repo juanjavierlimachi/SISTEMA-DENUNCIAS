@@ -3,3 +3,4 @@ from .models import *
 # Register your models here.
 admin.site.register(Perfiles)
 admin.site.register(Seguimiento)
+admin.site.register(CambiosNotificaciones)

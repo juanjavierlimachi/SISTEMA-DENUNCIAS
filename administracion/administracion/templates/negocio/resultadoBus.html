@@ -11,6 +11,17 @@
 <div class='card'>
 		<p><label>Propietario:</label>{{negocio.propietario}}
 			{{negocio.memorial_apertura}}
+			{% if negocio.estadoN == 1 %}
+			<span><img src="{{STATIC_URL}}img/alert.gif"></span>
+			{% else %}
+			<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+			{% endif %}
+
+			{% if negocio.estadoD == 1 %}
+			<span><img src="{{STATIC_URL}}img/icon_error.gif"></span>
+			{% else %}
+			<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+			{% endif %}
 	</p>
 	<ul class='nn'>
 		<li><a href=""></a>

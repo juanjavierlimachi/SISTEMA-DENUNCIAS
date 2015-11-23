@@ -7,7 +7,19 @@
 	<p>Detalles Del Negocio:{{negocio.propietario}}</p>
 	<ul>
 		<li>Propietario: {{negocio.propietario}}  
-		 {{negocio.memorial_apertura}}<br>
+		 {{negocio.memorial_apertura}}
+		 {% if negocio.estadoN == 1 %}
+			<span><img src="{{STATIC_URL}}img/alert.gif"></span>
+			{% else %}
+			<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+			{% endif %}
+
+			{% if negocio.estadoD == 1 %}
+			<span><img src="{{STATIC_URL}}img/icon_error.gif"></span>
+			{% else %}
+			<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+			{% endif %}
+		 <br>
 		 <a href="#" onclick="Notificaiones()" class="btn btn-warning">Notificaciones</a>
 		 <a href="#" onclick="Denuncias()" class="btn btn-danger">Denuncias</a>
 		 <a href="#" onclick="SeguimientoDelNegocio()" class="btn btn-info">Seguimientos</a>

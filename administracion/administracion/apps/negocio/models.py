@@ -1,8 +1,10 @@
+#encoding:utf-8
 from django.db import models
 from django.contrib.auth.forms import User
 # Create your models here.
 class Categoria(models.Model):
 	categoria=models.CharField(max_length=50)
+	fecha_registro = models.DateTimeField(auto_now=True)
 	def __unicode__(self):
 		return self.categoria
 
@@ -14,6 +16,8 @@ class Negocio(models.Model):
 	direccion=models.CharField(max_length=80)
 	categoria=models.ForeignKey(Categoria)
 	fecha_registro = models.DateTimeField(auto_now=True)
+	estadoN=models.IntegerField(default=0)
+	estadoD=models.IntegerField(default=0)
 	def __unicode__(self):
 		return self.propietario
 
@@ -31,10 +35,7 @@ class multa(models.Model):
 
 class Cobro(models.Model):
 	monto=models.FloatField()
-	idNotificacion=models.ForeignKey(multa)
+	idNotificacion=models.OneToOneField(multa)
 	fecha=models.DateTimeField(auto_now=True)
-
 	def __unicode__(self):
 		return "%s"%self.idNotificacion
-
-

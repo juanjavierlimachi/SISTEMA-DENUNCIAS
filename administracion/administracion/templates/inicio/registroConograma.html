@@ -16,12 +16,39 @@
 		}
 		
 	</style>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery.ui.datepicker-es.js"></script>
+<script>
+$(function () {
+$.datepicker.setDefaults($.datepicker.regional["es"]);
+$("#id_Fecha_inicio").datepicker({
+firstYear: 1,
+dateFormat: 'yy-mm-dd'
+});
+});
+$(function () {
+$.datepicker.setDefaults($.datepicker.regional["es"]);
+$("#id_Conclucion").datepicker({
+firstYear: 1,
+dateFormat: 'yy-mm-dd'
+});
+});
+</script>
 	<div class="card">
 		<p>Registro de Cronograma de Trabajo</p>
 		<form method='POST'>{% csrf_token %}
-			{{form}}
-			<input type='submit' value='Guardar'>
+		{{form}}
+		<input type='submit' value='Guardar'>
 		</form>
+
+	</div>
+	<div class="card">
+		{%  for i in datos %}
+		<p>Fecha Inicio: {{i.Fecha_inicio}}    Conclucion:{{i.Conclucion}}   Objeto:{{i.Detalle}}    Fecha Publicacion:{{i.fecha_publicacion|timesince}}   <a href="/EditarCronograma/{{i.id}}/">Editar</a></p>
+		{%empty %}
+		<p>No hay registros.</p>
+		{% endfor %}
 	</div>
 	{% else %}
 <script type="text/javascript">

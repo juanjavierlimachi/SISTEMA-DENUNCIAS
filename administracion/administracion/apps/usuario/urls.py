@@ -6,7 +6,7 @@ urlpatterns = patterns('',
 	url(r'^$', Usuario),
 	url(r'^privado/$', ingreso),
 	url(r'^privado/(?P<id>\d+)/$',ingresoQR),
-
+	url(r'^Finalizar/$', Finalizar),
 	url(r'^cerrar/$', serrar),
 	url(r'^datos/(?P<id>\d+)/$',Datos),
 	url(r'^editarperfil/$',editar_perfil),

@@ -6,7 +6,13 @@
 	</tr>
 	{% for negosio in negosios %}
 	<tr>
-		<td>{{negosio.id}}</td><td>{{negosio.propietario}}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td><td>
+		<td>{{negosio.id}}</td><td>{{negosio.propietario}}
+	{% if negosio.estadoN == 1 %}
+			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
+			{% endif %}
+		{% if negosio.estadoD == 1 %}
+			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
+			{% endif %}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td><td>
 			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>|
 			<span><a href="/denunciasAdmin/{{negosio.id}}/"><img src="/static/img/icon_error.gif "></a></span>
 		</td>

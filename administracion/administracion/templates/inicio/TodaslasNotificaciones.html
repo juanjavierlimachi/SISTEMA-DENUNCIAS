@@ -137,10 +137,10 @@ window.onload = function(){
 <!-- <script type="text/javascript" src="{{STATIC_URL}}js/newUi.js"></script> -->
 <style type="text/css">
 .card{background: #eee;}
+.card p{ text-align: center;}
 </style>
 <div class="card">
 	<p>Notificacones de hoy {{hoy}}  total:{{conta}}</p>
-	
 <form method='get' id='filtro'>{% csrf_token %}
 	<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
 	<input type="button" id="lanzador" value="Desde" />
@@ -150,10 +150,10 @@ window.onload = function(){
 
 	<button id='fer'>Ver</button>
 	<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>|
- 	<a href="#" target="_blank" id='repExcel'>Excel</a> 
+ 	<a href="#" target="_blank" id='repExcel'>Excelz</a> 
 </form>
 		<div id="contend"></div>
-		<a href="#"  id='Ante'>Anterior</a>|<a href="#" id="Siguiente">Siguiente</a>
+	<p><a href="#"  id='Ante'>Anterior</a>|<a href="#" id="Siguiente">Siguiente</a></p>
 		<hr>
 		<ul class='nn'>
 	{%  for i in datos %}
@@ -166,7 +166,6 @@ window.onload = function(){
 	{% endfor %}
 	</ul>
 </div>
-
 <script type="text/javascript">
 $(".nn li a").on("click",function(e){
 		e.preventDefault()

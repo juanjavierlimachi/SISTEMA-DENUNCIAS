@@ -22,7 +22,7 @@ urlpatterns = patterns('',
 	url(r'^sanciones/(?P<id>\d+)/$',sanciones),
 	url(r'^EditarNegocio/(?P<id>\d+)/$',EditarNegocio),
 	url(r'^DeleteNegocio/(?P<id>\d+)/$',DeleteNegocio),
-
+	url(r'^ActivaNegocio/(?P<id>\d+)/$',ActivaNegocio),
 	url(r'^importarExcel/$', importarExcel),
 	url(r'^dataInport/$', dataInport),
 	url(r'^ReporteExcel/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ReporteExcel),

@@ -7,7 +7,7 @@ from django.contrib.auth.forms import User
 class UserForm(UserCreationForm):
 	username = forms.CharField(max_length=40,required=True,label="Nombre de Usuario",widget=forms.TextInput())
 	password1 = forms.CharField(required=True, label="Contraceña",widget=forms.PasswordInput(render_value=False))
-	password2 = forms.CharField(required=True, label="Confirmacion",widget=forms.PasswordInput(render_value=False))
+	password2 = forms.CharField(required=True,help_text="Introduzca la misma contraseña de arriba para su verificacion" ,label="Confirmacion",widget=forms.PasswordInput(render_value=False))
 	first_name = forms.CharField(max_length=40,required=True,label="Nombre Completo",widget=forms.TextInput())
 	last_name = forms.CharField(max_length=50,required=True,label="Apellido",widget=forms.TextInput())
 	ci = forms.IntegerField(required=True,label="Nro. de CI",widget=forms.TextInput())

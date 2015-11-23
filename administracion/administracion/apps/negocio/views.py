@@ -160,15 +160,19 @@ def seguimientosNotificacion(request):
     for aux in multa.objects.raw('SELECT nm.id, count(Codigo) as total, Codigo, propietario  FROM negocio_multa nm, negocio_negocio nn WHERE nm.Codigo=nn.id GROUP BY Codigo'):
         #print (aux.Codigo, aux.propietario)
         lista.append(dict([(aux.total, aux.propietario)]))
-    #print ">>>>>>>>",aux.Codigo
-    return render_to_response('negocio/seguimientosNotificacion.html',{'lista':lista},context_instance=RequestContext(request))
+    total_Not=Negocio.objects.filter(estadoN=1).count()
+    t_no=Negocio.objects.filter(estadoD=0).count()
+    tt=Negocio.objects.count()
+    return render_to_response('negocio/seguimientosNotificacion.html',{'t_no':t_no,'tt':tt,'lista':lista,'total_Not':total_Not},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def seguimientosDenuncia(request):
     lista=[]
     for aux in Comment.objects.raw('SELECT cm.id, count(idNegocio) as total, idNegocio, propietario  FROM cliente_comment cm, negocio_negocio nn WHERE cm.idNegocio=nn.id GROUP BY cm.idNegocio'):
-        #print (aux.idNegocio, aux.propietario)
         lista.append(dict([(aux.total, aux.propietario)]))
-    return render_to_response('negocio/seguimientosDenuncia.html',{'lista':lista},context_instance=RequestContext(request))
+    total_denunciados=Negocio.objects.filter(estadoD=1).count()
+    t_no=Negocio.objects.filter(estadoD=0).count()
+    tt=Negocio.objects.count()
+    return render_to_response('negocio/seguimientosDenuncia.html',{'t_no':t_no,'tt':tt,'lista':lista,'total_denunciados':total_denunciados},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def seguimiento(request):
     hoy=datetime.now()
@@ -186,9 +190,13 @@ def sanciones(request, id):
         dato=Cobro(idNotificacion_id=idn)
         forms=FormCobro(request.POST, instance=dato)
         if forms.is_valid():
-            
             forms.save()
+            datos=multa.objects.get(id=id)
+            print "estes el id ontenido",datos.Codigo
+            Negocio.objects.filter(id=datos.Codigo).update(estadoN=0)
             return HttpResponse("Datos Guardados Correctamente")
+        else:
+            HttpResponse("Se produjo un error Verifique los datos Nuevamente.")
     else:
         forms=FormCobro()
     return render_to_response('negocio/RegistroCobro.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
@@ -213,6 +221,15 @@ def DeleteNegocio(request, id):
     denuncia=Negocio.objects.get(id=int(id))
     denuncia.delete()
     return HttpResponse("Se Elimino el registro")
+
+def ActivaNegocio(request, id):
+    if request.user.is_superuser and request.user.is_staff and request.user.is_active:
+        datos=multa.objects.get(id=id)
+        Negocio.objects.filter(id=datos.Codigo).update(estadoN=0)
+        return HttpResponse("El Negocio se encuentra nuevamente activo.")
+    else:
+        return HttpResponse("Ud no puede realizar esta accion consulte con el administrador.")
+
 import xlwt
 from xlwt import *
 

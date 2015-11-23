@@ -4,12 +4,11 @@
 {% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
 <!--<button id='not' class="waves-effect waves-light btn">Responder</button>-->
-<audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
 <div id="comentario">
 {% for mult in multa %}	
 	<li><a href="javascript:ventanaSecundaria('/detDenuncias/{{mult.id}}/')">{{ mult.Usuario}}- Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
 {% endfor %}
-<li class='cuenta'>Notificaciones registradas: {{cont}}   <a href="/TodaslasNotificaciones/">Ver Todos</a></li>
+<li id='cuenta'>Notificaciones registradas: {{cont}}   <a href="/TodaslasNotificaciones/">Ver Todos</a></li>
 </div>
 <div class="help">
 <div id="map_canvas"></div>

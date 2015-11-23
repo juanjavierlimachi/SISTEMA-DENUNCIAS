@@ -84,7 +84,7 @@ body {
 .row{
   margin-top: 15px;
   height: auto;
-  width: 100%;
+  width: 100%;margin-bottom: 40px;
 }
 .container{
   width: 87%; /*width auto*/

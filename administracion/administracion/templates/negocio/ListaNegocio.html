@@ -1,5 +1,4 @@
 <link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
-
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
 <div class=''>
 	
@@ -17,11 +16,20 @@
 	
 <table border=1>
 	<tr>
-		<td>Codigo</td><td>Nombre Propietario</td><td>Memorial de Apertura</td><td>Resolucion Municipal</td><td>Not.|Den.</td><td>Opciones</td>
+		<td>Codigo</td><td>Nombre Propietario</td><td>Memorial de Apertura</td><td>Resolucion Municipal</td>
+		<td>Not.|Den.</td><td>Opciones</td>
 	</tr>
 	{% for negosio in negosios %}
 	<tr>
-		<td>{{negosio.id}}</td><td>{{negosio.propietario}}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td><td>
+		<td>{{negosio.id}}</td><td>{{negosio.propietario}}
+	{% if negosio.estadoN == 1 %}
+			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
+			{% endif %}
+		{% if negosio.estadoD == 1 %}
+			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
+			{% endif %}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td>
+		
+		<td>
 			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>|
 			<span><a href="/denunciasAdmin/{{negosio.id}}/"><img src="/static/img/icon_error.gif "></a></span>
 		</td>

@@ -26,13 +26,11 @@ function ventanaSecundaria(URL){
     }
 </script>
 </head>
-<audio id="player" src="/static/tonos/sonidoUno.mp3">
-		</audio>
 <div id='comentario'>
 	{% for comment in comments %}
 		<li><a href="javascript:ventanaSecundaria('/detDenunciasReclamos/{{comment.id}}/')">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
 	{% endfor %} 
-<li class='cuenta'>Notificaciones registradas: {{cont}}      <a href="/TodaslasDenuncias/">Ver Todos</a></li>
+<li id='cuenta'>Denuncias registradas: {{cont}}      <a href="/TodaslasDenuncias/">Ver Todos</a></li>
 </div>
 <div class="help">
 <div id="map_canvas"></div>

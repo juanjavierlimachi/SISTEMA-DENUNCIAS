@@ -62,7 +62,6 @@ class AvisosNotificaciones(TemplateView):
 			'form': FormMulta(),
 			'multa':multas
 		}
-		#una ves optenido el nombre enviamos al templete cliente.html
 		return render(request, 'inicio/Notificaciones.html', dic)
 	def post(self, request, *args, **kwargs):
 		print 'as guardado la informacion'
@@ -83,6 +82,7 @@ def Notiicaciones(request,id):
 	return render_to_response('inicio/NotificacionesNegocio.html',{},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def RegistroCronograma(request):
+	datos=Cronograma.objects.all().order_by('-id')[0:1]
 	if request.method == 'POST':
 		Usuario=Cronograma(Usuario=request.user)
 		form=FormCronograma(request.POST,instance=Usuario)
@@ -91,7 +91,21 @@ def RegistroCronograma(request):
 			return HttpResponseRedirect('/Cronograma/')
 	else:
 		form=FormCronograma()
-	return render_to_response('inicio/registroConograma.html',{'form':form},context_instance=RequestContext(request))
+	return render_to_response('inicio/registroConograma.html',{'form':form,'datos':datos},context_instance=RequestContext(request))
+@login_required(login_url='/')
+def EditarCronograma(request,id):
+	datos=Cronograma.objects.all().order_by('-id')[0:1]
+	cronograma=Cronograma.objects.get(id=id)
+	if request.method == 'POST':
+		#Usuario=Cronograma(Usuario=request.user)
+		form=FormCronograma(request.POST,instance=cronograma)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/Cronograma/')
+	else:
+		form=FormCronograma(instance=cronograma)
+	return render_to_response('inicio/registroConograma.html',{'form':form,'datos':datos},context_instance=RequestContext(request))
+
 @login_required(login_url='/')
 def datosDenuncia(request,id):
 	nego=Negocio.objects.get(id=int(id))
@@ -114,7 +128,15 @@ def ImprimirNotificacion(request,id):
 	cod=int(id)
 	denuncia=multa.objects.filter(id=int(id))
 	nombre=Negocio.objects.all()
-	html=render_to_string("inicio/reportesDiarios.html",{'pagesize':'A4','denuncia':denuncia,'nombre':nombre,'cod':cod},context_instance=RequestContext(request))
+	bs=0.0
+	try:
+		bs=Cobro.objects.get(idNotificacion=cod)
+		pass
+	except Cobro.DoesNotExist:
+		pass
+	hoy=date.today()
+	hoy=hoy.strftime('%d-%m-%Y')
+	html=render_to_string("inicio/reportesDiarios.html",{'pagesize':'later','denuncia':denuncia,'nombre':nombre,'cod':cod,'bs':bs,'hoy':hoy},context_instance=RequestContext(request))
 	return generar_pdf(html)
 
 @login_required(login_url='/')
@@ -151,7 +173,9 @@ def ImprecionDenuncia(request, id, fin):
 	f=fin
 	denuncia = multa.objects.filter(fecha_notificacion__range=(i,f))
 	nombre=Negocio.objects.all()
-	html=render_to_string('inicio/imprecion.html',{'pagesize':'later','i':i,'f':f,'denuncia':denuncia,'nombre':nombre},context_instance=RequestContext(request))
+	hoy=date.today()
+	hoy=hoy.strftime('%d-%m-%Y')
+	html=render_to_string('inicio/imprecion.html',{'pagesize':'later','i':i,'f':f,'denuncia':denuncia,'nombre':nombre,'hoy':hoy},context_instance=RequestContext(request))
 	return generar_pdf(html)
 @login_required(login_url='/')
 def ImprecionDenunciaClientes(request, id, fin):
@@ -161,13 +185,20 @@ def ImprecionDenunciaClientes(request, id, fin):
 	negocio=Negocio.objects.all()
 	html = render_to_string('negocio/reclamosAdmin.html',{'pagesize':'A4','inicio':inicio,'fin':fin,'reclamos':reclamos,'negocio':negocio},context_instance=RequestContext(request))
 	return generar_pdf(html)
+def InprecionReclamoDenuncias(request, id):
+	cod=int(id)
+	reclamos=Comment.objects.filter(id=int(id))
+	negocio=Negocio.objects.all()
+	hoy=date.today()
+	hoy=hoy.strftime('%d-%m-%Y')
+	html = render_to_string('negocio/InprecionDenuncias.html',{'pagesize':'A4','cod':cod,'reclamos':reclamos,'negocio':negocio,'hoy':hoy},context_instance=RequestContext(request))
+	return generar_pdf(html)
 @login_required(login_url='/')
 def InprecionReclamo(request, id):
 	reclamos=Comment.objects.filter(id=int(id))
 	negocio=Negocio.objects.all()
 	html = render_to_string('negocio/reclamosAdmin.html',{'pagesize':'A4','reclamos':reclamos,'negocio':negocio},context_instance=RequestContext(request))
 	return generar_pdf(html)
-
 @login_required(login_url='/')
 def DetalleDenuncias(request, id):
 	nego=Negocio.objects.all()

@@ -14,7 +14,7 @@ class formNegocio(forms.ModelForm):
 	resolucion_municipal=forms.ChoiceField(widget=forms.RadioSelect, choices=Resolucion)
 	class Meta:
 		model=Negocio
-		exclude=('user',)
+		exclude=('user','estadoN','estadoD',)
 
 class buscarForm(forms.Form):
 	buscar=forms.CharField()

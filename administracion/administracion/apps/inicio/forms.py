@@ -7,8 +7,8 @@ from administracion.apps.negocio.models import *
 from django.forms.extras.widgets import SelectDateWidget
 
 class FormCronograma(forms.ModelForm):
-	Fecha_inicio = forms.DateField(widget=SelectDateWidget())
-	Conclucion = forms.DateField(widget=SelectDateWidget())
+	#Fecha_inicio = forms.DateField(widget=SelectDateWidget())
+	#Conclucion = forms.DateField(widget=SelectDateWidget())
 	class Meta:
 		model=Cronograma
 		exclude=('Usuario',)

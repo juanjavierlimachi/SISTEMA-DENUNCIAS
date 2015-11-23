@@ -20,6 +20,24 @@
             $('#contenidos').show(1000);
         });
       });
+    function finalizar(){
+      var u='{{user}}';
+        sessionStorage.setItem("u", u);
+        $.ajax({
+          type:'GET',
+          url:'/Finalizar/',
+          success:function(resp){
+            console.log(resp);
+            alert(resp);
+            funcio();
+          }
+        });
+      //alert('Vuelva Pronto!!! :(');
+       // parent.window.close();
+       function funcio(){
+         window.location='https://facebook.com';
+       }
+    }
   </script>
   <style type="text/css">
   .glyphicon{
@@ -46,44 +64,19 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="/denuncias/" class="active"><span class="glyphicon glyphicon-home"></span>Home</a></li>
-              	<li><a href="#modal2"><span class="glyphicon glyphicon-hand-right"></span>Quienes Somos</a></li>
+                <li class="active"><a href="/denuncias/"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+      <li class="active"><a href="#modal2"><span class="glyphicon glyphicon-hand-right"></span>Quienes Somos</a></li>
                 {% if user.is_authenticated %}
                   <li class="active"><a href="javascript:window.history.go(-2);">
                  <span class="glyphicon glyphicon-list"></span>Denunciar</a></li>
                  {% else %}
   <li><a href="{% url 'social:begin' 'facebook' %}" class="active"><span class="glyphicon glyphicon-home"></span>Ingresar</a></li>
                 {% endif %}
-                <li><a href="#"><span class="glyphicon glyphicon-list"></span>Ayuda</a></li>
-                <!-- <a href="javascript:window.history.back();">Atras</a>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-check"></span>Consultas<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    
-                    <li><a href="/diciplinas/9/">avisos</a></li>
-                    <li><a href="/diciplinas/8/">informaciones</a></li>
-                  </ul>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-info-sign"></span>Programas 
-                  <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="/">Deportes Representacion</a></li>
-                     <li><a href="/">Deportes Curricular</a></li>
-                      <li><a href="/">Deportes Recreativo</a></li>
-                       <li><a href="/">Deporte Compretencia Interna</a></li>
-                       <li><a href="/">Apoyo a Deportistas</a></li>
-                  </ul>
-                </li>-->
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                 <span class="glyphicon glyphicon-lock"></span>Mas
-                    <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="/partidos/9/">Economia</a></li>
-                    <li><a href="/partidos/8/">Contabilidad</a></li>  
-                  </ul>
-                </li>
+  <li class="active"><a href="#modal2"><span class="glyphicon glyphicon-list"></span>Ayuda</a></li>
+<li class="active"><a href="#modal2"><span class="glyphicon glyphicon-list"></span>{{user.username}}</a></li>         
+  <li class="active"><a href="#" onclick="finalizar()"><span class="glyphicon glyphicon-list"></span>Salir</a></li>
+
+  <li class="active"><a href="https://facebook.com"><span class="glyphicon glyphicon-list"></span>Ir a Facebook</a></li>              
               </ul>
             </div>
           </div>

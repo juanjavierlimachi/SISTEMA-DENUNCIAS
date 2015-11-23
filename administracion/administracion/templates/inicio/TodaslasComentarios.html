@@ -105,12 +105,16 @@ window.onload = function(){
 {% endblock %}
 {% block contenidos %}
 {% if user.is_authenticated and user.is_staff %}
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
 <style type="text/css">
 .card{background: #eee;}
+.card p{ text-align: center;
+}
 </style>
 <div class="card">
-	<p>Lista de Denuncias Gestion: {% now "Y" %}</p>
+	<p>Notificacones de hoy {{hoy}}  total:{{conta}}</p>
 	<form method='get' id='filtro'>{% csrf_token %}
 				<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
 				<input type="button" id="lanzador" value="<Desde" />
@@ -120,19 +124,51 @@ window.onload = function(){
 				<a href="#" target="_blank" id="repExcelD">Excel</a>
 	</form>
 	<div id="contend"></div>
+<p><a href="#"  id='Ante'>Anterior</a>|<a href="#" id="Siguiente">Siguiente</a></p>
 	<hr>
+	<ul class='nn'>
 	{%  for i in datos %}
-		<ul class='nn'>
 			<li>Cliente:  {{i.user}} 
 		 Denuncio: {{i.comment}}
 		hace:{{i.fecha_denuncia|timesince}}
-			<a href="javascript:ventanaSecundaria('/detDenunciasReclamos/{{i.id}}/')">Ver</a>|
-			<a href="javascript:ventanaSecundaria('/InprecionReclamo/{{i.id}}/')">Imprimir</a>
+			<a href="/detDenunciasReclamos/{{i.id}}/">Ver</a>|
 			</li>
-		</ul>	 
+			<a href="/InprecionReclamoDenuncias/{{i.id}}/" target="_blank">Imprimir</a>	 
 	{% endfor %}
-	<a href="#"  id='Ante'>Anterior</a>|<a href="#" id="Siguiente">Siguiente</a>
+	</ul>
 </div>
+<script type="text/javascript">
+$(".nn li a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$("#notiii").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio.",
+			position: "center"
+		});	
+	}); 
+cargarFormularios=function(urla){
+				$.ajax({
+						url: urla,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$("#notiii").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+</script>
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){

@@ -19,6 +19,7 @@
         <script src="{{STATIC_URL}}js/materialize.js"></script>
         <script src="{{STATIC_URL}}js/script.js"></script>
         <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/deIndex.css" >
+        <audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
        <!-- onmouseOver="activo()"-->
        <script type="text/javascript" src='/static/js/validar.js'></script>
        <script src="http://localhost:3000/socket.io/socket.io.js"></script>
@@ -45,7 +46,6 @@ function bbbb(){
       }
    }, 600000) 
 }
-
     });
 /* function activo(){
         var hora_actual = new Date();
@@ -74,6 +74,7 @@ function bbbb(){
         var d=resp.denun;
         de++;
         $('#denuncia').html('Denuncias Recibidas:'+de);
+        document.getElementById('player').play();
     });
     var n=0;
     socket.on('nota',function(data){
@@ -81,6 +82,7 @@ function bbbb(){
         n++;
         console.log('llego una Notificacion'+n);
         $('#notificacion').html('Notificaciones Recibidas:'+n);
+        document.getElementById('player').play();
     });
 
     function Registertyp(){
@@ -206,9 +208,19 @@ function bbbb(){
                 $('#notiii').text("Procesando...")
             }
     }
+function openpopup(){
+$.ajax({
+            type:'GET',
+            url:'/cerrar/',
+            success:function(resp){
+                //$('#notiii').html(resp);
+            }
+        });
+}
+</script>
     </script>
     </head>
-    <body>   
+    <body onunload="openpopup()">   
         <header>
             <nav id="header" class="nav-top">
            <div class="btn-group" id="leftt">
@@ -257,13 +269,13 @@ function bbbb(){
                     
         <div class="acordion">
             <li class="active" id='denuncia'>Denuncias Recibidas</li>
-            
                         <div>
+                            <li><a href="/TodaslasDenuncias/">Ver Denuncias</a></li>
                             <li><a href="#" onclick='MisDenuncias()'>Mis denuncias</a></li>
                         </div>
             <li class="active" id='notificacion'>Notificaciones Recividas</li>
-            
                         <div>
+                            <li><a href="/TodaslasNotificaciones/">Ver Notificaciones</a></li>
                             <li><a href="#" onclick='MisNotificaciones()'>Mis notificaciones</a></li>
                         </div>
                         <li class="active">Negocios</li>
@@ -286,7 +298,7 @@ function bbbb(){
                          
                             <li><a href="#" onclick="VerUsers()">Ver Usuarios</a></li>
                         </div>
-                        <li class="active">Sanciones</li>
+                        <li class="active">Opciones</li>
                         <div>
                             <!--  <li><a href="/seguimiento/"></a></li> -->
                             <li><a href="#">Ver Usuarios</a></li>

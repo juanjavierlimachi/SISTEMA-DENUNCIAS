@@ -1,27 +1,31 @@
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user.is_staff %}
 <html>
 <head>
 	<title>Notificacion</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
+	<style type="text/css">
+	p{text-align: center;}
+	</style>
 </head>
 <body>
-<div class="card">
-	{% for i in denuncia %}
-	<table border=1>
-		<tr><td>H.G.M.P</td><td>Nro. {{i.Codigo}}</td></tr>
-	<tr><td colspan="2" align='center'>COMPARENDO</td></tr>
-		<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
+
+{% for i in denuncia %}
+	<table border=0> 
+	<tr><td colspan="2">H.G.M.P </td><td>Nro:{{i.Codigo}}</td></tr>
+	<tr><td colspan="3" align='center'>COMPARENDO<br></td></tr>
+		<tr><td colspan="3">Objeto: {{i.descripcion}}<br></td></tr>
 		{% for j in nombre %}
 			{% if j.id == i.Codigo %}
-				<tr><td colspan="2">Sr(s):{{j.propietario}}</td></tr>
-				<tr><td colspan="2">Direccion: {{j.direccion}}</td></tr>
+				<tr><td colspan="2">Sr(s):{{j.propietario}}<br></td></tr>
+				<tr><td colspan="2" >Direccion: {{j.direccion}}<br></td></tr>
+				<tr><td colspan="2">Fecha de Presentacion en Oficina: {{i.fecha_presentacion}} <br></td><td>Horas: {{i.hora}}<br></td></tr>
+				<tr><td colspan="2">Fecha de Notificacion: {{i.fecha_notificacion}}<br></td><td>Total:{{bs.monto}} bs.</td></tr>
 			{% endif %}
-			<tr><td>Fecha de Presentacion en Oficina: {{i.fecha_presentacion}} </td><td>Horas: {{i.hora}}</td></tr>
-				<tr><td colspan="2">Fecha de Notificacion: {{i.fecha_notificacion}}</td></tr>
 		{% endfor %}
-	</table><br>
+	</table><br><br><br>
+		<p>Firma Intendente.<br>
+			P-{{hoy}}</p>
 	{% endfor %}
-</div>
 </body>
 </html>
 {% else %}

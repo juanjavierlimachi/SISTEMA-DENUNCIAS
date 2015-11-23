@@ -10,10 +10,10 @@ from django.http import JsonResponse, HttpResponse
 # Create your views here.
 class denucias(TemplateView):
 	template_name='cliente/denuncia.html'
-	def post(self, request, *args, **kwargs):
-		request.session['name'] = request.POST['name']
-		request.session['Codigo'] = request.POST['Codigo']
-		return redirect('/cliente/')
+	# def post(self, request, *args, **kwargs):
+	# 	request.session['name'] = request.POST['name']
+	# 	request.session['Codigo'] = request.POST['Codigo']
+	# 	return redirect('/cliente/')
 
 class clienteView(TemplateView):
 	def get(self, request, *args, **kwargs):
@@ -61,6 +61,8 @@ def create_comment(request):
 		idUser = request.POST['idUser']
 		)
 	cont=Comment.objects.all().count()
+	Negocio.objects.filter(id=request.POST['idNegocio']).update(estadoD=1)
+	#up.save()
 	response= JsonResponse({'cont':cont,
 							'user': request.POST['user'],
 							'Tipo_de_peticion':request.POST['Tipo_de_peticion'],

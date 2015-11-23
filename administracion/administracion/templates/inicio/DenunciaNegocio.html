@@ -21,9 +21,25 @@
 		{% endfor %} 
 	{% endfor %}
 </table>
-<a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a>
+<a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a>|<a href="/ActivaNegocio/{{dni}}" id='rr'> Revisado</a>
+<div id="ttt"></div>
 </div>
+<script type="text/javascript">
+$('#rr').on('click', envio);
+function envio(e){
+	e.preventDefault()
+	var urla=$(this).attr("href");
+	$.ajax({
+		type:'GET',
+		url:urla,
+		success:function(resp){
+			console.log(resp);
+			$('#ttt').html(resp);
+		}
+	});
 
+}
+</script>
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){

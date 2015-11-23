@@ -51,16 +51,16 @@ var socket = io.connect("http://localhost:3000");
 		}
 	}
 	socket.on('devolviendo', function(data){
-		console.log(data);
 	var data = JSON.parse(data);
-	$("#comentario").prepend("<li>"+data.Usuario+ ":Notifico.-" +data.descripcion+"   Cod:  "+data.Codigo+"</li>");
+	//console.log(data);
+$("#comentario").prepend("<li>"+data.Usuario+ ":Notifico.-" +data.descripcion+"   Cod:  "+data.Codigo+"</li>");
+$("#cuenta").html('Notificaciones registradas:'+data.cont+"<a href='/TodaslasNotificaciones/'>   Ver Todos</a>");
 		var playing = true;
         $(this).toggleClass("down");
         if (playing == true) {
-            document.getElementById('player').play();
+            //document.getElementById('player').play();
         }
-	});
-	
+	}); 
 	socket.on('regresandoCooords',DatosCoors);
 	function DatosCoors(Coords){
 		iniciar(Coords);

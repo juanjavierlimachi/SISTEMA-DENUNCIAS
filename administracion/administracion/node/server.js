@@ -28,8 +28,9 @@ io.on('connection', function(socket){
 		console.log(data);
 		io.emit('Avisos',data);
 	}
-	socket.on('notificacion' ,function(data){//data son los datos que resivimos del servidor
-		//console.log('escucho el evento notificacion');escucho el evento
+	
+	socket.on('notificacion' ,function(data){
+
 		var values = querystring.stringify(data);
 		var options = {
 			hostname: 'localhost',
@@ -44,9 +45,7 @@ io.on('connection', function(socket){
 		var request = http.request(options, function(response){
 			response.setEncoding('utf8');
 			response.on('data',function(data){
-				//aki vienos los datos del cliente django
 				io.emit('devolviendo', data);
-				//console.log('emito el evento'+data)
 				notificacio=notificacio+1;
 				console.log('Notificacion'+notificacio);
 				socket.broadcast.emit('nota',{noti:notificacio});
