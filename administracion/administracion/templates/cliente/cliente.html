@@ -5,7 +5,7 @@
 <p class="errornote">
   Por favor Ingrese con su cuenta de de Facebook a la aplicacion Web para realizar una denuncia al Negocio.</p>
 <h2>Inicie Session  <a href="{% url 'social:begin' 'facebook' %}">Facebook</a></h2>
-	</div>
+</div>
 {% else %}
 <link rel="stylesheet" type="text/css" href="/static/css/formulariosCliente.css">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
@@ -16,6 +16,8 @@
                 window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
     }
 </script>
+<style type="text/css">
+</style>
 </head>
 <audio id="player" src="/static/tonos/sonidoUno.mp3">
 		</audio>
@@ -56,7 +58,7 @@ Ud. esta en el negocio : {{codd.propietario}}</h2>
 <li id="Otros">Descriva algun tipo de irregularidad observada</li>
 </div> 
 <tr><th><label for="id_comment">Descipcion:</label></th>
-	<td><textarea cols="40" id="id_comment" name="comment" rows="10" required placeholder="Introdusca su reclamo">
+	<td><textarea cols="40" id="id_comment" name="comment" rows="10" required placeholder="Introdusca su reclamo" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()">
 </textarea></td></tr>
 <tr><td><input id="id_idNegocio" name="idNegocio" type="hidden" required  value="{{cod}}"/></td></tr>
 <input id="id_idUser" name="idUser" type="hidden"  value="{{uu.id}}"/>

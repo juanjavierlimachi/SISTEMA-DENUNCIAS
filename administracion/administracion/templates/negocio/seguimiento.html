@@ -1,20 +1,32 @@
-
-<div class="">
-	<p>Acciones realizadas por los Inspectores</p>
-	<ul class="nn">
+<style type="text/css">
+p{text-align: center;}
+table{
+	width: 80%;margin: auto;
+}
+#ante{display: none;}
+</style>
+<script type="text/javascript">
+function ver(){
+	$('#ante').show(1000);
+}
+</script>
+	<p>Acciones realizadas por los Inspectores de hoy</p>
+<table border=1>
 		{% for i in Por_dia %}
-		<li>Inspector:{{i.user}}, Realisó el seguimiento al negocio:{{i.neg}} en fecha:{{i.fecha}}</li>
+		<tr><td>Inspector:{{i.user}}</td><td> Realisó el seguimiento al negocio:{{i.neg}} en fecha:{{i.fecha}}</td></tr>
 		{% empty %}
-		<a href="#">No hay Registros de hoy</a>
+		<p>No hay Registros de hoy</p>
 		{% endfor %}
-		<hr>
+</table>
+<p>Inpecciones Anteriores <a href="#" onclick='ver()'>Ver</a></p>
+<table border=1 id='ante'>
 {% for item in datos %}
-	<li>
-		Inspector:{{item.user}}, Realisó el control al negocio: {{item.neg}} en fecha:{{item.fecha}},
-		    <span><img src="/static/img/icon_success.gif"></span>
-	</li>
+	<tr><td>
+		Inspector:{{item.user}}</td><td> Realisó el control al negocio: {{item.neg}} en fecha:{{item.fecha}},
+		    <span><img src="/static/img/icon_success.gif"></span></td>
+	</tr>
 {% empty %}
 		<p>No hay registros</p>
-</ul>
+
 {% endfor %}
-</div>
+</table>

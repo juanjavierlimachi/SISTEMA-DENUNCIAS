@@ -4,7 +4,7 @@ $('#form').submit(function(e){
 	var dato=$(this).serialize();
 	$.ajax({
 		type:'POST',
-		url:'/EdirNotificacion/'+{{con}}+'/',
+		url:'/EditNotificacion/'+{{con}}+'/',
 		data:dato,
 		success:function(res){
 			$('.info').html(res);
@@ -17,4 +17,4 @@ $('#form').submit(function(e){
 		<table>{{forms}}</table>
 		<input type='submit' value='Guardar Canbios' class='btn btn-primary'>
 	</form>
-	</div>
+</div>

@@ -1,0 +1,21 @@
+<div id='as'>
+<p>Multa Asignado :{{dato.monto}}  bs.  <a href="/EditarMulta/{{dato.id}}/">Editar</a>|
+<a href="/EliminarMulta/{{dato.id}}/">Eliminar</a></p>
+<div id="respp"></div>
+</div>
+<script type="text/javascript">
+$('#as p a').on('click', Envio);
+function Envio(e){
+	e.preventDefault()
+	var urla=$(this).attr("href");
+	$.ajax({
+		type:'GET',
+		url:urla,
+		success:function(resp){
+			console.log(resp);
+			$('#respp').html(resp);
+			
+		}
+	});
+}
+</script>

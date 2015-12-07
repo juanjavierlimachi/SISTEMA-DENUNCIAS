@@ -8,8 +8,14 @@
 	<ul class="nn">
 		<li>Notifacaciones: Propietario: {{nego.propietario}}</li>
 {% for i in datosN %}
-		<li>{{i.Usuario}}   <label>: Fecha de Notificacion:</label>
-		<a href="/detDenuncias/{{i.id}}/">{{i.fecha_notificacion}}</a></li>
+<li>{{i.Usuario}}:Fecha:
+		<a href="/detDenuncias/{{i.id}}/">{{i.fecha_notificacion}}</a>
+		{% if i.estado == 0 %}
+			<span><img src="{{STATIC_URL}}img/alert.gif"></span>
+		{% else %}
+		<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+		{% endif %}
+	</li>
 {% endfor %}
 <a href="/allNotDeUnNegocio/{{nego.id}}/">Ver todos</a>
 	</ul>

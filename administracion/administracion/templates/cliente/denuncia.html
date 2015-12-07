@@ -64,7 +64,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="/denuncias/"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+                <li class="active"><a href="#modal1"><span class="glyphicon glyphicon-home"></span>Home</a></li>
       <li class="active"><a href="#modal2"><span class="glyphicon glyphicon-hand-right"></span>Quienes Somos</a></li>
                 {% if user.is_authenticated %}
                   <li class="active"><a href="javascript:window.history.go(-2);">
@@ -72,8 +72,10 @@
                  {% else %}
   <li><a href="{% url 'social:begin' 'facebook' %}" class="active"><span class="glyphicon glyphicon-home"></span>Ingresar</a></li>
                 {% endif %}
-  <li class="active"><a href="#modal2"><span class="glyphicon glyphicon-list"></span>Ayuda</a></li>
-<li class="active"><a href="#modal2"><span class="glyphicon glyphicon-list"></span>{{user.username}}</a></li>         
+       <li class="active"><a href="#modal3"><span class="glyphicon glyphicon-list"></span>Ayuda</a></li>
+{% if user.is_authenticated %}
+<li class="active"><a href="#modal2"><span class="glyphicon glyphicon-list"></span>{{user.username}}</a></li>
+{% endif %}         
   <li class="active"><a href="#" onclick="finalizar()"><span class="glyphicon glyphicon-list"></span>Salir</a></li>
 
   <li class="active"><a href="https://facebook.com"><span class="glyphicon glyphicon-list"></span>Ir a Facebook</a></li>              
@@ -147,13 +149,34 @@
   <div id="modal2" class="modalmask">
     <div class="modalbox rotate">
       <a href="#close" title="Close" class="close">X</a>
-      <h4>Mision</h4>
+      <h4 align='center'>Mision</h4>
       <p>Realizar los respectidos controles en le cuidad de Potosi.</p>
-      <h4>Vision</h4>
+      <h4 align='center'>Vision</h4>
       <p>Colaborar a todos los negocios llevendo el order en beneficio de nuestra ciudad.</p>
     </div>
   </div>
 </div> 
+
+<div id="modal1" class="modalmask">
+    <div class="modalbox movedown">
+      <a href="#close" title="Close" class="close">X</a>
+      {% if not user.is_authenticated %}
+        <h4 align='center'>Bienvenido al Sistema de Contol y Seguimiento de Negocios y Denuncias en tiempo Real.</h4>
+        <p>Te damos las gracias pr visitar nuestro nuevo sitio Web, donde pordras 
+          realizar Denuncias en tiempo Real, para que usted pueda informar sobre alguna irregularidad
+          o delito que ocurriera en el Negocio que visito.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div id="modal3" class="modalmask">
+    <div class="modalbox resize">
+      <a href="#close" title="Close" class="close">X</a>
+      <p>Para Ingresar al sistema de Control y seguimiento de Negocios y Denuncias en Tiempo Real,</p>
+      <p>Deve ingresar al sistema con su cuenta de <a href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+        para Realizar su respectivo Reclamo el negocio.</p>
+    </div>
+  </div>
       <!-- Three columns of text below the carousel -->
     </div><!-- /.container -->
     </div>

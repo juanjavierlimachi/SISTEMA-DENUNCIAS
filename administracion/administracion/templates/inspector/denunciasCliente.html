@@ -1,7 +1,7 @@
 {% extends 'inspector/inicio_inspector.html' %}
 {% block user %}{{user}}{% endblock %}
 {% block inspecciones %}
-{% if not user.is_authenticated %}
+{% if not user.is_authenticated and not user.is_staff %}
 	<script type="text/javascript">
 	$(document).ready(function(){
 		alert(window.location='/');
@@ -15,22 +15,16 @@
 {% else %}
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
-<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
-<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/newUi.js"></script>
-<head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
-</head>
-<audio id="player" src="/static/tonos/sonidoUno.mp3">
-		</audio>
+<audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
 <div id='comentario'>
-	<p id="datos">
-	{% for comment in comments %}
-		<li><a  href="/detDenunciasReclamos/{{comment.id}}/">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
-	{% endfor %} 
-	</p>
+{% for comment in comments %}
+	<li><a  href="javascript:ventanaSecundaria('/detDenunciasReclamos/{{comment.id}}/')">{{ comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
+{% endfor %} 
 </div>
 <!-- <li>Negocio a denunciar::{{nego.propietario}}</li><br> -->
+<div id="conect"></div>
 <div id="map_canvas"></div>
 <div class="row">
 <form method='POST'  id='for' enctype="multipart/form-data">{% csrf_token %}
@@ -58,9 +52,10 @@
 </form> 
 </div>
 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<script src="/static/js/jquery.min3.js"></script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="/static/js/denunciasAdmin.js"></script>
+<script src="/static/js/jquery.min3.js"></script>
+
 {% endif %}
 {% endblock %}
 {% block js %}

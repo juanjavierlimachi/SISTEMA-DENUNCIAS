@@ -9,6 +9,7 @@ class Comment(models.Model):
 	idUser = models.IntegerField(blank=True,null=True)
 	#archivo=models.ImageField(upload_to='imagenes',blank=True,null=True,help_text='Puede agregar una Imagen o Archivo')
 	fecha_denuncia=models.DateTimeField(auto_now=True)
+	estado=models.IntegerField(default=0)
 	def __unicode__(self):
 		return self.user
 

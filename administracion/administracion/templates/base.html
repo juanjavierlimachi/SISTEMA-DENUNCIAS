@@ -86,13 +86,16 @@ function bbbb(){
     });
 
     function Registertyp(){
+        $('.card').hide();
+        $('.help').hide();
+        $('#map_canvas').hide();
         $.ajax({
                 type:'GET',
                 url:'/Registertype/',
                 beforeSend: entesEnviar,
                 success:function(resp){
                     console.log(resp);
-                    $('#resultados').html(resp);
+                    $('#notiii').html(resp);
                 }
             });
         function entesEnviar(){
@@ -217,6 +220,19 @@ $.ajax({
             }
         });
 }
+function genera(){
+    $.ajax({
+        type:'GET',
+        url:'/generarQR/',
+        beforeSend: entesEnviar,
+        success:function(resp){
+            $('#notiii').html(resp);
+        }
+    });
+    function entesEnviar(){
+                $('#notiii').text("Generando QR(s)...")
+            }
+}
 </script>
     </script>
     </head>
@@ -244,12 +260,13 @@ $.ajax({
     <ul>
         <li> <a href="/">Inicio</a> </li>
         <!-- <li> <a href="#">assssss</a> </li>  -->
+        <li> <a href="/EnviarNotificacion/">Informar</a></li>
         <li> <a href="/AvisosDenuncias/">Denucias</a> </li>
-        <li> <a href="/AvisosNotificaciones/" >Notificar</a> </li>
-        <li> <a href="/Cronograma/">Cronograma</a> </li>
-        <li> <a href="/EnviarNotificacion/">Informar</a> </li>
-        <li> <a href="/cerrar/">Salir</a> </li> 
-         <li> <a href="/MisdatosAdmins/">Ultimos</a> </li> 
+        <li> <a href="/AvisosNotificaciones/" >Notificaciones</a> </li>
+        <li> <a href="/Cronograma/">Actividades</a> </li>
+         <li> <a href="/Informes/">Informes</a> </li>
+         <li><a href="#" onclick='genera()'>Generar QR</a></li> 
+         <li> <a href="/cerrar/">Salir</a> </li> 
     </ul>
 </li>
 </ul>
@@ -312,6 +329,7 @@ $.ajax({
             <div class="resultados" id="resultados"> </div>
 {% block contenidos %}  {% endblock %}   {% block js %}  {% endblock %}
 <div id="notiii"></div>
+<div id="respuestasservidor"></div>
 </main>
 <script type="text/javascript">
     if (navigator.appVersion.indexOf("Win")!=-1) {

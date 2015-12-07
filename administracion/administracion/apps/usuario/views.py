@@ -15,6 +15,7 @@ from django.db.models import Q
 from administracion.apps.cliente.models import *
 from administracion.apps.negocio.models import *
 from datetime import datetime
+from administracion.apps.inspector.forms import *
 # Create your views here.
 def Usuario(request):
 	if not request.user.is_anonymous():
@@ -64,7 +65,8 @@ def ingreso(request):
 	else:
 		#user.is_staff decimoe q el administrador le dio el permiso para subsustema secretria
 		if request.user.is_active and request.user.is_staff:
-			return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario},context_instance=RequestContext(request))
+			conogramas=Cronograma.objects.all().order_by('-id')[0:3]
+			return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario,'conogramas':conogramas},context_instance=RequestContext(request))
 		else:
 			USER=request.user.id
 			print "Este es el Perfil:",USER
@@ -96,15 +98,25 @@ def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
 			seg=Seguimiento()
 			seg.user_id=inspector
 			seg.neg_id=idNegocio
-			seg.save()
+			#seg.save()
 			Negocio.objects.filter(id=id).update(estadoD=0)
 			if request.user.is_staff and request.user.is_active and request.user.is_superuser:
-		#denuncias=Comment.objects.all().order_by('-id')
 				return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
 			else:
 		#user.is_staff decimoe q el administrador le dio el permiso para subsustema secretria
 				if request.user.is_active and request.user.is_staff:
-					return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario},context_instance=RequestContext(request))
+					conogramas=Cronograma.objects.all().order_by('-id')[0:3]
+					contexto=request.user
+					multas=multa.objects.all().order_by("-id")[0:3]
+					dic = {
+						'cod':cod,
+						'conogramas':conogramas,
+						'user':contexto,
+						'form': FormMulta(),
+						'multa':multas
+					}
+					return render(request, 'inspector/formMultas.html', dic)
+					#return render_to_response('inspector/formMultas.html',{'usuario':usuario,'conogramas':conogramas,dic},context_instance=RequestContext(request))
 				else:
 					USER=request.user.id
 					try:
@@ -316,50 +328,24 @@ def UserNotificaciones(request, id):
 
 
 
-# from datetime import datetime
-# import os
-# from subprocess import Popen, PIPE, STDOUT
-# def crearBackup(request):
-# 	#try:
-# 	command = "mysqldump -h localhost -u root --password="" denuncia"
-# 		#command= Popen('mysqldump -h localhost -P 3306 -u -root denuncia | mysql -h localhost -P 3306 -u root denuncia', shell=True)
-# 	today = datetime.now()
-# 	fecha = today.strftime("%d %m %Y")
-# 	#print "esta es la fecha",fecha
-# 	#ficheor de salida
-# 	file="backup_servidor_"+fecha
-# 	command = command+file+".sql"
-# 	os.system(command)
-# 	#except:
-# 	return HttpResponse()
 
 
-import ConfigParser
-import os
 import time
-import getpass
+import os
+import MySQLdb
 
 def crearBackup(request):
-    #print "Enter user:"
-    user = "root"
+	command = "mysqldump -h localhost -u root -p  denuncia"
+	fecha=time.strftime("%j")
 
-    #print "Password will not be visible:"
-    #password = getpass.getpass()
-    password = ""
+# Fichero de salida
+	file = "backup_Servidor_"+fecha
 
-    #print "Enter host:"
-    host = "localhost:8080"
+	command = command+"> bd_"+file+".sql"
 
-    #print "Enter database name:"
-    database = "denuncia"
+	os.system(command)
 
 
-    filestamp = time.strftime('%Y-%m-%d')
-    #os.popen("mysqldump -u %s -p%s -h %s -e --opt -c %s | sql -G > %s.sql" % (user,password,host,database,database+"_"+filestamp))
-    comant=os.popen("mysqldump -h 127.0.0.1 --u=root --password="" denuncia >copias"+filestamp+".sql")
-    #comant=filestamp+".sql"
-    #print command
-    #os.system(comant)
-    return HttpResponse()
+	return HttpResponse()
 
 

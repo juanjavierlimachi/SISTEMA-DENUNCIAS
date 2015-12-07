@@ -1,0 +1,20 @@
+<script type="text/javascript">
+	$('#Tipo').submit(function(e){
+		e.preventDefault();
+		var dato=$(this).serialize();
+		console.log(dato);
+		$.ajax({
+			type:"POST",
+			url:"/EditarMulta/"+{{idn}}+"/",
+			data: dato,
+			success:function(resp){
+				console.log(resp);
+				$("#respp").html(resp);
+			}
+		});
+	});
+</script>
+<form method='POST' id='Tipo'>{% csrf_token %}
+{{forms}}
+<input type='submit' value='Actualizar'>
+</form>

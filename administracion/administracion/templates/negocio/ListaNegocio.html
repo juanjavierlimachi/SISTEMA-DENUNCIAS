@@ -3,12 +3,20 @@
 <div class=''>
 	
 		<div>
-			<select>
+			<select id='cate'>
 				<option>Seleccione una categoria</option>
 				{% for i in categorias %}
 					<option value='{{i.id}}'>{{i.categoria}}</option>
 				{% endfor %}
 			</select>
+
+	<!-- 	<select id='Notificado'> 
+		<option>Seleccione una categoria</option>
+		{% for dato in categorias %}
+			<option value="{{dato.id}}">{{dato.categoria}}</option>
+		{% endfor %}
+		</select>  -->
+
 		</div>
 		 <div class="datalles"></div>
 		 <div class="infoNegocio"></div>
@@ -23,10 +31,10 @@
 	<tr>
 		<td>{{negosio.id}}</td><td>{{negosio.propietario}}
 	{% if negosio.estadoN == 1 %}
-			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
+			<span><img src="/static/img/alert.gif"></span>
 			{% endif %}
 		{% if negosio.estadoD == 1 %}
-			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
+			<span><img src="/static/img/icon_error.gif"></span>
 			{% endif %}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td>
 		
 		<td>
@@ -73,13 +81,26 @@ cargarFormularios=function(url){
 					});
 			}
 
-	$('select').on('change',inicio);
+	$('#cate').on('change',inicio);
 	function inicio(){
 		var id = $(this).val();
 		console.log(id); //aki vemos k el id se esta inprimiendo
 		$.ajax({
 			type: 'GET',
 			url:"/busqueda_ajax/"+id+"",
+			success: function(data){
+				console.log(data);
+				$('.datalles').html(data);
+			}
+		});
+	}
+	$('#Notificado').on('change', Notificados);
+	function Notificados(){
+		var id = $(this).val();
+		console.log(id); //aki vemos k el id se esta inprimiendo
+		$.ajax({
+			type: 'GET',
+			url:"/Aclusurar/"+id+"",
 			success: function(data){
 				console.log(data);
 				$('.datalles').html(data);

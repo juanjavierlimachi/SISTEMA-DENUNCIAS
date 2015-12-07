@@ -1,0 +1,30 @@
+
+<p>Total de Notificaciones: {{cont}}</p>
+<script type="text/javascript">
+function Informe(){
+
+}
+</script>
+	<ul class='nn'>
+		<table border=1>
+		<tr><td align='center' style="width: 50px"><br>Nro.</td><td align='center' ><br>Nombre Negocio</td><td align='center' style="width: 70px"><br>Multa</td><td align='center'><br>Usuario</td><td align='center'><br>Fecha</td></tr>
+{% for i in datos %}
+
+	{% for k in nego %}
+		{% for j in multas %}
+				 {% if j.Codigo == k.id and  j.id == i.idNotificacion_id  %}
+			
+	<tr><td align='center' style='table-layout:fixed';><br>{{i.id}}</td><td align='center'><br>{{k.propietario}}</td><td align='center'><br>{{i.monto}}</td><td align='center'><br>{{k.user}}</td align='center'><td align='center'><br>{{i.fecha}}</td></tr>
+				 {% endif %}
+
+			{% endfor %}
+	
+	{% endfor %}
+
+{% empty %}
+<p>Aun no hay registros.</p>
+{% endfor %}
+<tr><td></td><td></td><td colspan="3" align='center'><br>Total Monto Recaudato :{{suma}}</td></tr>
+</table>
+	</ul>
+

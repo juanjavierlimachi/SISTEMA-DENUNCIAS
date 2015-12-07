@@ -3,12 +3,13 @@
 {% block contenidos %}
 {% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
 <!--<button id='not' class="waves-effect waves-light btn">Responder</button>-->
 <div id="comentario">
 {% for mult in multa %}	
-	<li><a href="javascript:ventanaSecundaria('/detDenuncias/{{mult.id}}/')">{{ mult.Usuario}}- Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
+	<li><a href="/detDenuncias/{{mult.id}}/">{{ mult.Usuario}}- Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
 {% endfor %}
-<li id='cuenta'>Notificaciones registradas: {{cont}}   <a href="/TodaslasNotificaciones/">Ver Todos</a></li>
+<p id='cuenta'>Notificaciones registradas: {{cont}}   <a href="/TodaslasNotificaciones/">Ver Todos</a></p>
 </div>
 <div class="help">
 <div id="map_canvas"></div>
@@ -20,13 +21,13 @@
 <tr><th><label for="id_Usuario">Usuario:{{user.username}}</label></th><td>
 <input id="id_Usuario" maxlength="100" name="Usuario" type="hidden" value='{{user.username}}' /></td></tr>
 <tr><th><label for="id_descripcion">Descripcion:</label>
-</th><td><textarea cols="40" id="id_descripcion" name="descripcion" rows="10" required>
+</th><td><textarea cols="40" id="id_descripcion" name="descripcion" rows="10" required placeholder="Describa la notificacion">
 </textarea></td></tr>
 <tr><th><label for="id_Codigo">Codigo:</label></th>
-	<td><input id="id_Codigo" name="Codigo" type="number" required/></td></tr>
+	<td><input id="id_Codigo" name="Codigo" type="number" required placeholder='Ingrese el codigo del negocio'/></td></tr>
 
-	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" placeholder='Año-Mes-Dia' />
-</td><input type="button" id="lanzador" value="Eliga una fecha" /></tr>
+	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" placeholder='Año-Mes-Dia' disabled/>
+</td><input type="button" id="lanzador" value="Fecha" /></tr>
 <tr><th><label for="id_hora">Hora:</label></th><td>
 <input id="id_hora" type="time" name="hora" max="23:59:00" min="00:00:00" step="1" placeholder="Ejem:08:30" required></td></tr><br>
 <!--class="waves-effect waves-light btn"-->
@@ -66,5 +67,39 @@ $(document).ready(function(){
 <script src="/static/js/jquery.min3.js"></script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/NotificacionesAdmin.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript">
+$("#comentario li a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$("#notiii").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio.",
+			position: "center"
+		});	
+	});
+cargarFormularios=function(url){
+				$.ajax({
+						url: url,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						console.log(response);
+						$("#notiii").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+</script>
 {% endblock %}
 

@@ -11,11 +11,16 @@
 				<li>{{i.user}}:
 					Denuncio:<a href="/detDenunciasReclamos/{{i.id}}/">
 					{{i.Tipo_de_peticion}}</a>
+					{% if i.estado == 0 %}
+						<span><img src="{{STATIC_URL}}img/icon_error.gif"></span>
+					{% else %}
+						<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+					{% endif %}
 				</li>
 				{% empty %}
 		<p>No hay registros</p>
 			{% endfor %}
-	<a href="/allNotDeUnNegocio/{{negocio.id}}/">Ver todos</a>
+<!-- 	<a href="/allNotDeUnNegocio/{{negocio.id}}/">Ver todos</a> -->
 	</ul>
 	
 </div>

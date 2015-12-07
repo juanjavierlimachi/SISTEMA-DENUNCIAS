@@ -10,20 +10,30 @@
 					'fe':$('#campo_fecha').val(),
 					'fn':$('#campo_fecha_fin').val()
 				}
-				$.ajax({
-				type:'get',
-				url:'/ConsultarDenunciaClienteFecha/',
-				data: fecha,
-				success:function(data){
+				if(fecha.fe.length == 0 || fecha.fn.length == 0){
+					alert('Debe introducir una fecha');
+					return false;
+				}
+				if ((Date.parse(fecha.fe))>(Date.parse(fecha.fn))){
+					alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+					return false
+				}
+				else{
+					$.ajax({
+					type:'get',
+					url:'/ConsultarDenunciaClienteFecha/',
+					data: fecha,
+					success:function(data){
 					$('#contend').text("Procesando!!!");
 					var html=""
-					for(var i = 0; i<data.length; i++){
-						html += '<li>'+(i+1)+' .- '+data[i].fields.user+'  Denunció:  '+data[i].fields.comment+
-						'Fecha:'+data[i].fields.fecha_denuncia+'Cod:'+data[i].fields.idNegocio+'</li>';
+						for(var i = 0; i<data.length; i++){
+							html += '<li>'+(i+1)+' .- '+data[i].fields.user+'  Denunció:  '+data[i].fields.comment+
+							'Fecha:'+data[i].fields.fecha_denuncia+'Cod:'+data[i].fields.idNegocio+'</li>';
+						}
+						$('#contend').html(html);
 					}
-					$('#contend').html(html);
-				}
-			});
+				});
+			}
 		}
 		Calendar.setup({
 		        inputField     :    "campo_fecha",      // id del campo de texto
@@ -45,6 +55,10 @@ function Datoss(){
 		alert("Seleciones una Fecha");
 		return false;
 	}
+	if ((Date.parse(ini))>(Date.parse(fin))){
+	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+	return false
+	}
 	else{
 	window.open("/ImprecionDenunciaClientes/"+ini+"/"+fin);
 	}
@@ -56,6 +70,10 @@ function ExcelD(){
 	if (ini==""||fin==""){
 		alert("Seleciones una Fecha");
 		return false;
+	}
+	if ((Date.parse(ini))>(Date.parse(fin))){
+	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+	return false
 	}
 	else{
 	window.open("/ReporteExcelDenuncias/"+ini+"/"+fin);
@@ -116,9 +134,10 @@ window.onload = function(){
 <div class="card">
 	<p>Notificacones de hoy {{hoy}}  total:{{conta}}</p>
 	<form method='get' id='filtro'>{% csrf_token %}
-				<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
+				<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia' disabled>
 				<input type="button" id="lanzador" value="<Desde" />
-				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'><input type="button" id="lanzador2" value="Hasta>" />
+				<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia' disabled>
+				<input type="button" id="lanzador2" value="Hasta>" />
 				<button id='fer'>Ver</button>
 				<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>|
 				<a href="#" target="_blank" id="repExcelD">Excel</a>

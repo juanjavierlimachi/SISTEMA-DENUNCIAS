@@ -14,7 +14,7 @@ class formNegocio(forms.ModelForm):
 	resolucion_municipal=forms.ChoiceField(widget=forms.RadioSelect, choices=Resolucion)
 	class Meta:
 		model=Negocio
-		exclude=('user','estadoN','estadoD',)
+		exclude=('user','estadoN','estadoD','qr',)
 
 class buscarForm(forms.Form):
 	buscar=forms.CharField()
@@ -22,7 +22,11 @@ class buscarForm(forms.Form):
 class regisArchivoForm(forms.Form):
 	csv=forms.FileField()
 
+#objeto = (('Horario No Establecido', 'Horario No Establecido',),('Falta de Higiene','Falta de Higiene',),('Alteracion al Negocio','Alteracion al Negocio',) ,('Infraestructura', 'Infraestructura',),('Equipamiento De Comodidades al cliente', 'Falta de Equipamiento',))
+tipo = (('150', 'Por primera vez',), ('300', 'Por segunda vez',),('400', 'Por Clausura Temporal 5 Dias',),('1000','Clausuara Temporal 15 Dias',))
 class FormCobro(forms.ModelForm):
+	monto=forms.ChoiceField(widget=forms.Select, choices=tipo)
+	#estado=forms.ChoiceField(widget=forms.Select, choices=objeto)
 	class Meta:
 		model=Cobro
 		exclude=('idNotificacion',)

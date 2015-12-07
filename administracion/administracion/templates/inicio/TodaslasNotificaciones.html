@@ -36,6 +36,10 @@
 					alert('Debe introducir una fecha');
 					return false;
 				}
+				if ((Date.parse(fecha.fe))>(Date.parse(fecha.fn))){
+					alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+					return false
+				}
 				else{
 					$.ajax({
 					type:'get',
@@ -76,6 +80,10 @@ function Datoss(){
 		alert("Seleciones una Fecha");
 		return false;
 	}
+	if ((Date.parse(ini))>(Date.parse(fin))){
+	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+	return false
+	}
 	else{
 	window.open("/ImprecionDenuncia/"+ini+"/"+fin);
 	}
@@ -87,6 +95,10 @@ function Excel(){
 	if (ini==""||fin==""){
 		alert("Seleciones una Fecha");
 		return false;
+	}
+	if ((Date.parse(ini))>(Date.parse(fin))){
+	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+	return false
 	}
 	else{
 	window.open("/ReporteExcel/"+ini+"/"+fin);
@@ -142,15 +154,15 @@ window.onload = function(){
 <div class="card">
 	<p>Notificacones de hoy {{hoy}}  total:{{conta}}</p>
 <form method='get' id='filtro'>{% csrf_token %}
-	<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia'>
+	<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia' disabled>
 	<input type="button" id="lanzador" value="Desde" />
 
-	<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia'>
+	<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia' disabled>
 	<input type="button" id="lanzador2" value="Hasta" />
 
 	<button id='fer'>Ver</button>
 	<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>|
- 	<a href="#" target="_blank" id='repExcel'>Excelz</a> 
+ 	<a href="#" target="_blank" id='repExcel'>Excel</a> 
 </form>
 		<div id="contend"></div>
 	<p><a href="#"  id='Ante'>Anterior</a>|<a href="#" id="Siguiente">Siguiente</a></p>
@@ -161,7 +173,7 @@ window.onload = function(){
 		Descricion: {{i.descripcion}}</li>
 		<li>Fecha de Presentacion : {{i.fecha_presentacion}}   Hora: {{i.hora}}
 <a href="/detDenuncias/{{i.id}}/" title='Ver Comparendo'>Ver</a>|
-<a href="/sanciones/{{i.id}}/">Sanciones</a></li>
+<a href="/sanciones/{{i.id}}/">Multar</a></li>
 <a href="/ImprimirNotificacion/{{i.id}}/" target="_blank">Imprimir</a>
 	{% endfor %}
 	</ul>

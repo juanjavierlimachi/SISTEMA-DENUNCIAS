@@ -15,16 +15,29 @@ import os
 import csv
 import datetime
 from datetime import date
+from pyqrcode import QRCode
+import sys
 #import xlwt
 # Create your views here.
 #d= Seguimientos.objects.count()
 @login_required(login_url='/')
 def RegistroNegocio(request):
     if request.method == 'POST':
+        estado=False
         user=Negocio(user=request.user)
         formulario=formNegocio(request.POST, instance=user)
         if formulario.is_valid():
             formulario.save()
+            estado=True
+            if estado==True:
+                dato=Negocio.objects.all().order_by('-id')[0:1]
+                for i in dato:
+                    url = QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+                    url.svg(sys.stdout, scale=15)
+                    url.svg('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.svg',scale=6)
+                    number=QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+                    number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png')
+                    Negocio.objects.filter(id=i.id).update(qr=number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png'))
             return HttpResponseRedirect('/RegistroNegocio/')
     else:
         formulario=formNegocio()
@@ -65,6 +78,7 @@ def Filtro(request,id):
 	formulario=buscarForm()
 	return render_to_response('negocio/formBusqueda.html',{'formulario':formulario},RequestContext(request))
 """ 
+
 @login_required(login_url='/')
 def buscar(request):
     if request.method=="POST":
@@ -118,6 +132,7 @@ def detDenunciasReclamos(request, id):
     dni=int(id)
     reclamos=Comment.objects.filter(id=int(id))
     negocio=Negocio.objects.all()
+    Comment.objects.filter(id=int(id)).update(estado=1)
     return render_to_response('negocio/reclamosAdmin.html',{'reclamos':reclamos,'negocio':negocio,'dni':dni},context_instance=RequestContext(request))
 
 from administracion.apps.negocio.resources import NegocioResource
@@ -161,9 +176,9 @@ def seguimientosNotificacion(request):
         #print (aux.Codigo, aux.propietario)
         lista.append(dict([(aux.total, aux.propietario)]))
     total_Not=Negocio.objects.filter(estadoN=1).count()
-    t_no=Negocio.objects.filter(estadoD=0).count()
+    #t_no=Negocio.objects.filter(estadoD=0).count()
     tt=Negocio.objects.count()
-    return render_to_response('negocio/seguimientosNotificacion.html',{'t_no':t_no,'tt':tt,'lista':lista,'total_Not':total_Not},context_instance=RequestContext(request))
+    return render_to_response('negocio/seguimientosNotificacion.html',{'tt':tt,'lista':lista,'total_Not':total_Not},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def seguimientosDenuncia(request):
     lista=[]
@@ -179,27 +194,58 @@ def seguimiento(request):
     hoy=hoy.strftime('%Y-%m-%d')
     #d=d.day
     #print "este es e dia: ",int(d)  __gte
-    Por_dia=Seguimiento.objects.filter(fecha__gte = hoy)
+    Por_dia=Seguimiento.objects.filter(fecha__gte = hoy).order_by('-id')
     print Por_dia
-    datos=Seguimiento.objects.all().order_by('id')
+    datos=Seguimiento.objects.filter(fecha__lte=hoy)
     return render_to_response('negocio/seguimiento.html',{'datos':datos,'Por_dia':Por_dia},context_instance=RequestContext(request))
 
 def sanciones(request, id):
     idn=id
+    if request.user.is_superuser and request.user.is_staff:
+        if request.method=='POST':
+            try:
+                yatiene=Cobro.objects.get(idNotificacion_id=idn)
+                if yatiene:
+                    return HttpResponse("Ya asigno la multa a esta Notificacion. ")
+            except Cobro.DoesNotExist:
+                dato=Cobro(idNotificacion_id=idn)
+                forms=FormCobro(request.POST, instance=dato)
+                if forms.is_valid():
+                    forms.save()
+                    datos=multa.objects.get(id=id)
+                    print "estes el id ontenido",datos.Codigo
+                    Negocio.objects.filter(id=datos.Codigo).update(estadoN=0)
+                    return HttpResponse("Datos Guardados Correctamente")
+                else:
+                    HttpResponse("Se produjo un error Verifique los datos Nuevamente.")
+        else:
+            forms=FormCobro()
+    else:
+        return HttpResponse("Ud consulte con el administrador")
+    return render_to_response('negocio/RegistroCobro.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
+
+def EditarMulta(request, id):
+    idn=id
+    d=Cobro.objects.get(id=idn)
     if request.method=='POST':
-        dato=Cobro(idNotificacion_id=idn)
-        forms=FormCobro(request.POST, instance=dato)
+        #dato=Cobro(idNotificacion_id=idn)
+        forms=FormCobro(request.POST, instance=d)
         if forms.is_valid():
             forms.save()
-            datos=multa.objects.get(id=id)
-            print "estes el id ontenido",datos.Codigo
-            Negocio.objects.filter(id=datos.Codigo).update(estadoN=0)
-            return HttpResponse("Datos Guardados Correctamente")
+            return HttpResponse("Se Modifico el monto Correctamente.")
         else:
-            HttpResponse("Se produjo un error Verifique los datos Nuevamente.")
+            return HttpResponse("Erro en los datos Verifique por favor.")
     else:
-        forms=FormCobro()
-    return render_to_response('negocio/RegistroCobro.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
+        forms=FormCobro(instance=d)
+    return render_to_response('negocio/UpdateCobro.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
+def EliminarMulta(request, id):
+    if request.user.is_superuser and request.user.is_staff and request.user.is_active:
+        dato=Cobro.objects.get(id=int(id))
+        dato.delete()
+        return HttpResponse("Se Elimino el registro.")
+    else:
+        HttpResponse("Ud no tiene permiso para eliminar el registro.")
+
 from datetime import datetime
 @login_required(login_url='/')
 def EditarNegocio(request, id):
@@ -221,12 +267,19 @@ def DeleteNegocio(request, id):
     denuncia=Negocio.objects.get(id=int(id))
     denuncia.delete()
     return HttpResponse("Se Elimino el registro")
-
+@login_required(login_url='/')
 def ActivaNegocio(request, id):
     if request.user.is_superuser and request.user.is_staff and request.user.is_active:
         datos=multa.objects.get(id=id)
         Negocio.objects.filter(id=datos.Codigo).update(estadoN=0)
         return HttpResponse("El Negocio se encuentra nuevamente activo.")
+    else:
+        return HttpResponse("Ud no puede realizar esta accion consulte con el administrador.")
+@login_required(login_url='/')
+def mostrarMulta(request, id):
+    if request.user.is_superuser and request.user.is_staff and request.user.is_active:
+        dato=Cobro.objects.get(idNotificacion_id=int(id))
+        return render_to_response("negocio/mostrarMulta.html",{'dato':dato},context_instance=RequestContext(request))
     else:
         return HttpResponse("Ud no puede realizar esta accion consulte con el administrador.")
 
@@ -325,6 +378,98 @@ def ReporteExcelDenuncias(request,id,fin):
                 ws1.write(ind,4,d.comment)
                 ws1.write(ind,5,d.user)
                 ws1.write(ind,6,d.idUser)
+                
+    return HttpResponse(first_book.save('C:/Users/PAVILION/Downloads/Denuncias.xls'),'application/ms-excel')
+@login_required(login_url='/')
+def ReporteExcelInforme(request, id, fin):
+    lista=[]
+    first_book = Workbook()
+    ws1 = first_book.add_sheet('first_sheet')
+    ws1.write(0,0,'Nombre Negocio')
+    ws1.write(0,1,'Multa')
+    ws1.write(0,2,'Usuario')
+    ws1.write(0,3,'Fecha')
+    ind=0
+    datos=Cobro.objects.filter(fecha__range=(id,fin))
+    cont=Cobro.objects.filter(fecha__range=(id,fin)).count()
+    suma=0
+    multas=multa.objects.all()
+    nego=Negocio.objects.all()
+    for i in datos:
+        for k in nego:
+            for j in multas:
+                if j.Codigo == k.id and  j.id == i.idNotificacion_id:
+                    ind+=1
+                    ws1.write(ind,0,k.propietario)
+                    ws1.write(ind,1,i.monto)
+                    ws1.write(ind,2,k.user_id)
+                    ws1.write(ind,3,datetime.strftime(i.fecha,'%Y-%m-%d %H:%M:%S'))
+    return HttpResponse(first_book.save('C:/Users/PAVILION/Downloads/Informes.xls'),'application/ms-excel')
+@login_required(login_url='/')
+def Generar(request,id):
+    dato=Negocio.objects.get(id=id)
+    nombe=str(dato.id)
+    propietario=str(dato.propietario)
+    url = QRCode('http://192.168.1.15:8000/privado/'+str(id)+'/')
+    url.svg(sys.stdout, scale=15)
+    url.svg('QR_'+propietario+'_Cod_'+nombe+'.svg',scale=6)
+    number=QRCode('http://192.168.1.15:8000/privado/'+str(id)+'/')
+    number.png('QR_'+propietario+'_Cod_'+nombe+'.png')
+    Negocio.objects.filter(id=id).update(qr=number.png('QR_'+propietario+'_Cod_'+nombe+'.png'))
+    return HttpResponse("Se creo el codigo QR Correctamente")
+@login_required(login_url='/')
+def generarQR(request):
+    datos=Negocio.objects.all()
+    for i in datos:
+        url = QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+        url.svg(sys.stdout, scale=15)
+        url.svg('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.svg',scale=6)
+        number=QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+        number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png')
 
-    first_book.save('Denuncias.xls')
-    return HttpResponse("bien Denuncias")
+    return HttpResponse("Se Genero Los codigos QR |<a href='G:sistemasDenuncias/administracion/'>Ver</a>")
+
+def resultadosN(request, id):
+    total_Denuncias=Comment.objects.filter(idNegocio=int(id)).count()
+    total_Notificaciones=multa.objects.filter(Codigo=int(id)).count()
+    total_inspecciones=Seguimiento.objects.filter(neg_id=int(id)).count()
+    #nego=Negocio.objects.all()
+    noti=multa.objects.filter(Codigo=int(id))
+    cobros=Cobro.objects.all()
+    contador=0
+    recaudado=0
+    for i in noti:
+        for j in cobros:
+            #for k in cobros:
+            if i.id==j.idNotificacion_id:
+                contador+=1
+                recaudado=recaudado+j.monto
+    dic={
+        'total_Denuncias':total_Denuncias,
+        'total_Notificaciones':total_Notificaciones,
+        'total_inspecciones':total_inspecciones,
+        'contador':contador,
+        'recaudado':recaudado
+    }
+    return render(request, 'negocio/resultados.html', dic)
+
+def Aclusurar(request, id):
+    negocios=Negocio.objects.filter(categoria_id=int(id), estadoN=1).distinct()
+    noti=multa.objects.all()
+    con=0
+    aux=0
+    acu=0
+    lista=[]
+    for i in negocios:
+        for j in noti:
+            if i.id == j.Codigo:
+                acu+=1
+                aux+=1
+            if acu>=2:
+                lista.append(dict([(i.propietario,acu)]))
+                acu=0
+    return render_to_response('negocio/Aclausuarar.html',{'lista':lista,'negocios':negocios, 'noti':noti,'aux':aux},context_instance=RequestContext(request))
+
+
+
+

@@ -1,13 +1,25 @@
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <!-- <link rel="stylesheet" type="text/css" href="/static/css/formularios.css"> -->
-
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
-
-	<li>{{user.username}}, Estas son tus Notificaiones realizadas Total:{{cont}}</li>
+<style type="text/css">
+p{text-align: center;}
+ .row .nn li a{
+        color: #465866;
+        text-decoration: none;
+    }
+    .row .nn li:nth-child(2n){background: #F5F5F5; 
+	border-top: 1px solid #DCDCDC; }
+    .row .nn li:hover{
+        background: #90EE90;
+    }
+    .nn li a:hover{content: white;}
+</style>
+</style>
+<p>{{user.username|upper}}, Estas son tus Notificaiones realizadas Total:{{cont}}</p>
 <div class="row">
 	<ul class='nn'>
 {%  for i in notificaciones %}
-	<li><a href="/detDenuncias/{{i.id}}/">Fecha de notificacion: {{i.fecha_notificacion}}  Descripcion:<br>
+	<li><a href="/detDenuncias/{{i.id}}/">Fecha de notificacion: {{i.fecha_notificacion}}  Descripcion:
 		{{i.descripcion}}</a>
 		<a href="/EditNotificacion/{{i.id}}/">Edit</a>
 		<a href="/DeleteNotificacion/{{i.id}}/">Eliminar</a></li>

@@ -186,10 +186,6 @@ def DeleteNotificacion(request, id):
 	denuncia.delete()
 	return HttpResponse("Se Elimino el registro")
 
-
-
-
-
 @login_required(login_url='/')
 def datosDenuncia(request,id):
 	nego=Negocio.objects.get(id=int(id))
@@ -215,6 +211,7 @@ def MisNotificaciones(request, id):
 	notificaciones=multa.objects.filter(idUser=user).order_by("-id")
 	cont=multa.objects.filter(idUser=user).count()
 	return render_to_response('inspector/MisNotificacioness.html',{'cont':cont,'notificaciones':notificaciones},context_instance=RequestContext(request))
+
 @login_required(login_url='/')
 def inspeccionesDato(request ,id):
 	ind=int(id)

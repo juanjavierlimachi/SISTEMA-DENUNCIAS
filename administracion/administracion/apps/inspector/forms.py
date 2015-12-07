@@ -10,12 +10,13 @@ class FormMulta(ModelForm):
 	#fecha_presentacion=forms.DateField(widget=SelectDateWidget())
 	class Meta:
 		model=multa
+		exclude=('estado',)
 class FormMultaEditar(ModelForm):
 	class Meta:
 		model=multa
-		exclude=('idUser','Usuario','Codigo',)
+		exclude=('idUser','Usuario','Codigo','estado',)
 
 class EdirDenuncia(ModelForm):
 	class Meta:
 		model=Comment
-		exclude=('idUser','user','idNegocio',)
+		exclude=('idUser','user','idNegocio','estado',)

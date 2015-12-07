@@ -1,13 +1,19 @@
 
-
+<style type="text/css">
+table{
+	width: 30%;margin: auto;
+}
+</style>
 <div class="">
-	<p>Lista Total de Notificaciones recividas por cada Negocio<br>
-	Negocios Denunciados:     {{total_Not}}         No Denunciados :{{t_no}} de:      {{tt}}</p>
-	<ul class="nn">
+	<p>Lista Total de Notificaciones Realizadas por Negocio<br>
+	Negocios Notificados:     {{total_Not}}     <!--  No Denunciados :{{t_no}} --> de:      {{tt}}|</p>
+	<table border=1>
+	<tr><td>Negocio</td><td>Cantidad de Denuncias Recividas</td></tr>
 {% for i in lista %}
 	{% for a,i in i.items %}
-		Comtidad de Notificaciones resividas:{{a}} del Negocio:{{i}}          <img src="/static/img/alert.gif"></span><br>
+		
+	<tr><td>{{i}}</td><td>{{a}} </td><td><span><img src="/static/img/alert.gif"></span></td></tr>
 	{%  endfor %}
 {% endfor %}
-</ul>
+</table>
 </div>

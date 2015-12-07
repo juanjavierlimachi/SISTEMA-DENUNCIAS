@@ -48,8 +48,7 @@ $('#boton').on('click',	Comentar);
 				    }
 				    socket.emit('UbicacionCliente', coordenadas);
 				     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
-				     alert("Su reclamo fue enviada correctamente pronto daremos una solucion!!!<br>
-				     	Vuelva ha situar su camara para realizar otra Denuncia gracias.");
+				    
 				    // document.getElementById('boton').disabled=false;
 				     $('.icon').hide();
 				}    
@@ -103,3 +102,6 @@ $('#boton').on('click',	Comentar);
             //document.getElementById('player').play();
         }
 	});
+function ventanaSecundaria(URL){
+    window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
+}

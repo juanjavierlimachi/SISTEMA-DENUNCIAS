@@ -1,0 +1,22 @@
+<script type="text/javascript">
+	$("#Ttipo").submit(function(e){
+		e.preventDefault();
+		var dato=$(this).serialize();
+		//alert(dato);
+		$.ajax({
+			type:"POST",
+			url:"/EditCategoria/"+{{idn}}+"/",
+			data: dato,
+			success:function(resp){
+				//alert(resp);
+				$("#respuestasservidor").html(resp);
+			}
+		});
+	});
+
+</script>
+<form method='POST' id="Ttipo">
+	{% csrf_token %}
+		{{forms}}
+<input type='submit' value='Actualizar'>
+</form>

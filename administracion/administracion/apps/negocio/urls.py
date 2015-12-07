@@ -20,12 +20,23 @@ urlpatterns = patterns('',
 	url(r'^seguimientosNotificacion/$', seguimientosNotificacion),
 	url(r'^seguimiento/$', seguimiento),
 	url(r'^sanciones/(?P<id>\d+)/$',sanciones),
+	url(r'^EditarMulta/(?P<id>\d+)/$',EditarMulta),
+	url(r'^EliminarMulta/(?P<id>\d+)/$',EliminarMulta),
 	url(r'^EditarNegocio/(?P<id>\d+)/$',EditarNegocio),
 	url(r'^DeleteNegocio/(?P<id>\d+)/$',DeleteNegocio),
 	url(r'^ActivaNegocio/(?P<id>\d+)/$',ActivaNegocio),
+	url(r'^mostrarMulta/(?P<id>\d+)/$',mostrarMulta),
 	url(r'^importarExcel/$', importarExcel),
+
 	url(r'^dataInport/$', dataInport),
 	url(r'^ReporteExcel/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ReporteExcel),
 	url(r'^ReporteExcelDenuncias/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ReporteExcelDenuncias),
 
+	url(r'^ReporteExcelInforme/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ReporteExcelInforme),
+
+	url(r'^Generar/(?P<id>\d+)/$',Generar),
+	url(r'^generarQR/$',generarQR),
+	url(r'^resultadosN/(?P<id>\d+)/$',resultadosN),
+
+	url(r'^Aclusurar/(?P<id>\d+)/$',Aclusurar),
 )

@@ -1,4 +1,8 @@
 
+<style type="text/css">
+	.res{text-align: center;margin-top: 15px;}
+	#Tipo{width: 30%;margin: auto;}
+</style>
 <script type="text/javascript">
 	$('#Tipo').submit(function(e){
 		e.preventDefault();
@@ -10,14 +14,29 @@
 			data: dato,
 			success:function(resp){
 				console.log(resp);
-				$('#resultados').html(resp);
+				$('#notiii').html(resp);
 			}
 		});
 	});
+	function VerCate(){
+		$.ajax({
+			type:'GET',
+			url:'/VerCategorias/',
+			beforeSend: entesEnviar,
+			success:function(resp){
+				$('#cc').html(resp);
+			}
+		});
+		function entesEnviar(){
+                $('#cc').text("Procesando...")
+            }
+	}
 </script>
-
+<p class='res'>Registrar Tipo de Negocio</p>
 <form method="POST" id="Tipo">
 	{% csrf_token %}
-	{{forms}}
-	<input type='submit' id='btn'  value='Guardar'>
+	{{forms}}<br>
+	<input type='submit' id='btn'  value='Guardar'  class="btn btn-primary">
 </form>
+<p class='res'><a href="#" onclick='VerCate()'>Categorias Registradas</a></p>
+<div id="cc"></div>

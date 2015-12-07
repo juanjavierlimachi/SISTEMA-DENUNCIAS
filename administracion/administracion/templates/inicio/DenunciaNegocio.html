@@ -1,5 +1,8 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
+<style type="text/css">
+#notiii form{width: 50%; margin: auto;}
+</style>
 <div class="">
 	<!-- <li>Nombre Inspector:{{denuncia.Usuario}}</li>
 	<li>Fecha de notificacion: {{denuncia.fecha_notificacion}}</li>
@@ -7,12 +10,12 @@
 	<li>Fecha de presentacion: {{denuncia.fecha_presentacion}}</li>
 	<li>Hora de presentacion: {{denuncia.hora}}</li> -->
 <table border=1>
-	<tr><td>H.G.M.P </td><td>Nro.{{dni}}</td></tr>
-	<tr><td colspan="2" align='center'>COMPARENDO</td></tr>
 	{% for i in denuncia %}
-		<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
 		{% for j in nombre %}
 			{% if j.id == i.Codigo %}
+				<tr><td>H.G.M.P </td><td>Nro.{{j.id}}</td></tr>
+				<tr><td colspan="2" align='center'>COMPARENDO</td></tr>
+				<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
 				<tr><td colspan="2">Sr(s):{{j.propietario}}</td></tr>
 				<tr><td colspan="2">Direccion: {{j.direccion}}</td></tr>
 				<tr><td>Fecha de Presentacion en Oficina: {{i.fecha_presentacion}} </td><td>Horas: {{i.hora}}</td></tr>
@@ -21,7 +24,9 @@
 		{% endfor %} 
 	{% endfor %}
 </table>
-<a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a>|<a href="/ActivaNegocio/{{dni}}" id='rr'> Revisado</a>
+<a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a>|
+<a href="/ActivaNegocio/{{dni}}" id='rr'> Revisado</a>|<a href="#" onclick='Multar()'>Registrar Multar</a>|
+<a href="/mostrarMulta/{{dni}}/" id="rrM">Ver Multa</a>
 <div id="ttt"></div>
 </div>
 <script type="text/javascript">
@@ -37,7 +42,28 @@ function envio(e){
 			$('#ttt').html(resp);
 		}
 	});
-
+}
+$('#rrM').on('click', Ver);
+function Ver(e){
+	e.preventDefault()
+	var urla=$(this).attr("href");
+	$.ajax({
+		type:'GET',
+		url:urla,
+		success:function(resp){
+			console.log(resp);
+			$('#ttt').html(resp);
+		}
+	});
+}
+function Multar(){
+	$.ajax({
+		type:'GET',
+		url:"/sanciones/"+{{dni}}+"/",
+		success:function(resp){
+			$('#notiii').html(resp);
+		}
+	});
 }
 </script>
 {% else %}

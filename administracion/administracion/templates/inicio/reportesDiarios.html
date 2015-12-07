@@ -14,13 +14,14 @@
 	<table border=0> 
 	<tr><td colspan="2">H.G.M.P </td><td>Nro:{{i.Codigo}}</td></tr>
 	<tr><td colspan="3" align='center'>COMPARENDO<br></td></tr>
-		<tr><td colspan="3">Objeto: {{i.descripcion}}<br></td></tr>
+		<tr><td colspan="3">Objeto: {{objec}}<br></td></tr>
+		<tr><td colspan="3">{{i.descripcion}}</td></tr>
 		{% for j in nombre %}
 			{% if j.id == i.Codigo %}
 				<tr><td colspan="2">Sr(s):{{j.propietario}}<br></td></tr>
 				<tr><td colspan="2" >Direccion: {{j.direccion}}<br></td></tr>
 				<tr><td colspan="2">Fecha de Presentacion en Oficina: {{i.fecha_presentacion}} <br></td><td>Horas: {{i.hora}}<br></td></tr>
-				<tr><td colspan="2">Fecha de Notificacion: {{i.fecha_notificacion}}<br></td><td>Total:{{bs.monto}} bs.</td></tr>
+				<tr><td colspan="2">Fecha de Notificacion: {{i.fecha_notificacion}}<br></td><td>Total:  {{bs}} bs.</td></tr>
 			{% endif %}
 		{% endfor %}
 	</table><br><br><br><br><br>

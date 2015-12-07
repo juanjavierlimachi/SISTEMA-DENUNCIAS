@@ -14,11 +14,3 @@ $(".contador").each(function(){
 			});
 		});
 });
-function esconde(form){
-		if (form.comment.value !=""){
-			form.enviar.style.visibility = "visible";
-		}
-		else{
-			form.enviar.style.visibility = "hidden";
-		}
-	}

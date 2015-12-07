@@ -9,11 +9,11 @@
     var memorial=$('#id_memorial_apertura').val();
     var resolucion=$('#id_resolucion_municipal').val();
     var dir=$('#id_direccion').val();
-    if (pro=='' || memorial=='' || resolucion ==''){
+    /*if (pro=='' || memorial=='' || resolucion ==''){
       alert('Datos Incorrectos Verifique por favor..');
       $('#id_propietario').focus()
       return false;
-    }
+    }*/
     if (!isNaN(pro)){
         alert("No deve ser numero");
         $('#id_propietario').focus()
@@ -35,13 +35,17 @@
                 window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
             } 
 </script>
+
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
  <div class="card">
   <p>Registro Negocio</p>
             <form method="POST" action="" onsubmit='return verificar()'>{% csrf_token %} 
               {{formulario}}<br><br>
               <button class="waves-effect waves-light btn" type="submit"
-       onsubmit='verificar()'>Guardar</button> 
+       onsubmit='verificar()'>Guardar</button>
+     <!--  <a href="javascript:ventanaSecundaria('/saveFiles/')">Archivo</a>| -->
+      <a href="javascript:ventanaSecundaria('/admin/negocio/negocio/import/')">Importar</a>|
+      <a href="javascript:ventanaSecundaria('/admin/negocio/negocio/export/?')">Exportar</a>
             </form>
 
 </div>

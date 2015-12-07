@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block js %}
+<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
+  <!-- librería principal del calendario -->
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
+  <!-- librería para cargar el lenguaje deseado -->
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
+  <!-- librería que declara la función Calendar.setup, que ayuda a generar un calendario en unas pocas líneas de código -->
+  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
+<script type="text/javascript">
+	Calendar.setup({
+		        inputField     :    "campo_fecha",      // id del campo de texto
+		        ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
+		        button         :    "lanzador"   // el id del botón que lanzará el calendario
+		    });
+		Calendar.setup({
+		        inputField     :    "campo_fecha_fin",      // id del campo de texto
+		        ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
+		        button         :    "lanzador2"   // el id del botón que lanzará el calendario
+		    });
+$("#Verr").on("click",Inicio);
+function Inicio(e){
+	e.preventDefault();
+	var inicio=$("#campo_fecha").val();
+	var fin=$("#campo_fecha_fin").val();
+	if (inicio==""||fin==""){
+		alert("Seleciones una Fecha");
+		return false;
+	}
+	if ((Date.parse(inicio))>(Date.parse(fin))){
+	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+	return false
+	}
+	else{
+		$.ajax({
+		type:"GET",
+		url:"/ImformePorMes/"+inicio+"/"+fin,
+		success:function(resp){
+			console.log(resp);
+			$("#resp").html(resp);
+		}
+	  });
+	}
+}
+$("#ImprimirDatos").on('click',Datoss);
+function Datoss(){
+	var ini=$("#campo_fecha").val();
+	var fin=$("#campo_fecha_fin").val();
+	if (ini==""||fin==""){
+		alert("Seleciones una Fecha");
+		return false;
+	}
+	if ((Date.parse(inicio))>(Date.parse(fin))){
+	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+	return false
+	}
+	else{
+	window.open("/ImprecionInforme/"+ini+"/"+fin);
+	}
+}
+$("#repExcel").on('click',Excel);
+function Excel(){
+	var ini=$("#campo_fecha").val();
+	var fin=$("#campo_fecha_fin").val();
+	if (ini==""||fin==""){
+		alert("Seleciones una Fecha");
+		return false;
+	}
+	if ((Date.parse(inicio))>(Date.parse(fin))){
+	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
+	return false
+	}
+	else{
+	window.open("/ReporteExcelInforme/"+ini+"/"+fin);
+	}
+}
+</script>
+{%  endblock %}
+{% block contenidos %}
+<style type="text/css">
+#leftt{
+        display: none;
+    }
+    .card{background: #eee; margin: auto}
+    .card table{width: 80%;border-radius: 8px;margin: auto;}
+    .card form{width: 80%;margin: auto;margin-bottom: 15px;margin-top: 10px;}
+</style>
+<script type="text/javascript">
+/*window.onload = function(){
+	var contador=0;
+	document.getElementById("Anterior").onclick=function(){
+	contador++;
+	console.log(contador);
+	$.ajax({
+		type:'GET',
+		url:'/VerPorMes/'+contador+'/',
+		success:function(resp){
+			console.log(resp);
+			var resp=resp;
+			$('#informes').html(resp);
+		}
+	});
+	}
+	document.getElementById("siguiente").onclick=function(){
+		contador--;
+		console.log(contador);
+		$.ajax({
+		type:'GET',
+		url:'/VerPorMes/'+contador+'/',
+		success:function(resp){
+			console.log(resp);
+			$('#informes').html(resp);
+		}
+	});
+	}
+}*/
+
+
+</script><br>
+<div class="card">
+	<p>{{cont}}  Informes de multas Mensuales del Mes |<a href="/ImprimirInformes/" target='_blank'>Imprimir</a></p>
+	<form method='GET' id='filtro'>{% csrf_token %}
+	<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia' disabled>
+	<input type="button" id="lanzador" value="Desde" />
+
+	<input type='text' name='fnn' id='campo_fecha_fin' placeholder='Año-Mes-Dia' disabled>
+	<input type="button" id="lanzador2" value="Hasta" />
+
+	<button id='Verr'>Ver</button>
+	<a href="#" target="_blank" id="ImprimirDatos">Imprimir</a>|
+ 	<a href="#" target="_blank" id='repExcel'>Excel</a> 
+</form>
+<div id="resp"></div>
+	<table border=1>
+		<tr><td align='center' style="width: 50px"><br>Nro.</td><td align='center' ><br>Nombre Negocio</td><td align='center' style="width: 70px"><br>Multa</td><td align='center'><br>Usuario</td><td align='center'><br>Fecha</td></tr>
+{% for i in datos %}
+	{% for k in nego %}
+		{% for j in multas %}
+				 {% if j.Codigo == k.id and  j.id == i.idNotificacion_id  %}
+			
+	<tr><td align='center' style='table-layout:fixed';><br>{{i.id}}</td><td align='center'><br>{{k.propietario}}</td><td align='center'><br>{{i.monto}}</td><td align='center'><br>{{k.user}}</td align='center'><td align='center'><br>{{i.fecha}}</td></tr>
+				 {% endif %}
+
+			{% endfor %}
+	
+	{% endfor %}
+
+{% empty %}
+<p>Aun no hay registros.</p>
+{% endfor %}
+<tr><td></td><td></td><td colspan="3" align='center'><br>Total Monto Recaudato :{{suma}}</td></tr>
+</table>
+<!-- <p><a href="#" id="Anterior">Anterior Mes</a>|<a href="#" id="siguiente">Siguiente Mes</a></p> -->
+<div id="informes"></div>
+</div>
+{% endblock %}

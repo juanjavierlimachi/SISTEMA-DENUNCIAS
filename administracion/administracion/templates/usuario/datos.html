@@ -61,8 +61,8 @@
         {% endfor %}
     {% endfor %}
     {% if user.id == aux %}
-         <a class="btn btn-primary" href="/editarcontracenia/{{user.id}}/">Editar Password</a>
-      <a class="btn btn-primary" href="/editarperfil/">Editar Datos</a>
+         <p><a class="btn btn-primary" href="/editarcontracenia/{{user.id}}/">Editar Password</a>
+      <a class="btn btn-primary" href="/editarperfil/">Editar Datos</a></p>
       {% else %}
     <p></p>
     {% endif %}

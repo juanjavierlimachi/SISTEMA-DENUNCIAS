@@ -201,9 +201,9 @@
       <h4>Cronograma de Actividades {% now "Y" %}</h4>
       <p>{% for i in conogramas %}
         <li>{{i.Usuario}}</li>
-        <li>{{i.Fecha_inicio}}</li>
-        <li>{{i.Conclucion}}</li>
-        <li>{{i.Detalle}}</li>
+        <li>Desde:{{i.Fecha_inicio}}</li>
+        <li>Hasta:{{i.Conclucion}}</li>
+        <li>Obgeto:{{i.Detalle}}</li>
         {% endfor %}
       </p>
     </div>

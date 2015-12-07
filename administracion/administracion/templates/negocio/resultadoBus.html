@@ -7,6 +7,7 @@
 .infoNegocio{width: 92%;margin: auto;}
 .nn li{list-style: none;}
 .card{background: #eee;}
+#notiii form{width: 50%; margin: auto;}
 </style>
 <div class='card'>
 		<p><label>Propietario:</label>{{negocio.propietario}}
@@ -28,7 +29,9 @@
 			<a href="/eliminarN/{{negocio.id}}/">Eliminar</a> | 
 				<a href="/EditarNegocio/{{negocio.id}}/">Editar</a>|
 			<a href="/datosDenuncia/{{negocio.id}}/">Notificaciones</a>|
-	<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a></li>
+	<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a>|
+	<a href="/Generar/{{negocio.id}}/" targer='_blank'>QR</a>|
+	<a href="/resultadosN/{{negocio.id}}/">Resultados</a></li> 
 
 	</ul>
 	<div class="infoNegocio"></div>

@@ -11,7 +11,7 @@
 			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
 			{% endif %}
 		{% if negosio.estadoD == 1 %}
-			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
+			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/icon_error.gif"></a></span>
 			{% endif %}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td><td>
 			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>|
 			<span><a href="/denunciasAdmin/{{negosio.id}}/"><img src="/static/img/icon_error.gif "></a></span>
@@ -21,7 +21,7 @@
 	{% empty %}
 	<p>No hay Registros</p>
 	{% endfor %}
-	<tr>Total Registros {{aux}}</tr>
+	<tr><td>Total Registros {{aux}}</td></tr>
 	</td>
 	</tr>
 	</table><br>

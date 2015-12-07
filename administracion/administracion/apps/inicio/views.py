@@ -7,18 +7,19 @@ from django.http import JsonResponse, HttpResponse,HttpResponseRedirect
 from administracion.apps.cliente.models import Comment
 from administracion.apps.cliente.forms import Commentform
 from .forms import *
-from administracion.apps.negocio.models import multa
+from administracion.apps.negocio.models import *
 from administracion.apps.inspector.forms import *
 from administracion.apps.inspector.forms import *
 from django.core import serializers
 from administracion.apps.usuario.models import *
 import os
-import datetime
 from datetime import *
 import StringIO
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 from datetime import date
+import datetime
+import calendar
 #from django.utils.timesince import timesince
 # Create your views here.
 class AvisosDenuncias(TemplateView):
@@ -110,7 +111,8 @@ def EditarCronograma(request,id):
 def datosDenuncia(request,id):
 	nego=Negocio.objects.get(id=int(id))
 	datosN=multa.objects.filter(Codigo=int(id)).order_by('-id')[0:50]
-	return render_to_response('inicio/DatosNegocio.html',{'datosN':datosN,'nego':nego},context_instance=RequestContext(request))
+	sanciones=Cobro.objects.all()
+	return render_to_response('inicio/DatosNegocio.html',{'datosN':datosN,'nego':nego,'sanciones':sanciones},context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def allNotDeUnNegocio(request,id):
@@ -122,6 +124,7 @@ def detDenuncias(request,id):
 	dni=int(id)
 	denuncia=multa.objects.filter(id=int(id))
 	nombre=Negocio.objects.all()
+	multa.objects.filter(id=dni).update(estado=1)
 	return render_to_response('inicio/DenunciaNegocio.html',{'denuncia':denuncia,'nombre':nombre,'dni':dni},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def ImprimirNotificacion(request,id):
@@ -129,14 +132,34 @@ def ImprimirNotificacion(request,id):
 	denuncia=multa.objects.filter(id=int(id))
 	nombre=Negocio.objects.all()
 	bs=0.0
+	objec=''
 	try:
-		bs=Cobro.objects.get(idNotificacion=cod)
+		bss=Cobro.objects.get(idNotificacion=cod)
+		bs=bss.monto
+		objec=bss.estado
 		pass
 	except Cobro.DoesNotExist:
+		bs=bs
 		pass
 	hoy=date.today()
 	hoy=hoy.strftime('%d-%m-%Y')
-	html=render_to_string("inicio/reportesDiarios.html",{'pagesize':'later','denuncia':denuncia,'nombre':nombre,'cod':cod,'bs':bs,'hoy':hoy},context_instance=RequestContext(request))
+	html=render_to_string("inicio/reportesDiarios.html",{'pagesize':'later','denuncia':denuncia,'nombre':nombre,'cod':cod,'bs':bs,'objec':objec,'hoy':hoy},context_instance=RequestContext(request))
+	return generar_pdf(html)
+
+@login_required(login_url='/')
+def ImprimirInformes(request):
+	today=datetime.datetime.now()
+	fecha=today.strftime("%d-%m-%Y")
+	dateMonthStart="%s-%s-01" % (today.year, today.month)
+	suma=0
+	datos=Cobro.objects.filter(fecha__range=(dateMonthStart,today)).order_by('-id')
+	cont=Cobro.objects.filter(fecha__range=(dateMonthStart,today)).count()
+	for i in datos:
+		suma=suma+i.monto
+	print "Cobrosssss",datos
+	nego=Negocio.objects.all()
+	multas=multa.objects.all()
+	html=render_to_string('inicio/ImprimirInformes.html',{'fecha':fecha,'datos':datos,'cont':cont,'nego':nego,'multas':multas,'suma':suma},context_instance=RequestContext(request))
 	return generar_pdf(html)
 
 @login_required(login_url='/')
@@ -177,6 +200,18 @@ def ImprecionDenuncia(request, id, fin):
 	hoy=hoy.strftime('%d-%m-%Y')
 	html=render_to_string('inicio/imprecion.html',{'pagesize':'later','i':i,'f':f,'denuncia':denuncia,'nombre':nombre,'hoy':hoy},context_instance=RequestContext(request))
 	return generar_pdf(html)
+def ImprecionInforme(request, id, fin):
+	inicio=id
+	fina=fin
+	datos=Cobro.objects.filter(fecha__range=(inicio,fina))
+	cont=Cobro.objects.filter(fecha__range=(inicio,fina)).count()
+	suma=0
+	for i in datos:
+		suma=suma+i.monto
+	nego=Negocio.objects.all()
+	multas=multa.objects.all()
+	html = render_to_string('inicio/VerPorMes.html',{'pagesize':'later','datos':datos,'cont':cont,'nego':nego,'multas':multas,'suma':suma},context_instance=RequestContext(request))
+	return generar_pdf(html)
 @login_required(login_url='/')
 def ImprecionDenunciaClientes(request, id, fin):
 	inicio=id
@@ -212,16 +247,16 @@ def VerNotificacionesInspector(request,id):
 	return render_to_response('inicio/MisInspecciones.html',{'inspecciones':inspecciones,'nego':nego},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def TodaslasNotificaciones(request):
-	hoy=datetime.now()
+	hoy=datetime.datetime.now()
 	hoy=hoy.strftime('%Y-%m-%d')
-	datos=multa.objects.filter(fecha_notificacion__gte = hoy)
+	datos=multa.objects.filter(fecha_notificacion__gte = hoy).order_by('-id')
 	conta=multa.objects.filter(fecha_notificacion__gte = hoy).count()
 	return render_to_response('inicio/TodaslasNotificaciones.html',{'datos':datos,'conta':conta,'hoy':hoy},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def TodaslasDenuncias(request):
-	hoy=datetime.now()
+	hoy=datetime.datetime.now()
 	hoy=hoy.strftime('%Y-%m-%d')
-	datos=Comment.objects.filter(fecha_denuncia__gte = hoy)
+	datos=Comment.objects.filter(fecha_denuncia__gte = hoy).order_by('-id')
 	conta=Comment.objects.filter(fecha_denuncia__gte = hoy).count()
 	return render_to_response('inicio/TodaslasComentarios.html',{'datos':datos,'conta':conta,'hoy':hoy},context_instance=RequestContext(request))
 
@@ -258,6 +293,30 @@ def Registertype(request):
 		forms=FormTipo()
 	return render_to_response('inicio/Registertype.html',{'forms':forms},context_instance=RequestContext(request))
 @login_required(login_url='/')
+def VerCategorias(request):
+	datos=Categoria.objects.all().order_by('-id')
+	return render_to_response('negocio/listaCategorias.html',{'datos':datos},context_instance=RequestContext(request))
+@login_required(login_url='/')
+def EditCategoria(request, id):
+	idn=id
+	d=Categoria.objects.get(id=idn)
+	if request.method=='POST':
+		forms=FormTipo(request.POST, instance=d)
+		if forms.is_valid():
+			forms.save()
+			return HttpResponse("Se Modifico el monto Correctamente.")
+		else:
+			return HttpResponse("Error en los datos Verifique por favor.")
+	else:
+		forms=FormTipo(instance=d)
+	return render_to_response('negocio/EditCategoria.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
+@login_required(login_url='/')
+def EliminarCat(request, id):
+	dato=Categoria.objects.get(id=int(id))
+	dato.delete()
+	return HttpResponse("Se Elimino el Registro")
+
+@login_required(login_url='/')
 def MisdatosAdmin(request):
 	user=request.user
 	if request.user.is_staff and request.user.is_active and request.user.is_superuser:
@@ -281,7 +340,7 @@ def MisNotificacionesAdmin(request, id):
 	datos=multa.objects.filter(idUser=ind).order_by('-id')
 	print datos
 	return render_to_response('inicio/MisNotificacionesAdmin.html',{'datos':datos,'n':n},context_instance=RequestContext(request))
-
+@login_required(login_url='/')
 def VerPorDia(request, id):
 	num=int(id)
 	print "ahu esta",num
@@ -293,7 +352,7 @@ def VerPorDia(request, id):
 	datos=multa.objects.filter(fecha_notificacion__gte = result)
 	conta=multa.objects.filter(fecha_notificacion__gte = result).count()
 	return render_to_response('inicio/VerPorDia.html',{'datos':datos,'conta':conta,'result':result},context_instance=RequestContext(request))
-
+@login_required(login_url='/')
 def VerPorDiaDenuncias(request, id):
 	num=int(id)
 	print "ahu esta",num
@@ -305,4 +364,48 @@ def VerPorDiaDenuncias(request, id):
 	datos=Comment.objects.filter(fecha_denuncia__gte = result)
 	conta=Comment.objects.filter(fecha_denuncia__gte = result).count()
 	return render_to_response('inicio/VerPorDiaDenuncias.html',{'datos':datos,'conta':conta,'result':result},context_instance=RequestContext(request))
+from dateutil.relativedelta import relativedelta
+# def VerPorMes(request, id):
+# 	mes=int(id)
+# 	hoy=date.today()
+# 	hoy=hoy.strftime("%Y-%m-%d")
+# 	result=date.today()-relativedelta(months=mes)
+# 	result=result.strftime("%Y-%m-01")
 
+# 	datos=Cobro.objects.filter(fecha__gte = result)
+# 	cont=Cobro.objects.filter(fecha__gte=result).count()
+# 	suma=0
+# 	for i in datos:
+# 		suma=suma+i.monto
+# 	print "Cobrosssss",datos
+# 	nego=Negocio.objects.all()
+# 	multas=multa.objects.all()
+# 	return render_to_response('inicio/VerPorMes.html',{'result':result,'datos':datos,'nego':nego,'multas':multas,'cont':cont,'suma':suma},context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def Informes(request):
+	today=datetime.datetime.now()
+	dateMonthStart="%s-%s-01" % (today.year, today.month)
+	suma=0
+	datos=Cobro.objects.filter(fecha__range=(dateMonthStart,today)).order_by('-id')
+	cont=Cobro.objects.filter(fecha__range=(dateMonthStart,today)).count()
+	for i in datos:
+		suma=suma+i.monto
+	print "Cobrosssss",datos
+	nego=Negocio.objects.all()
+	multas=multa.objects.all()
+	return render_to_response('inicio/Informes.html',{'datos':datos,'cont':cont,'nego':nego,'multas':multas,'suma':suma},context_instance=RequestContext(request))
+
+def ImformePorMes(request,id ,fin):
+	inicio=id
+	print inicio
+	fina=fin
+	print fin
+	datos=Cobro.objects.filter(fecha__range=(inicio,fina))
+	cont=Cobro.objects.filter(fecha__range=(inicio,fina)).count()
+	suma=0
+	for i in datos:
+		suma=suma+i.monto
+	nego=Negocio.objects.all()
+	multas=multa.objects.all()
+	return render_to_response('inicio/VerPorMes.html',{'datos':datos,'cont':cont,'nego':nego,'multas':multas,'suma':suma},context_instance=RequestContext(request))
