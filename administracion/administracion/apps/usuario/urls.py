@@ -27,5 +27,5 @@ urlpatterns = patterns('',
 	url(r'^UserNotificaciones/(?P<id>\d+)/$', UserNotificaciones, name='UserNotificaciones'),
 
 	url(r'^crearBackup/$',crearBackup),
-
+	url(r'^ImportarBackup/$',ImportarBackup),
 )

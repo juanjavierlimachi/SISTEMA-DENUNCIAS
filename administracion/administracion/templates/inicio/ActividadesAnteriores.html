@@ -1,0 +1,7 @@
+<div>
+	{%  for i in datos %}
+		<p>Fecha Inicio: {{i.Fecha_inicio}}    Conclucion:{{i.Conclucion}}   Objeto:{{i.Detalle}}    Fecha Publicacion:{{i.fecha_publicacion|timesince}}   <a href="/EditarCronograma/{{i.id}}/">Editar</a></p>
+		{%empty %}
+		<p>No hay registros.</p>
+		{% endfor %}
+</div>

@@ -14,7 +14,9 @@
 		.select-wrapper select{
 			margin-right: -10px;
 		}
-		
+		#gg p{
+			text-align: center;
+		}
 	</style>
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
@@ -34,16 +36,26 @@ firstYear: 1,
 dateFormat: 'yy-mm-dd'
 });
 });
+function Activades(){
+	$.ajax({
+		type:'GET',
+		url:'/ActividadesAnteriores/',
+		success:function(data){
+			console.log(data)
+			$('#gg').html(data);
+		}
+	});
+}
 </script>
 	<div class="card">
 		<p>Registro de Cronograma de Trabajo</p>
 		<form method='POST'>{% csrf_token %}
 		{{form}}
-		<input type='submit' value='Guardar'>
+		<input type='submit' value='Guardar' class="btn btn-primary">
 		</form>
-
+<a href="#" onclick='Activades()'>Ver Anteriores</a>
 	</div>
-	<div class="card">
+	<div id='gg'>
 		{%  for i in datos %}
 		<p>Fecha Inicio: {{i.Fecha_inicio}}    Conclucion:{{i.Conclucion}}   Objeto:{{i.Detalle}}    Fecha Publicacion:{{i.fecha_publicacion|timesince}}   <a href="/EditarCronograma/{{i.id}}/">Editar</a></p>
 		{%empty %}

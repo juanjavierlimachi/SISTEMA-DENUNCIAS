@@ -1,17 +1,30 @@
-<html>
-<head>
-	<title>Reportes Usuario</title>
-</head>
-<body>
-<div class="card">
+<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
+<div class="">
+	<p>Total de usuarios Registrodos en el sistema: {{tota_user}}</p>
+	<table border=1 id='datos'>
+		<tr>
+			<td>Usuario</td><td>Nombre</td><td>Apellido</td><td>Nro. CI.</td><td>Fecha registro</td><td>Estado</td>
+		</tr>
+	
 {% for j in user %}
 	{% for i in perfil %}
 			{% if j.id == i.usuario_id %}
-				<li>Nombre:{{j.username}}, {{j.first_name}}  {{j.last_name}} User:{{i.usuario}} Ci:{{i.ci}}</li>
+			
+					<tr><td>{{j.username}}</td><td>{{j.first_name}}</td><td>{{j.last_name}}</td><td>{{i.ci}}</td><td>{{j.date_joined}}</td>
+						<td>
+							{% if j.is_staff == True %}
+								Activo
+							{% else %}
+								Inactivo
+							{% endif %}
+						</td>
+				</tr>
+			
 			{% endif %}
 		{% endfor %}
+	{% empty %}
+	<p>No hay Usuarios Inactivos</p>
 	{% endfor %}
-<p>Total de usuarios Registrodos en el sistema: {{tota_user}}</p>
+		
+	</table>
 </div>
-</body>
-</html>

@@ -23,7 +23,7 @@ p{text-align: center;}
 	{% if user.id == i.idUser %}
 	<li><a href="/detDenunciasReclamos/{{i.id}}/">Hace: {{i.fecha_denuncia|timesince}}     
 	{{i.Tipo_de_peticion}} Descripcion,
-	{{i.comment}}.
+	{{i.comment}},Cod:{{i.idNegocio}}
 	</a>
 	<a href="/EditReclamo/{{i.id}}/">Edit</a>|
 	<a href="/deleteReclamo/{{i.id}}/">Eliminar</a>
@@ -42,7 +42,7 @@ $(".nn li a").on("click",function(e){
 		$("#infoData").dialog({
 			modal:true,
 			show:"blind",
-			width: 600,
+			width: 500,
 			hide:"explode",
 			title:"Detalles del Negocio:",
 			position: "center"

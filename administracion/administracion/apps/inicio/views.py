@@ -93,6 +93,11 @@ def RegistroCronograma(request):
 	else:
 		form=FormCronograma()
 	return render_to_response('inicio/registroConograma.html',{'form':form,'datos':datos},context_instance=RequestContext(request))
+
+def ActividadesAnteriores(request):
+	datos=Cronograma.objects.all().order_by('-id')[0:10]
+	return render_to_response('inicio/ActividadesAnteriores.html',{'datos':datos},context_instance=RequestContext(request))
+
 @login_required(login_url='/')
 def EditarCronograma(request,id):
 	datos=Cronograma.objects.all().order_by('-id')[0:1]
@@ -136,7 +141,7 @@ def ImprimirNotificacion(request,id):
 	try:
 		bss=Cobro.objects.get(idNotificacion=cod)
 		bs=bss.monto
-		objec=bss.estado
+		#objec=bss.estado
 		pass
 	except Cobro.DoesNotExist:
 		bs=bs
@@ -169,6 +174,13 @@ def soloActivos(request):
 	tota_user=Perfiles.objects.all().count()
 	cli=request.user
 	html=render_to_string('inicio/usuariosActivos.html',{'pagesize':'later','cli':cli,'perfil':perfil,'user':user,'tota_user':tota_user},context_instance=RequestContext(request))
+	return generar_pdf(html)
+
+def NoActivos(request):
+	perfil=Perfiles.objects.all()
+	user=User.objects.all()
+	tota_user=Perfiles.objects.all().count()
+	html=render_to_string('inicio/NoActivos.html',{'pagesize':'later','perfil':perfil,'user':user,'tota_user':tota_user},context_instance=RequestContext(request))
 	return generar_pdf(html)
 
 def generar_pdf(html):

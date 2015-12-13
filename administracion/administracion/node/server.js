@@ -34,7 +34,7 @@ io.on('connection', function(socket){
 		var values = querystring.stringify(data);
 		var options = {
 			hostname: 'localhost',
-			port: '8000',
+			port: '9595',
 			path: '/crear-notificacion',
 			method: 'POST',
 			headers: {
@@ -60,7 +60,7 @@ socket.on('nuevo comentario' ,function(data){//data son los datos que resivimos 
 		var values = querystring.stringify(data);
 		var options = {
 			hostname: 'localhost',
-			port: '8000',
+			port: '9595',
 			path: '/crear-comentario',
 			method: 'POST', 
 			headers: {

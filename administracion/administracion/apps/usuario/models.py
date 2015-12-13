@@ -24,3 +24,9 @@ class CambiosNotificaciones(models.Model):
 	fecha=models.DateTimeField(auto_now=True)
 	def __unicode__(self):
 		return self.usuario
+class UpdateNotificaciones(models.Model):
+	usuario=models.CharField(max_length=50)
+	descripcion=models.TextField()
+	fecha=models.DateTimeField(auto_now=True)
+	def __unicode__(self):
+		return self.usuario

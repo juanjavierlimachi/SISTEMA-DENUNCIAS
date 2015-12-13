@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block contenidos %}
+<style type="text/css">
+#leftt{display: none;}
+</style>
+<br>
+
+	<form method="POST" enctype="multipart/form-data" id="sql">{% csrf_token %}
+		{{forms}}
+		<input type='submit' value='Importar' class="btn btn-primary" id='btn'>
+		<a href="#" onclick='Respaldo()' class="btn btn-warning">Crear Backup</a>
+	</form>
+	{%  if estado %}
+	<p>La base de Datos a sido Restaurada Correctamente</p>
+	
+	{% endif %}
+{% endblock %}
+{% block js %}
+	<script type="text/javascript">
+	$('#btn').click(mensaje);
+	function mensaje(){
+		alert("La base de datos de esta restaurando Espere por favor...");
+	}
+	function Respaldo(){
+		$.ajax({
+			type:'GET',
+			url:'/crearBackup/',
+			beforeSend: entesEnviar,
+			success:function(resp){
+                    console.log(resp);
+                    $('#notiii').html(resp);
+                }
+		});
+		function entesEnviar(){
+                $('#notiii').text("Creando la Restauracion de la Base de Datos")
+            }
+	}
+
+	</script>
+{% endblock %}

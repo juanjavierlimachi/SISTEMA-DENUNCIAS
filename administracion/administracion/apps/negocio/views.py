@@ -32,10 +32,10 @@ def RegistroNegocio(request):
             if estado==True:
                 dato=Negocio.objects.all().order_by('-id')[0:1]
                 for i in dato:
-                    url = QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+                    url = QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
                     url.svg(sys.stdout, scale=15)
                     url.svg('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.svg',scale=6)
-                    number=QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+                    number=QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
                     number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png')
                     Negocio.objects.filter(id=i.id).update(qr=number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png'))
             return HttpResponseRedirect('/RegistroNegocio/')
@@ -234,7 +234,7 @@ def EditarMulta(request, id):
             forms.save()
             return HttpResponse("Se Modifico el monto Correctamente.")
         else:
-            return HttpResponse("Erro en los datos Verifique por favor.")
+            return HttpResponse("Error en los datos Verifique por favor.")
     else:
         forms=FormCobro(instance=d)
     return render_to_response('negocio/UpdateCobro.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
@@ -410,10 +410,10 @@ def Generar(request,id):
     dato=Negocio.objects.get(id=id)
     nombe=str(dato.id)
     propietario=str(dato.propietario)
-    url = QRCode('http://192.168.1.15:8000/privado/'+str(id)+'/')
+    url = QRCode('http://192.168.1.15:9595/privado/'+str(id)+'/')
     url.svg(sys.stdout, scale=15)
     url.svg('QR_'+propietario+'_Cod_'+nombe+'.svg',scale=6)
-    number=QRCode('http://192.168.1.15:8000/privado/'+str(id)+'/')
+    number=QRCode('http://192.168.1.15:9595/privado/'+str(id)+'/')
     number.png('QR_'+propietario+'_Cod_'+nombe+'.png')
     Negocio.objects.filter(id=id).update(qr=number.png('QR_'+propietario+'_Cod_'+nombe+'.png'))
     return HttpResponse("Se creo el codigo QR Correctamente")
@@ -421,10 +421,10 @@ def Generar(request,id):
 def generarQR(request):
     datos=Negocio.objects.all()
     for i in datos:
-        url = QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+        url = QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
         url.svg(sys.stdout, scale=15)
         url.svg('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.svg',scale=6)
-        number=QRCode('http://192.168.1.15:8000/privado/'+str(i.id)+'/')
+        number=QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
         number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png')
 
     return HttpResponse("Se Genero Los codigos QR |<a href='G:sistemasDenuncias/administracion/'>Ver</a>")
@@ -465,7 +465,7 @@ def Aclusurar(request, id):
             if i.id == j.Codigo:
                 acu+=1
                 aux+=1
-            if acu>=2:
+            if acu>=3:
                 lista.append(dict([(i.propietario,acu)]))
                 acu=0
     return render_to_response('negocio/Aclausuarar.html',{'lista':lista,'negocios':negocios, 'noti':noti,'aux':aux},context_instance=RequestContext(request))

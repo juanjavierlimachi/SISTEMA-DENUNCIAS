@@ -98,7 +98,7 @@ def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
 			seg=Seguimiento()
 			seg.user_id=inspector
 			seg.neg_id=idNegocio
-			#seg.save()
+			seg.save()
 			Negocio.objects.filter(id=id).update(estadoD=0)
 			if request.user.is_staff and request.user.is_active and request.user.is_superuser:
 				return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
@@ -335,17 +335,32 @@ import os
 import MySQLdb
 
 def crearBackup(request):
-	command = "mysqldump -h localhost -u root -p  denuncia"
-	fecha=time.strftime("%j")
+	RUTA_PROYECTO=str(os.path.dirname(os.path.realpath(__file__)))
+	command = "mysqldump -h localhost -u root denuncia"
+	fecha=time.strftime("%Y-%m-%d")
 
 # Fichero de salida
-	file = "backup_Servidor_"+fecha
+	file = "backup_"+fecha
 
 	command = command+"> bd_"+file+".sql"
 
 	os.system(command)
+	#os.path.isdir(os.system(command))
+	return HttpResponse("Respaldo de la base de datos correctamente!!!")
 
-
-	return HttpResponse()
-
-
+def ImportarBackup(request):
+	if request.method=='POST':
+		forms=dbArchivoForm(request.POST,request.FILES)
+		if forms.is_valid():
+			estado=False
+			dato=str(request.FILES['base'])
+			print dato
+			command = "mysql -h localhost -u root denuncia"
+			command=command+"<"+dato+""
+			os.system(command)
+			estado=True
+			if estado == True:
+				return render_to_response('usuario/respaldo.html',{'forms':forms,'estado':True},context_instance=RequestContext(request))
+	else:
+		forms=dbArchivoForm()
+	return render_to_response('usuario/respaldo.html',{'forms':forms},context_instance=RequestContext(request))
