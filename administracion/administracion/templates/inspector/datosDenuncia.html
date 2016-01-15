@@ -4,8 +4,21 @@
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
 
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
-
-	<div class='card' id="comentario">
+<style type="text/css">
+.card{width: 100%;}
+.card .nn li{text-align: left;}
+ .card .nn li a{
+        color: #465866;
+        text-decoration: none;
+    }
+    .card .nn li:nth-child(2n){background: #F5F5F5; 
+	border-top: 1px solid #DCDCDC; }
+    .card .nn li:hover{
+        background: #90EE90;
+    }
+    .nn li a:hover{content: white;}
+</style>
+	<div class='card'>
 		<p>Notificaciones</p>
 		<ul class="nn">
 	{% for i in datosN %}
@@ -17,11 +30,12 @@
 		{% else %}
 		<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
 		{% endif %}</li>
+		{% empty %}
+		<p>No hay Notificaciones</p>
 	{% endfor %}
 
 	</ul>
 	<!-- <a href="/allNotDeUnNegocio/{{nego.id}}/">Ver todos</a> -->
-	</div>
 <div id="xxx"></div>
 	</div>
 	<script type="text/javascript">

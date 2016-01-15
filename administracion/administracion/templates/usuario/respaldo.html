@@ -5,7 +5,12 @@
 #leftt{display: none;}
 </style>
 <br>
-
+	<form method='POST' id='userr'>{% csrf_token %}
+		<p>Configuracion de la bae de datos</p>
+		<label>Usuario:</label><input type='text' name='user' id='user' placeholder='Ejem: Mario'>
+		<label>Password:</label><input type='password' name='pass' id='pass' placeholder='Ejem: 12345'>
+		<input type='submit' name='uu' id='btnn' value='Acceso'>
+	</form><br><br>
 	<form method="POST" enctype="multipart/form-data" id="sql">{% csrf_token %}
 		{{forms}}
 		<input type='submit' value='Importar' class="btn btn-primary" id='btn'>
@@ -18,6 +23,9 @@
 {% endblock %}
 {% block js %}
 	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#sql').hide();
+	});
 	$('#btn').click(mensaje);
 	function mensaje(){
 		alert("La base de datos de esta restaurando Espere por favor...");
@@ -36,6 +44,21 @@
                 $('#notiii').text("Creando la Restauracion de la Base de Datos")
             }
 	}
-
+$('#userr').submit(function(e){
+		e.preventDefault();
+		var dato=$(this).serialize();
+		console.log(dato);
+		$.ajax({
+			type:'POST',
+			url:'/ValidarUser/',
+			data: dato,
+			success:function(resp){
+				console.log(resp);
+				$('#notiii').html(resp);
+				$('#sql').show(1000);
+				$('#userr').hide();
+			}
+		});
+	});
 	</script>
 {% endblock %}

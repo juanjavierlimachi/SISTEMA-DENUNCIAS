@@ -51,7 +51,7 @@ $(document).ready(function(){
 <div class='row'>
 <form method='POST' id='form_coords' autocomplete='off'>{% csrf_token %}
 	<input id="id_idUser" name="idUser" value='{{user.id}}' type="hidden">
-	<tr><th><label for="id_Usuario">Usuario:{{user.username|upper}} conta:{{contador}}</label></th><td>
+	<tr><th><label for="id_Usuario">Usuario:{{user.username|upper}}</label></th><td>
 	<input id="id_Usuario" maxlength="100" name="Usuario" type="hidden" value='{{user.username}}' /></td></tr>
 	<tr><th><label for="id_descripcion">Descripcion:</label></th><td>
 	<textarea cols="40" id="id_descripcion" name="descripcion" rows="10" required placeholder="Describa la notificacion"></textarea></td></tr>
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	<input id="id_Codigo" name="Codigo" type="number" value='{{cod}}' placeholder='Ingrese el codigo del negocio'/></td></tr>
 	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" placeholder='Año-Mes-Dia' disabled/>
 	<input type="button" id="lanzador" value="Fecha" /></td></tr>
-	<tr><th><label for="id_hora">Hora:</label></th><td>
+	<tr><td><label for="id_hora">Hora:</label>
 	<input id="id_hora" type="time" name="hora" max="23:59:00" min="00:00:00" step="1" placeholder="Ejem:08:30" required></td></tr><br>
 	<button name='btn' id='bo'class="btn btn-primary">Notificar</button>
 </form>

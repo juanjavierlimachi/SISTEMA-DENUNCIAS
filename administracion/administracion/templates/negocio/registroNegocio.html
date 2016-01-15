@@ -2,7 +2,9 @@
 {% block title %}.:Nuevo:.{% endblock %}
 {% block contenidos %}
 {% if user.is_authenticated and user.is_staff and user.is_active %}
-
+<style type="text/css">
+.icon{width: 8px;float: right;margin-right: 150px;margin-top: -20px;}
+</style>
 <script type="text/javascript">
   function verificar(){
     var pro= $('#id_propietario').val();
@@ -17,13 +19,16 @@
     if (!isNaN(pro)){
         alert("No deve ser numero");
         $('#id_propietario').focus()
+        $('#id_propietario').val("");
         return false;
     }
     if (pro==''){
+      alert("Este campo es Obrigatorio")
         $('#id_propietario').focus()
         return false;
     }
     if (dir == ''){
+       alert("Este campo es Obrigatorio")
         $('#id_direccion').focus()
         return false;
     }
@@ -32,7 +37,7 @@
     }
   }
   function ventanaSecundaria(URL){
-                window.open(URL,"Editar","width=500,height=300,scrollbars=NO top=150 left=550");
+                window.open(URL,"Editar","width=500,height=225,scrollbars=NO top=150 left=550");
             } 
 </script>
 
@@ -40,7 +45,8 @@
  <div class="card">
   <p>Registro Negocio</p>
             <form method="POST" action="" onsubmit='return verificar()'>{% csrf_token %} 
-              {{formulario}}<br><br>
+              {{formulario}}
+              <span class='icon'><a href="javascript:ventanaSecundaria('/Registertype/')" title='Nuevo Categoria'><img src="{{STATIC_URL}}img/add.gif"></a></span><br><br>
               <button class="waves-effect waves-light btn" type="submit"
        onsubmit='verificar()'>Guardar</button>
      <!--  <a href="javascript:ventanaSecundaria('/saveFiles/')">Archivo</a>| -->

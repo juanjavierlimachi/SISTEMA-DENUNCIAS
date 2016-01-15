@@ -1,0 +1,18 @@
+<div>
+<table border=1>
+	<tr><td align='center' colspan="7"><br>Informe de negocios a Clausurar Por Faltas Cometidas o Incumplimineto de Notificaciones</td></tr>
+<tr><td align='center'><br>Cod</td><td align='center'><br>Propietario</td><td align='center'><br>Direccion</td><td align='center'><br>Estado</td><td align='center'><br>Notificacion</td><td align='center'><br>Fecha Presentacion</td><td align='center'><br>Objeto</td></tr>
+{% for i in negocios %}
+	{% for j in notis %}
+		
+			{% if  i.id == j.Codigo and i.estadoN == 1 and j.estado == 0 %}
+				
+					<tr><td>{{i.id}}</td><td>{{i.propietario}}</td><td>{{i.direccion}}</td><td>{% if j.estado == 0 %}
+						Clausurar
+						{% endif %}</td><td>{{j.fecha_notificacion}}</td><td>{{j.fecha_presentacion}}</td><td>{{j.descripcion}}</td></tr>
+			{% endif %}
+
+	{% endfor %}
+{% endfor %}
+</table>
+</div>

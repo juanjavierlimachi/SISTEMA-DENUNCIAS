@@ -2,6 +2,9 @@
 <link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
 <style type="text/css">
 #notiii form{width: 50%; margin: auto;}
+.ui-dialog-buttonset{
+	display: none;
+}
 </style>
 <div class="">
 	<!-- <li>Nombre Inspector:{{denuncia.Usuario}}</li>
@@ -14,7 +17,7 @@
 		{% for j in nombre %}
 			{% if j.id == i.Codigo %}
 				<tr><td>H.G.M.P </td><td>Nro.{{j.id}}</td></tr>
-				<tr><td colspan="2" align='center'>COMPARENDO</td></tr>
+				<tr><td aling="center" colspan="2">COMPARENDO</td></tr>
 				<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
 				<tr><td colspan="2">Sr(s):{{j.propietario}}</td></tr>
 				<tr><td colspan="2">Direccion: {{j.direccion}}</td></tr>

@@ -1,0 +1,38 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#sis').click(function(e){
+		e.preventDefault();
+		var link=$(this).attr('href');
+		//alert(link);
+		$.ajax({
+			type:'GET',
+			url:link,
+			beforeSend: entesEnviar,
+			success:function(resp){
+				$('.card').html(resp);
+				Recargar();
+			}
+		});
+		function entesEnviar(){
+                $('.card').text("Procesando...")
+            }
+	});
+	function Recargar(){
+		$.ajax({
+            type:'GET',
+            url:'/ListaNegocio/',
+            beforeSend: entesEnviar,
+            success:function(respuesta){
+                $('#notiii').html(respuesta);
+            }
+        });
+        function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
+	}
+});
+</script>
+<div>
+<p>Esta seguro de Eliminar en Negocio {{dato.propietario}}?</p>
+<p><a href="/InactivarNew/{{dato.id}}" id='sis'>Confirmar</a></p>
+</div>

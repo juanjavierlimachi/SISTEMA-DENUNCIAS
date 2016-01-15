@@ -26,7 +26,8 @@ p{text-align: center;}
 	{{i.comment}},Cod:{{i.idNegocio}}
 	</a>
 	<a href="/EditReclamo/{{i.id}}/">Edit</a>|
-	<a href="/deleteReclamo/{{i.id}}/">Eliminar</a>
+	 <a href="/deleteReclamo/{{i.id}}/" id='dd'></a>
+	<a href="/deli/{{i.id}}/">Eliminar</a>
 	</li>
 	{% endif %}
 {% endfor %}
@@ -45,7 +46,18 @@ $(".nn li a").on("click",function(e){
 			width: 500,
 			hide:"explode",
 			title:"Detalles del Negocio:",
-			position: "center"
+			position: "center",
+			resizable: false,
+			buttons: [
+		{
+			text: "Si",
+			click: function() {
+				//$( this ).dialog( "close" );
+				//window.location.href="/deleteReclamo/"+{{i.id}}+"/";
+				activar();
+			}
+		}
+	]
 		});	
 	});
 cargarFormularios=function(direccion){
@@ -64,5 +76,28 @@ cargarFormularios=function(direccion){
 						console.log("complete");
 					});
 			}
+function activar(){
+	//alert("bien");
+	$.ajax({
+		type:'GET',
+		url:$("#dd").attr("href"),
+		success:function(resp){
+			$("#infoData").html(resp);
+			Load();
+			$(this).dialog("close");
+		}
+	});
+}
+function Load(){
+	$.ajax({
+        type:'GET',
+        url:"/VerDenunciasInspector/"+{{user.id}}+"/",
+        success:function(resp){
+          $('#notiii').html(resp);
+        }
+      });
+	$('#infoDataN').html("El Registro a sido Modificado en la Base de datos.");
+	$('.ui-dialog-buttonset').hide();
+}
 </script>
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

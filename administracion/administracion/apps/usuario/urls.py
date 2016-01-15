@@ -28,4 +28,5 @@ urlpatterns = patterns('',
 
 	url(r'^crearBackup/$',crearBackup),
 	url(r'^ImportarBackup/$',ImportarBackup),
+	url(r'^ValidarUser/$',ValidarUser),
 )

@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('negocio', '0034_auto_20160104_2205'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='multa',
+            name='activo',
+            field=models.IntegerField(default=0),
+            preserve_default=True,
+        ),
+    ]

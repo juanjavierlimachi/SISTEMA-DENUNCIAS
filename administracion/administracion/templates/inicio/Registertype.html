@@ -1,7 +1,8 @@
 
 <style type="text/css">
 	.res{text-align: center;margin-top: 15px;}
-	#Tipo{width: 30%;margin: auto;}
+	#Tipo{width: 40%;margin: auto;}
+	#Tipo #id_atencion li{list-style: none;}
 </style>
 <script type="text/javascript">
 	$('#Tipo').submit(function(e){
@@ -32,7 +33,7 @@
             }
 	}
 </script>
-<p class='res'>Registrar Tipo de Negocio</p>
+<p class='res'>Registrar Nueva Ordenanza</p>
 <form method="POST" id="Tipo">
 	{% csrf_token %}
 	{{forms}}<br>

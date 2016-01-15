@@ -19,10 +19,15 @@ p{text-align: center;}
 <div class="row">
 	<ul class='nn'>
 {%  for i in notificaciones %}
-	<li><a href="/detDenuncias/{{i.id}}/">Fecha de notificacion: {{i.fecha_notificacion}}  Descripcion:
+	{% if i.activo == 0 %}
+		<li><a href="/detDenuncias/{{i.id}}/">Fecha de notificacion: {{i.fecha_notificacion}}  Descripcion:
 		{{i.descripcion}},Cod:{{i.Codigo}}</a>
-		<a href="/EditNotificacion/{{i.id}}/">Edit</a>
-		<a href="/DeleteNotificacion/{{i.id}}/">Eliminar</a></li>
+		<a href="/EditNotificacion/{{i.id}}/">Edit</a>|
+		<!-- <a href="/DeleteNotificacion/{{i.id}}/">Elimin</a> -->
+		<a href="/DeshavilitarNot/{{i.id}}/" id='ddd'></a>|
+		<a href="/delii/{{i.id}}/">Eliminar</a>
+	</li>
+	{% endif %}
 {% endfor %}
 </ul>
 </div>
@@ -39,9 +44,21 @@ $(".nn li a").on("click",function(e){
 			width: 500,
 			hide:"explode",
 			title:"Detalles del Negocio:",
-			position: "center"
+			position: "center",
+			resizable: false,
+			buttons: [
+				{
+					text: "Si",
+					click: function() {
+				//$( this ).dialog( "close" );
+				//window.location.href="/deleteReclamo/"+{{i.id}}+"/";
+					activar();
+					}
+				}
+			]
 		});	
 	});
+
 cargarFormularios=function(direccion){
 				$.ajax({
 						url: direccion,
@@ -58,6 +75,31 @@ cargarFormularios=function(direccion){
 						console.log("complete");
 					});
 			}
+function activar(){
+	//alert("bien");
+	$.ajax({
+		type:'GET',
+		url:$("#ddd").attr("href"),
+		success:function(resp){
+			$("#infoData").html(resp);
+			Load();
+			$(this).dialog("close");
+
+		}
+	});
+}
+function Load(){
+	$.ajax({
+        type:'GET',
+        url:"/MisNotificaciones/"+{{user.id}}+"/",
+        success:function(resp){
+          $('#notiii').html(resp);
+        }
+      });
+	$('#infoDataN').html("El Registro a sido Modificado en la Base de datos.");
+	$('.ui-dialog-buttonset').hide();
+}
+
 </script>
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
 

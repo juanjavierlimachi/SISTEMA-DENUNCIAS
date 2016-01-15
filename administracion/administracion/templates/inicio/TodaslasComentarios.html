@@ -55,7 +55,7 @@ function Datoss(){
 		alert("Seleciones una Fecha");
 		return false;
 	}
-	if ((Date.parse(ini))>(Date.parse(fin))){
+	if ((Date.parse(ini))>=(Date.parse(fin))){
 	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
 	return false
 	}
@@ -71,7 +71,7 @@ function ExcelD(){
 		alert("Seleciones una Fecha");
 		return false;
 	}
-	if ((Date.parse(ini))>(Date.parse(fin))){
+	if ((Date.parse(ini))>=(Date.parse(fin))){
 	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
 	return false
 	}
@@ -132,7 +132,7 @@ window.onload = function(){
 }
 </style>
 <div class="card">
-	<p>Notificacones de hoy {{hoy}}  total:{{conta}}</p>
+	<p>Denuncias de hoy {{hoy}}  total:{{conta}}</p>
 	<form method='get' id='filtro'>{% csrf_token %}
 				<input type='text' name="date"  id="campo_fecha" placeholder='Año-Mes-Dia' disabled>
 				<input type="button" id="lanzador" value="<Desde" />
@@ -147,7 +147,7 @@ window.onload = function(){
 	<hr>
 	<ul class='nn'>
 	{%  for i in datos %}
-			<li>Cliente:  {{i.user}} 
+			<li>Cod:{{i.idNegocio}}.-Cliente:  {{i.user}} 
 		 Denuncio: {{i.comment}}
 		hace:{{i.fecha_denuncia|timesince}}
 			<a href="/detDenunciasReclamos/{{i.id}}/">Ver</a>|

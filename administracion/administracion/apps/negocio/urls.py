@@ -33,10 +33,15 @@ urlpatterns = patterns('',
 	url(r'^ReporteExcelDenuncias/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ReporteExcelDenuncias),
 
 	url(r'^ReporteExcelInforme/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ReporteExcelInforme),
-
+	url(r'^VerCodigoQR/(?P<id>\d+)/$',VerCodigoQR),
 	url(r'^Generar/(?P<id>\d+)/$',Generar),
 	url(r'^generarQR/$',generarQR),
 	url(r'^resultadosN/(?P<id>\d+)/$',resultadosN),
 
 	url(r'^Aclusurar/(?P<id>\d+)/$',Aclusurar),
+	url(r'^deliteNew/(?P<id>\d+)/$',deliteNew),
+	
+	url(r'^InactivarNew/(?P<id>\d+)/$',InactivarNew),
+	
+	url(r'^DeshavilitarNot/(?P<id>\d+)/$',DeshavilitarNot),
 )

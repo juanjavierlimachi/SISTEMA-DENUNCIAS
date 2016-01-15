@@ -159,11 +159,12 @@ def EditReclamo(request, id):
 	return render_to_response('inspector/EditReclamo.html',{'forms':forms,'con':con},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def deleteReclamo(request, id):
-	denuncia=Comment.objects.get(id=int(id))
-	denuncia.delete()
-	return HttpResponse("Se elimino el registro")
-
-
+	try:
+		denuncia=Comment.objects.get(id=int(id))
+		denuncia.delete()
+		return HttpResponse("Se elimino el registro")
+	except Comment.DoesNotExist:
+		return HttpResponse("El dato ya se Elimino")
 
 @login_required(login_url='/')
 def EditNotificacion(request, id):
@@ -209,7 +210,7 @@ def detaDenuncias(request,id):
 def MisNotificaciones(request, id):
 	user=int(id)
 	notificaciones=multa.objects.filter(idUser=user).order_by("-id")
-	cont=multa.objects.filter(idUser=user).count()
+	cont=multa.objects.filter(idUser=user, activo=0).count()
 	return render_to_response('inspector/MisNotificacioness.html',{'cont':cont,'notificaciones':notificaciones},context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -219,3 +220,14 @@ def inspeccionesDato(request ,id):
 	print "dato inspecicpn",dato
 	cont=Seguimiento.objects.filter(neg=ind).count()
 	return render_to_response('inspector/inpeciones.html',{'dato':dato,'cont':cont},context_instance=RequestContext(request))
+
+
+def deli(request, id):
+	denuncia=Comment.objects.get(id=int(id))
+	print denuncia.idNegocio
+	return HttpResponse("Esta seguro de Eliminar, la Denuncia Cod. %s ?"%(denuncia.idNegocio))
+
+def delii(request, id):
+	denuncia=multa.objects.get(id=int(id))
+	print denuncia.Codigo
+	return HttpResponse("Esta seguro de Eliminar, la Notificacion Cod. %s ?"%(denuncia.Codigo))

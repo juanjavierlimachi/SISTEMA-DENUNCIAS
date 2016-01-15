@@ -3,10 +3,22 @@
 {% block inspecciones %}
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
+<style type="text/css">
+.row ul li{list-style: none;}
+</style>
 <div class="row">
 	<p>Detalles Del Negocio:{{negocio.propietario}}</p>
+	{% if negocio.activo == 1 %}
+	<style type="text/css">
+		.row p{color: red;}
+	</style>
+	{% else %}
+	<style type="text/css">
+		.row p{color: green;}
+	</style>
+	{% endif %}
 	<ul>
-		<li>Propietario: {{negocio.propietario}}  
+		<li>Propietario: {{negocio.propietario}}, Registro{{negocio.fecha_registro}} 
 		 {{negocio.memorial_apertura}}
 		 {% if negocio.estadoN == 1 %}
 			<span><img src="{{STATIC_URL}}img/alert.gif"></span>

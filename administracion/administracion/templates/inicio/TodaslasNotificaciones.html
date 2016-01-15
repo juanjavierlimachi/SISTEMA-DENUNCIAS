@@ -36,7 +36,7 @@
 					alert('Debe introducir una fecha');
 					return false;
 				}
-				if ((Date.parse(fecha.fe))>(Date.parse(fecha.fn))){
+				if ((Date.parse(fecha.fe))>=(Date.parse(fecha.fn))){
 					alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
 					return false
 				}
@@ -80,7 +80,7 @@ function Datoss(){
 		alert("Seleciones una Fecha");
 		return false;
 	}
-	if ((Date.parse(ini))>(Date.parse(fin))){
+	if ((Date.parse(ini))>=(Date.parse(fin))){
 	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
 	return false
 	}
@@ -96,7 +96,7 @@ function Excel(){
 		alert("Seleciones una Fecha");
 		return false;
 	}
-	if ((Date.parse(ini))>(Date.parse(fin))){
+	if ((Date.parse(ini))>=(Date.parse(fin))){
 	alert("La Fecha de inicio deve ser Mayor a la Fecha Final");
 	return false
 	}
@@ -169,7 +169,9 @@ window.onload = function(){
 		<hr>
 		<ul class='nn'>
 	{%  for i in datos %}
-			 <li>Usuario:  {{i.Usuario}} 
+			 <li>Cod:{{i.Codigo}}.-Usuario:  {{i.Usuario}} {% if mult.activo == 1 %}
+		<span><img src="{{STATIC_URL}}img/alert.gif"></span>
+		{% endif %}
 		Descricion: {{i.descripcion}}</li>
 		<li>Fecha de Presentacion : {{i.fecha_presentacion}}   Hora: {{i.hora}}
 <a href="/detDenuncias/{{i.id}}/" title='Ver Comparendo'>Ver</a>|

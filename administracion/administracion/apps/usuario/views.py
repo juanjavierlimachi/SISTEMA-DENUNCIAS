@@ -17,6 +17,15 @@ from administracion.apps.negocio.models import *
 from datetime import datetime
 from administracion.apps.inspector.forms import *
 # Create your views here.
+def ValidarUser(request):
+	usuario=request.POST['user']
+	clave=request.POST['pass']
+	acceso=authenticate(username=usuario,password=clave)
+	if acceso:
+		return HttpResponse("Ud. puede Restaurar o impotar la base de datos")
+	else:
+		#return HttpResponse("Aceso Incorrecto Intente nuevamente Gracias")
+		pass
 def Usuario(request):
 	if not request.user.is_anonymous():
 		return HttpResponseRedirect('/privado/')
@@ -327,13 +336,10 @@ def UserNotificaciones(request, id):
 	return render_to_response('usuario/UserNotificaciones.html',{'noti':noti},context_instance=RequestContext(request))
 
 
-
-
-
 import time
 import os
 import MySQLdb
-
+import shutil
 def crearBackup(request):
 	RUTA_PROYECTO=str(os.path.dirname(os.path.realpath(__file__)))
 	command = "mysqldump -h localhost -u root denuncia"
@@ -346,7 +352,10 @@ def crearBackup(request):
 
 	os.system(command)
 	#os.path.isdir(os.system(command))
-	return HttpResponse("Respaldo de la base de datos correctamente!!!")
+	src = 'G:\sistemasDenuncias/administracion/bd_'+file+'.sql'
+	dst = 'G:\sistemasDenuncias/administracion/administracion/media/bd_'+file+'.sql'
+	shutil.copy(src, dst)
+	return HttpResponse("Respaldo de la base de datos correctamente!!!<a href='/http://localhost:9595/media/' target='_blank'>Descargar</a>")
 
 def ImportarBackup(request):
 	if request.method=='POST':

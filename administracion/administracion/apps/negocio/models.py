@@ -4,7 +4,7 @@ from django.contrib.auth.forms import User
 # Create your models here.
 
 class Categoria(models.Model):
-	categoria=models.CharField(max_length=50, help_text='Escriba una Categoria Ejem. Locales')
+	categoria=models.CharField(max_length=50, unique=True, help_text='Escriba una Categoria Ejem. Locales')
 	atencion=models.CharField(max_length=100)
 	#hoar=models.CharField(max_length=100)
 	fecha_registro = models.DateTimeField(auto_now=True)
@@ -21,7 +21,8 @@ class Negocio(models.Model):
 	fecha_registro = models.DateTimeField(auto_now=True)
 	estadoN=models.IntegerField(default=0)
 	estadoD=models.IntegerField(default=0)
-	qr=models.ImageField(upload_to='imagenes',blank=True, null=True)
+	qr=models.CharField(max_length=200,blank=True, null=True)
+	activo=models.IntegerField(default=0)
 	def __unicode__(self):
 		return self.propietario
 
@@ -35,6 +36,7 @@ class multa(models.Model):
 	fecha_presentacion=models.DateField()
 	hora=models.CharField(max_length=12)
 	estado=models.IntegerField(default=0)
+	activo=models.IntegerField(default=0)
 	def __unicode__(self):
 		return self.Usuario
 

@@ -5,6 +5,7 @@
 		<td>Codigo</td><td>Nombre Propietario</td><td>Memorial de Apertura</td><td>Resolucion Municipal</td><td>Not.|Den.</td><td>Opciones</td>
 	</tr>
 	{% for negosio in negosios %}
+	{% if negosio.activo == 0 %}
 	<tr>
 		<td>{{negosio.id}}</td><td>{{negosio.propietario}}
 	{% if negosio.estadoN == 1 %}
@@ -16,12 +17,13 @@
 			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>|
 			<span><a href="/denunciasAdmin/{{negosio.id}}/"><img src="/static/img/icon_error.gif "></a></span>
 		</td>
-		<td><span><a href="/eliminarN/{{negosio.id}}/"><img src="/static/img/eli.gif"></a></span> |
+		<td><span><a href="/deliteNew/{{negosio.id}}/"><img src="/static/img/eli.gif"></a></span> |
 	<span><a href="/EditarNegocio/{{negosio.id}}/"><img src="/static/img/edit.png"></a></span> </td>
+		{% endif %}
 	{% empty %}
 	<p>No hay Registros</p>
 	{% endfor %}
-	<tr><td>Total Registros {{aux}}</td></tr>
+	<tr><td colspan="6">Total Registros {{aux}}</td></tr>
 	</td>
 	</tr>
 	</table><br>

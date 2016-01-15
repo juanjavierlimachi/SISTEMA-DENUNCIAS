@@ -10,7 +10,7 @@
 #notiii form{width: 50%; margin: auto;}
 </style>
 <div class='card'>
-		<p><label>Propietario:</label>{{negocio.propietario}}
+		<p><label>Propietario:</label>{{negocio.propietario}} 
 			{{negocio.memorial_apertura}}
 			{% if negocio.estadoN == 1 %}
 			<span><img src="{{STATIC_URL}}img/alert.gif"></span>
@@ -26,12 +26,13 @@
 	</p>
 	<ul class='nn'>
 		<li><a href=""></a>
-			<a href="/eliminarN/{{negocio.id}}/">Eliminar</a>| 
+			<!-- <a href="/eliminarN/{{negocio.id}}/">Eliminar</a>| -->
+			<a href="/deliteNew/{{negocio.id}}/">Eliminar</a>|
 			<a href="/EditarNegocio/{{negocio.id}}/">Editar</a>|
 			<a href="/datosDenuncia/{{negocio.id}}/">Notificaciones</a>|
 			<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a>|
 			<a href="/resultadosN/{{negocio.id}}/">Resultados</a>|
-			<a href="/Generar/{{negocio.id}}/" target='_blank'>QR</a>
+			<a href="/VerCodigoQR/{{negocio.id}}/">QR</a>
 		</li>
 	</ul>
 	<div class="infoNegocio"></div>

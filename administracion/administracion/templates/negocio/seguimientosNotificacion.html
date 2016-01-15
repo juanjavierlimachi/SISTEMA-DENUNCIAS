@@ -6,12 +6,12 @@ table{
 </style>
 <div class="">
 	<p>Lista Total de Notificaciones Realizadas por Negocio<br>
-	Negocios Notificados:     {{total_Not}}     <!--  No Denunciados :{{t_no}} --> de:      {{tt}}|</p>
+	Negocios Notificados:     {{total_Not}}     <!--  No Denunciados :{{t_no}} --> de:      {{tt}}
+<a href="/AclausurarNegcios/" target='_blank'>Negocios a Clausurar</a></p>
 	<table border=1>
 	<tr><td>Negocio</td><td>Cantidad de Denuncias Recividas</td></tr>
 {% for i in lista %}
 	{% for a,i in i.items %}
-		
 	<tr><td>{{i}}</td><td>{{a}} </td><td><span><img src="/static/img/alert.gif"></span></td></tr>
 	{%  endfor %}
 {% endfor %}

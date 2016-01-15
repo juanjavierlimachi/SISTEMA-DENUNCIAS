@@ -20,6 +20,7 @@ import sys
 #import xlwt
 # Create your views here.
 #d= Seguimientos.objects.count()
+import shutil
 @login_required(login_url='/')
 def RegistroNegocio(request):
     if request.method == 'POST':
@@ -31,13 +32,17 @@ def RegistroNegocio(request):
             estado=True
             if estado==True:
                 dato=Negocio.objects.all().order_by('-id')[0:1]
-                for i in dato:
-                    url = QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
+                for i in dato:#Aki indicar la IP de mi PC (servidor)
+                    url = QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
                     url.svg(sys.stdout, scale=15)
-                    url.svg('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.svg',scale=6)
-                    number=QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
-                    number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png')
-                    Negocio.objects.filter(id=i.id).update(qr=number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png'))
+                    url.svg('QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg',scale=6)
+                    number=QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
+                    number.png('QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.png')
+                    ruta='http://localhost:9595/media/QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg'
+                    Negocio.objects.filter(id=i.id).update(qr=ruta)
+                    src = 'G:\sistemasDenuncias/administracion/QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg'
+                    dst = 'G:\sistemasDenuncias/administracion/administracion/media/QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg'
+                    shutil.copy(src, dst)
             return HttpResponseRedirect('/RegistroNegocio/')
     else:
         formulario=formNegocio()
@@ -48,7 +53,8 @@ def RegistroNegocio(request):
 def ListaNegocio(request):
     categorias=Categoria.objects.all().order_by('categoria')
     negosios=Negocio.objects.all().order_by('propietario')
-    return render_to_response('negocio/ListaNegocio.html',{'categorias':categorias,'negosios':negosios},context_instance=RequestContext(request))
+    conta=Negocio.objects.filter(activo=0).count()
+    return render_to_response('negocio/ListaNegocio.html',{'categorias':categorias,'negosios':negosios,'conta':conta},context_instance=RequestContext(request))
 
 from django.core import serializers
 class busquedaAjaxView(TemplateView):#no esta en ejecucion
@@ -61,9 +67,10 @@ class busquedaAjaxView(TemplateView):#no esta en ejecucion
 
 @login_required(login_url='/')
 def Filtro(request,id):
-    aux=Negocio.objects.filter(categoria=int(id)).count()
+    #aux=Negocio.objects.filter(categoria=int(id)).count()
     c=int(id)
     negosios = Negocio.objects.filter(categoria=int(id)).order_by('propietario')
+    aux=Negocio.objects.filter(categoria=int(id), activo=0).count()
     return render_to_response('negocio/ListaNegociosPORcategoria.html',{'negosios':negosios,'aux':aux,'c':c},context_instance=RequestContext(request))
 """def buscar(request):
 	if request.method=='POST':
@@ -78,7 +85,6 @@ def Filtro(request,id):
 	formulario=buscarForm()
 	return render_to_response('negocio/formBusqueda.html',{'formulario':formulario},RequestContext(request))
 """ 
-
 @login_required(login_url='/')
 def buscar(request):
     if request.method=="POST":
@@ -88,14 +94,14 @@ def buscar(request):
     	cont=0
     	negocio=[]
     	for i in negocios:
-    		if dato==i.id:
+    		if dato==i.id and i.activo==0:
     			cont=1
     			negocio=Negocio.objects.get(id=int(texto))
     	#acceso.is_active and acceso.is_superuser and acceso.is_staff:
         		return render_to_response('negocio/resultadoBus.html',{'negocio':negocio},context_instance=RequestContext(request))
         		break
         if cont==0:
-        	return HttpResponse('No existe')
+        	return HttpResponse('El Registro No existe o a sido Eliminardo de la dase de datos Consulte con el Administrador')
     else:
         texto=request.GET["texto"]
         busqueda=(
@@ -106,7 +112,8 @@ def buscar(request):
         resultados=Negocio.objects.filter(busqueda).distinct()
         html="<ul class='ul_lista'>"
         for i in resultados:
-            html=html+"<li><a href='/detalleNegocio/"+str(i.id)+"/'>"+i.propietario+"</a></li>"
+            if i.activo==0:
+                html=html+"<li><a href='/detalleNegocio/"+str(i.id)+"/'>"+i.propietario+"</a></li>"
         html=html+"<ul>"
         return HttpResponse(html)
 @login_required(login_url='/')
@@ -198,7 +205,7 @@ def seguimiento(request):
     print Por_dia
     datos=Seguimiento.objects.filter(fecha__lte=hoy)
     return render_to_response('negocio/seguimiento.html',{'datos':datos,'Por_dia':Por_dia},context_instance=RequestContext(request))
-
+@login_required(login_url='/')
 def sanciones(request, id):
     idn=id
     if request.user.is_superuser and request.user.is_staff:
@@ -255,6 +262,16 @@ def EditarNegocio(request, id):
         forms=formNegocio(request.POST, instance=neg)
         if forms.is_valid():
             forms.save()
+            url = QRCode('http://localhost:9595/privado/'+str(id)+'/')
+            url.svg(sys.stdout, scale=15)
+            url.svg('QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg',scale=6)
+            number=QRCode('http://localhost:9595/privado/'+str(id)+'/')
+            number.png('QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.png')
+            ruta='http://localhost:9595/media/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
+            Negocio.objects.filter(id=id).update(qr=ruta)
+            src = 'G:\sistemasDenuncias/administracion/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
+            dst = 'G:\sistemasDenuncias/administracion/administracion/media/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
+            shutil.copy(src, dst)
             return HttpResponse('Se modifico el registro Correctamente')
             #return HttpResponseRedirect('/exito/')
             #return HttpResponse(json.dumps({"result":True}),"application/json")
@@ -410,21 +427,27 @@ def Generar(request,id):
     dato=Negocio.objects.get(id=id)
     nombe=str(dato.id)
     propietario=str(dato.propietario)
-    url = QRCode('http://192.168.1.15:9595/privado/'+str(id)+'/')
+    url = QRCode('http://localhost:9595/privado/'+str(id)+'/')
     url.svg(sys.stdout, scale=15)
     url.svg('QR_'+propietario+'_Cod_'+nombe+'.svg',scale=6)
-    number=QRCode('http://192.168.1.15:9595/privado/'+str(id)+'/')
+    number=QRCode('http://localhost/privado/'+str(id)+'/')
     number.png('QR_'+propietario+'_Cod_'+nombe+'.png')
     Negocio.objects.filter(id=id).update(qr=number.png('QR_'+propietario+'_Cod_'+nombe+'.png'))
     return HttpResponse("Se creo el codigo QR Correctamente")
 @login_required(login_url='/')
+
+def VerCodigoQR(request,id):
+    dato=Negocio.objects.get(id=int(id))
+    return render_to_response('negocio/VerCodigoQR.html',{'dato':dato},context_instance=RequestContext(request))
+
+@login_required(login_url='/')
 def generarQR(request):
     datos=Negocio.objects.all()
     for i in datos:
-        url = QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
+        url = QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
         url.svg(sys.stdout, scale=15)
         url.svg('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.svg',scale=6)
-        number=QRCode('http://192.168.1.15:9595/privado/'+str(i.id)+'/')
+        number=QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
         number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png')
 
     return HttpResponse("Se Genero Los codigos QR |<a href='G:sistemasDenuncias/administracion/'>Ver</a>")
@@ -470,6 +493,18 @@ def Aclusurar(request, id):
                 acu=0
     return render_to_response('negocio/Aclausuarar.html',{'lista':lista,'negocios':negocios, 'noti':noti,'aux':aux},context_instance=RequestContext(request))
 
+def deliteNew(request, id):
+    dato = Negocio.objects.get(id=int(id))
+    return render_to_response('negocio/deliteNew.html',{'dato':dato},context_instance=RequestContext(request))
 
+def InactivarNew(request, id):
+    #dato=Negocio.objects.get(id=int(id))
+    Negocio.objects.filter(id=int(id)).update(activo=1)
+    return HttpResponse("El registro a sido Desactivado de la base de Datos")
+
+def DeshavilitarNot(request, id):
+    #dato=Negocio.objects.get(id=int(id))
+    multa.objects.filter(id=int(id)).update(activo=1)
+    return HttpResponse("El registro a sido Desactivado de la base de Datos")
 
 

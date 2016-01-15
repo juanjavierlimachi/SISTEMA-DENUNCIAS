@@ -12,6 +12,11 @@ $('#form').submit(function(e){
 	});
 });
 </script>
+<style type="text/css">
+.ui-dialog-buttonset{
+	display: none;
+}
+</style>
 	<div class="info">
 	<form method='POST' id='form'>{% csrf_token %}
 		<table>{{forms}}</table>

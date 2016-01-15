@@ -7,7 +7,10 @@
 <!--<button id='not' class="waves-effect waves-light btn">Responder</button>-->
 <div id="comentario">
 {% for mult in multa %}	
-	<li><a href="/detDenuncias/{{mult.id}}/">{{ mult.Usuario}}- Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
+	<li><a href="/detDenuncias/{{mult.id}}/">{{ mult.Usuario}}.-{% if mult.activo == 1 %}
+		<span><img src="{{STATIC_URL}}img/alert.gif"></span>
+		{% endif %}
+	 Notifico:  {{mult.descripcion}}      Cod:{{mult.Codigo}}</a></li>	
 {% endfor %}
 <p id='cuenta'>Notificaciones registradas: {{cont}}   <a href="/TodaslasNotificaciones/">Ver Todos</a></p>
 </div>

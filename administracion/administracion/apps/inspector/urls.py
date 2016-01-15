@@ -26,4 +26,6 @@ urlpatterns = patterns('',
 	url(r'^EditNotificacion/(?P<id>\d+)/$',EditNotificacion),
 	url(r'^DeleteNotificacion/(?P<id>\d+)/$',DeleteNotificacion),
 	url(r'^inspeccioness/(?P<id>\d+)/$',inspeccionesDato),
+	url(r'^deli/(?P<id>\d+)/$',deli),
+	url(r'^delii/(?P<id>\d+)/$',delii),
 )

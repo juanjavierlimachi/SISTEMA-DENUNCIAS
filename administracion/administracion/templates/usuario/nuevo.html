@@ -8,8 +8,8 @@
         <div class="card">
             <form method="POST" action="" onsubmit='return verificar()'> {% csrf_token %}
                 {{form}}
-                <button class="waves-effect waves-light btn" type="submit"
-                onsubmit='verificar()'>Guardar</button> <a href="#" 
+    <button class="waves-effect waves-light btn" type="submit"
+                onsubmit='verificar()' id='ttt'>Guardar</button> <a href="#" 
                 class="waves-effect waves-light btn" id='buscarUser'>Buscar Usuario</a>
             </form>
             <div id="valor"></div>
@@ -57,7 +57,6 @@ html{display: none;}
        function buscarUsuario(){
             $('#fbuscarUser').show(1000);    
        }
-       
     });
 function verificar(){
         var user=$('#id_username').val();
@@ -74,5 +73,19 @@ function verificar(){
                 alert("Usuario Registrodo Exitosamente");
             }
         }
+$(document).ready(function(){
+    $('#ttt').click(cuenta);
+    function cuenta(){
+        var aux=$('#id_ci').val();
+        if (aux.length==8 || aux.length==7 || aux.length==9){
+            return true;
+        }
+        else{
+           alert("El Num de Ci deve ser 8 Digitos");
+            $('#id_ci').focus();
+            return false;
+        }
+    }
+});
 </script>
 {% endblock %}

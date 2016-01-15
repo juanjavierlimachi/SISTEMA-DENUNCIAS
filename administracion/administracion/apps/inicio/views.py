@@ -150,7 +150,10 @@ def ImprimirNotificacion(request,id):
 	hoy=hoy.strftime('%d-%m-%Y')
 	html=render_to_string("inicio/reportesDiarios.html",{'pagesize':'later','denuncia':denuncia,'nombre':nombre,'cod':cod,'bs':bs,'objec':objec,'hoy':hoy},context_instance=RequestContext(request))
 	return generar_pdf(html)
-
+def ImprimirQR(request, id):
+	dato=Negocio.objects.get(id=int(id))
+	html=render_to_string("negocio/VerCodigoQR.html",{'pagesize':'later','dato':dato},context_instance=RequestContext(request))
+	return generar_pdf(html)
 @login_required(login_url='/')
 def ImprimirInformes(request):
 	today=datetime.datetime.now()
@@ -272,6 +275,13 @@ def TodaslasDenuncias(request):
 	conta=Comment.objects.filter(fecha_denuncia__gte = hoy).count()
 	return render_to_response('inicio/TodaslasComentarios.html',{'datos':datos,'conta':conta,'hoy':hoy},context_instance=RequestContext(request))
 
+def AclausurarNegcios(request):
+	negocios=Negocio.objects.all()
+	notis=multa.objects.all()
+	multas=Cobro.objects.all()
+	html=render_to_string('inicio/AclausurarNegcios.html',{'pagesize':'A4','negocios':negocios,'notis':notis,'multas':multas},context_instance=RequestContext(request))
+	return generar_pdf(html)
+
 class ConsultarDenunciaFecha(TemplateView):
 	def get(self, request, *args, **kwargs):
 		fechas = request.GET['fe']
@@ -318,7 +328,7 @@ def EditCategoria(request, id):
 			forms.save()
 			return HttpResponse("Se Modifico el monto Correctamente.")
 		else:
-			return HttpResponse("Error en los datos Verifique por favor.")
+			return HttpResponse("El Registro ya existe, Deve registrar una nueva Ordenaza.")
 	else:
 		forms=FormTipo(instance=d)
 	return render_to_response('negocio/EditCategoria.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
@@ -361,7 +371,7 @@ def VerPorDia(request, id):
 	hoy=hoy.strftime('%Y-%m-%d')
 	result=date.today()-timedelta(days=num)
 	result=result.strftime('%Y-%m-%d')
-	datos=multa.objects.filter(fecha_notificacion__gte = result)
+	datos=multa.objects.filter(fecha_notificacion__gte = result).order_by('fecha_notificacion')
 	conta=multa.objects.filter(fecha_notificacion__gte = result).count()
 	return render_to_response('inicio/VerPorDia.html',{'datos':datos,'conta':conta,'result':result},context_instance=RequestContext(request))
 @login_required(login_url='/')

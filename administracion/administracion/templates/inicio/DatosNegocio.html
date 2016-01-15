@@ -16,6 +16,8 @@
 		<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
 		{% endif %}
 	</li>
+	{% empty %}
+	<p>No hay registros</p>
 {% endfor %}
 <a href="/allNotDeUnNegocio/{{nego.id}}/">Ver todos</a>
 	</ul>

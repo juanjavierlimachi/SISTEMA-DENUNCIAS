@@ -10,11 +10,11 @@ class FormMulta(ModelForm):
 	#fecha_presentacion=forms.DateField(widget=SelectDateWidget())
 	class Meta:
 		model=multa
-		exclude=('estado',)
+		exclude=('estado','activo',)
 class FormMultaEditar(ModelForm):
 	class Meta:
 		model=multa
-		exclude=('idUser','Usuario','Codigo','estado',)
+		exclude=('idUser','Usuario','Codigo','estado', 'activo',)
 
 from django.forms.extras.widgets import SelectDateWidget
 peticion=(('Falta de Higiene','Falta de Higiene',),('Denuncia por corrupcion','Denuncia por corrupcion',),('Horario No Establecido','Horario No Establecido',),('Maltratos','Maltratos'),('No Emite Factura','No Emite Factura'),('Reclamo','Reclamo',),('sugerencias','sugerencia',),('Otros Casos','Otros Casos'),)
