@@ -1,4 +1,3 @@
-
 <style type="text/css">
 	.res{text-align: center;margin-top: 15px;}
 	#Tipo{width: 40%;margin: auto;}
@@ -32,11 +31,30 @@
                 $('#cc').text("Procesando...")
             }
 	}
+	$('#fd').click(function(){
+		var checkboxValues = "";
+		$('input[name="cbipeliculas[]"]:checked').each(function() {
+		checkboxValues += $(this).val() + ",";
+		});
+	checkboxValues = checkboxValues.substring(0, checkboxValues.length-1);
+	document.getElementById('id_dias').value=checkboxValues;
+	});
+	$(document).ready(function(){
+		$('#id_dias').hide();
+	});
 </script>
 <p class='res'>Registrar Nueva Ordenanza</p>
 <form method="POST" id="Tipo">
 	{% csrf_token %}
 	{{forms}}<br>
+	<p id='fd'><input name="cbipeliculas[]" type="checkbox" value="Lunes" />Lunes<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Martes" />Martes<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Miercoles" />Miercoles<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Jueves" />Jueves<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Viernes" />Viernes<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Sabado" />Sabado<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Domingo" />Domingo<br></p>
+
 	<input type='submit' id='btn'  value='Guardar'  class="btn btn-primary">
 </form>
 <p class='res'><a href="#" onclick='VerCate()'>Categorias Registradas</a></p>

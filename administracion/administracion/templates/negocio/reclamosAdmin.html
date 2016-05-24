@@ -1,16 +1,19 @@
 
 {% if user.is_authenticated and user.is_staff %}
 <link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
+<style type="text/css">
+.ui-dialog-buttonpane{display: none;}
+</style>
 	<div>
 		{% for i in reclamos %}
 	<table border=1>
-	<tr><td>H.G.M.P </td><td>Nro:{{i.idNegocio}}</td></tr>
+	<tr><td>G.A.M.P.</td><td>Nro:{{i.idNegocio}}</td></tr>
 	<tr><td colspan="2" align='center'>Reclamo</td></tr>
 		<tr><td>Reclamo:{{i.Tipo_de_peticion}}</td> <td colspan="2">{{i.comment}}</td></tr>
 		{% for j in negocio %}
 			{% if j.id == i.idNegocio %}
 				<tr><td colspan="2">Sr(s):{{j.propietario}}</td></tr>
-				<tr><td colspan="2">Direccion: {{j.direccion}}</td></tr>
+				<tr><td colspan="2">Dirección: {{j.direccion}}</td></tr>
 				<tr><td colspan="2">fecha: {{i.fecha_denuncia}}</td></tr>
 				<tr><td colspan="2">Fecha de denuncia: {{i.fecha_denuncia}}</td></tr>
 			{% endif %}
@@ -18,7 +21,6 @@
 		</table> <br>
 		<a href="/InprecionReclamoDenuncias/{{i.id}}/" target="_blank">Imprimir</a>
 	{% endfor %}
-
 	</div>
 <!--<script type="text/javascript" src='{{STATIC_URL}}js/miventanaUi.js'></script>-->
 

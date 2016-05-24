@@ -1,3 +1,7 @@
+<style type="text/css">
+.ui-dialog-buttonpane{display: none;}
+#id_dias{display: none;}
+</style>
 <script type="text/javascript">
 	$("#Ttipo").submit(function(e){
 		e.preventDefault();
@@ -10,13 +14,32 @@
 			success:function(resp){
 				//alert(resp);
 				$("#respuestasservidor").html(resp);
+				$(".ui-dialog-buttonpane").hide();
 			}
 		});
 	});
 
+$('#fdd').click(function(){
+
+		var checkboxValues = "";
+		$('input[name="cbipeliculas[]"]:checked').each(function() {
+		checkboxValues += $(this).val() + ",";
+		});
+	//alert(checkboxValues);
+	checkboxValues = checkboxValues.substring(0, checkboxValues.length-1);
+	document.getElementById('id_dias').value=checkboxValues;
+	});
 </script>
 <form method='POST' id="Ttipo">
 	{% csrf_token %}
 		{{forms}}
+	
+	<p id='fdd'><input name="cbipeliculas[]" type="checkbox" value="Lunes" />Lunes<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Martes" />Martes<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Miercoles" />Miercoles<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Jueves" />Jueves<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Viernes" />Viernes<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Sabado" />Sabado<br>
+	<input name="cbipeliculas[]" type="checkbox" value="Domingo" />Domingo<br></p>          
 <input type='submit' value='Actualizar'>
 </form>

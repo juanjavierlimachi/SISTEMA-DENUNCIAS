@@ -31,7 +31,8 @@ urlpatterns = patterns('',
 	url(r'^VerCategorias/$',VerCategorias),
 	url(r'^EditCategoria/(?P<id>\d+)/$',EditCategoria),
 	
-	url(r'^EliminarCat/(?P<id>\d+)/$',EliminarCat),
+	url(r'^EliCat/(?P<id>\d+)/$',EliminarCat),
+	url(r'^EliminarCat/(?P<id>\d+)/$',DeleteCat),
 	url(r'^MisdatosAdmin/$',MisdatosAdmin, name='MisdatosAdmin'),
 	#datos Admin MisNotificacionesAdmin
 	url(r'^MisDenunciasAdmin/(?P<id>\d+)/$',MisDenunciasAdmin, name='MisDenunciasAdmin'),
@@ -47,5 +48,9 @@ urlpatterns = patterns('',
 	#url(r'^VerPorMes/(?P<id>\d+)/$',VerPorMes),
 	url(r'^ImformePorMes/(?P<id>[^/]+)/(?P<fin>[^/]+)$',ImformePorMes),
 	url(r'^Informes/$',Informes),
-	
+
+
+	url(r'^Ayudas/$',Ayudas),
+	url(r'^ImprimirAyuda/$',ImprimirAyuda),
+	url(r'^Estadisticos_vew/$',Estadisticos_vew),
 )

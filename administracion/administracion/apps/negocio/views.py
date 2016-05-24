@@ -138,7 +138,7 @@ def denunciasAdmin(request, id):
 def detDenunciasReclamos(request, id):
     dni=int(id)
     reclamos=Comment.objects.filter(id=int(id))
-    negocio=Negocio.objects.all()
+    negocio=Negocio.objects.all().order_by("-id")
     Comment.objects.filter(id=int(id)).update(estado=1)
     return render_to_response('negocio/reclamosAdmin.html',{'reclamos':reclamos,'negocio':negocio,'dni':dni},context_instance=RequestContext(request))
 
@@ -228,7 +228,7 @@ def sanciones(request, id):
         else:
             forms=FormCobro()
     else:
-        return HttpResponse("Ud consulte con el administrador")
+        return HttpResponse("Consulte con el administrador")
     return render_to_response('negocio/RegistroCobro.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
 
 def EditarMulta(request, id):
@@ -374,7 +374,7 @@ def ReporteExcelDenuncias(request,id,fin):
     lista=[]
     first_book = Workbook()
     ws1 = first_book.add_sheet('first_sheet')
-    ws1.write(0,0,'IDNegocio')
+    ws1.write(0,0,'Codigo')
     ws1.write(0,1,'Propietario')
     ws1.write(0,2,'Direccion')
     ws1.write(0,3,'Fecha Denuncia')

@@ -38,6 +38,16 @@
          window.location='https://facebook.com';
        }
     }
+    function VerDenunciasUser(){
+      //alert("ver denuncias");
+      $.ajax({
+        type:'GET',
+        url:"/VERdATOScliente/"+{{user.id}}+"/",
+        success: function(resp){
+          $("#comentario").html(resp);
+        }
+      });
+    }
   </script>
   <style type="text/css">
   .glyphicon{
@@ -64,7 +74,10 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#modal1"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+        {% if user.is_authenticated %}
+        <li class="active"><a href="#modal4" ><span class="glyphicon glyphicon-home"></span>Mis Denuncias</a></li>
+        {% endif %}
+
       <li class="active"><a href="#modal2"><span class="glyphicon glyphicon-hand-right"></span>Quienes Somos</a></li>
                 {% if user.is_authenticated %}
                   <li class="active"><a href="javascript:window.history.go(-2);">
@@ -78,7 +91,7 @@
 {% endif %}         
   <li class="active"><a href="#" onclick="finalizar()"><span class="glyphicon glyphicon-list"></span>Salir</a></li>
 
-  <li class="active"><a href="https://facebook.com"><span class="glyphicon glyphicon-list"></span>Ir a Facebook</a></li>              
+  <li class="active"><a href="https://facebook.com"><span class="glyphicon glyphicon-list"></span>Facebook</a></li>              
               </ul>
             </div>
           </div>
@@ -128,7 +141,7 @@
         <!-- <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
           <span class="sr-only">Next</span>
       </a> 
-    </div><!-- /.carousel -->
+  </div><!-- /.carousel -->
     <div class="container marketing" id='circle'>
     	{% block cliente %} {% endblock %}
       <div id="contenidos"><!--el css de este div esta en carrusel.css-->
@@ -177,6 +190,25 @@
         para Realizar su respectivo Reclamo el negocio.</p>
     </div>
   </div>
+
+  <div id="modal4" class="modalmask">
+    <div class="modalbox resize">
+      <a href="#close" title="Close" class="close">X</a>
+        <p>Sr@:{{user.username}}
+              {% for i in denuncias %}
+              <li>{{i.comment}}
+                {% if i.estado == 0 %}
+                <br> <span>Su Denuncia aun no a sido atendida.<img src="/static/img/icon_error.gif"></span>
+                {%  else %}
+                <br><span>Su Denuncia a sido atentida.<img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+                {%  endif %}
+              </li>
+              {% empty %}
+              <li>Aún no realizó ninguna denuncia.</li>
+              {% endfor %}
+        </p>
+    </div>
+  </div>
       <!-- Three columns of text below the carousel -->
     </div><!-- /.container -->
     </div>
@@ -195,7 +227,7 @@
     <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
     <!-- FOOTER -->
       <footer>
-        <p class="pull-right"><a href="/">H.G.M.P</a></p>
+        <p class="pull-right"><a href="/">G.A.M.P</a></p>
         <p>&copy; Intendencia Municipal de Potosi</p>
       </footer>
   </body>

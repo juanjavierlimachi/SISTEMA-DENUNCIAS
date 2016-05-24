@@ -92,6 +92,22 @@
 
       }
     }*/
+    function AyudaIns(){
+      $('.row').hide();
+      $('#map_canvas').hide();
+      $('#comentario').hide();
+      $.ajax({
+        type:'GET',
+        url:"/ayudasInspertor/",
+        beforeSend: entesEnviar,
+        success:function(resp){
+          $('#notiii').html(resp);
+        }
+      });
+      function entesEnviar(){
+                $('#notiii').text("Procesando...")
+            }
+    }
     </script>
      <script type="text/javascript" src='/static/js/validar.js'></script>
   </head>
@@ -122,10 +138,10 @@
               <ul class="nav navbar-nav">
                 <li><a  href="/"><span class="glyphicon glyphicon-home"></span>Home</a></li>
               	<li><a  href="#modal2"><span class="glyphicon glyphicon-folder-open"></span>Actividades</a></li>
-                <li class="active"><a href="#"><span class="glyphicon glyphicon-list"></span> Denuncias</a></li>
-                <li><a href="#" ><span class="glyphicon glyphicon-lock"></span>datos</a></li>
+                <li class="active"><a href="#"><span class="glyphicon glyphicon-list"></span>Comercios</a></li>
+                <li><a href="#" onclick="AyudaIns()"><span class="glyphicon glyphicon-lock"></span>Ayuda</a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id='denuncia'><span class="glyphicon glyphicon-briefcase"></span>Comercios<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id='denuncia'><span class="glyphicon glyphicon-briefcase"></span>Denuncias<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     
                     <li><a href="/Denuncias-cliente/"><span class="glyphicon glyphicon-file"></span>Registrar Denuncia</a></li>

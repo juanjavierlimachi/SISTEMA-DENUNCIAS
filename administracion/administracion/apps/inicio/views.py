@@ -185,6 +185,11 @@ def NoActivos(request):
 	tota_user=Perfiles.objects.all().count()
 	html=render_to_string('inicio/NoActivos.html',{'pagesize':'later','perfil':perfil,'user':user,'tota_user':tota_user},context_instance=RequestContext(request))
 	return generar_pdf(html)
+def ImprimirAyuda(request):
+	today=datetime.datetime.now()
+	user=request.user
+	html=render_to_string('inicio/AyudasImprecion.html',{'pagesize':'later','today':today,'user':user},context_instance=RequestContext(request))
+	return generar_pdf(html)
 
 def generar_pdf(html):
 	resultado=StringIO.StringIO()
@@ -326,7 +331,7 @@ def EditCategoria(request, id):
 		forms=FormTipo(request.POST, instance=d)
 		if forms.is_valid():
 			forms.save()
-			return HttpResponse("Se Modifico el monto Correctamente.")
+			return HttpResponse("Se Modifico La categoria Correctamente.")
 		else:
 			return HttpResponse("El Registro ya existe, Deve registrar una nueva Ordenaza.")
 	else:
@@ -335,8 +340,11 @@ def EditCategoria(request, id):
 @login_required(login_url='/')
 def EliminarCat(request, id):
 	dato=Categoria.objects.get(id=int(id))
+	return HttpResponse("Esta seguro de Eliminar la Categoria, %s ?"%(dato.categoria))
+def DeleteCat(request, id):
+	dato=Categoria.objects.get(id=int(id))
 	dato.delete()
-	return HttpResponse("Se Elimino el Registro")
+	return HttpResponse('El registro a sido Eliminado Correctamente.')
 
 @login_required(login_url='/')
 def MisdatosAdmin(request):
@@ -431,3 +439,27 @@ def ImformePorMes(request,id ,fin):
 	nego=Negocio.objects.all()
 	multas=multa.objects.all()
 	return render_to_response('inicio/VerPorMes.html',{'datos':datos,'cont':cont,'nego':nego,'multas':multas,'suma':suma},context_instance=RequestContext(request))
+
+def Ayudas(request):
+	today=datetime.datetime.now()
+	return render_to_response('inicio/Ayudas.html',{'today':today},context_instance=RequestContext(request))
+
+def Estadisticos_vew(request):
+	total_denucias=multa.objects.count()
+	total_noti=Comment.objects.count()
+	total_seguimientos=Seguimiento.objects.count()
+	total_negocios=Negocio.objects.count()
+	total_cobro=Cobro.objects.count()
+	total_user=Perfiles.objects.count()
+	print total_user
+	dic={
+		'total_denucias':total_denucias,
+		'total_noti':total_noti,
+		'total_seguimientos':total_seguimientos,
+		'total_negocios':total_negocios,
+		'total_cobro':total_cobro,
+		'total_user':total_user
+	}
+	return render_to_response('inicio/Estadisticos_vew.html',dic,context_instance=RequestContext(request))
+
+

@@ -11,6 +11,7 @@ p{text-align: center;}
         background: #90EE90;
     }
     .nn li a:hover{content: white;}
+    .nn li{list-style: none;}
 </style>
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <!-- <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
@@ -21,7 +22,13 @@ p{text-align: center;}
 	<ul class="nn">
 {% for i in notificacion %}
 	{% if user.id == i.idUser %}
-	<li><a href="/detDenunciasReclamos/{{i.id}}/">Hace: {{i.fecha_denuncia|timesince}}     
+	<li><a href="/detDenunciasReclamos/{{i.id}}/">
+		{% if i.estado == 0 %}
+                <span><img src="/static/img/icon_error.gif"></span>
+                {%  else %}
+                <span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+         {%  endif %}
+		Hace: {{i.fecha_denuncia|timesince}}     
 	{{i.Tipo_de_peticion}} Descripcion,
 	{{i.comment}},Cod:{{i.idNegocio}}
 	</a>

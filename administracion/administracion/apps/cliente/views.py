@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from .forms import *
 from .models import *
+from django.contrib.auth.forms import User
 from administracion.apps.negocio.models import Negocio
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
@@ -71,3 +72,10 @@ def create_comment(request):
 							'idUser':request.POST['idUser']})
 	#esto informacion mandamos al server 
 	return HttpResponse(response.content)
+
+def VERdATOScliente(request, id):
+	dato=User.objects.get(id=int(id))
+	denuncias=Comment.objects.filter(id=int(id))
+	print dato.id
+	print dato.username
+	return HttpResponse(dato)

@@ -24,7 +24,7 @@
 <div id='comentario'>
 	{% for comment in comments %}
 		<li><a  href="javascript:ventanaSecundaria('/DetalleDenuncias/{{comment.id}}/')">
-			{{comment.user}}  Denuncio:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
+			{{comment.user}}  Denunció:  {{comment.comment}}     Cod:{{comment.idNegocio}}</a></li>
 	{% endfor %}
 </div> 
 <h1>Bienvenido :{{uu}}</h1>
@@ -34,9 +34,9 @@ Ud. esta en el negocio : {{codd.propietario}}</h2>
 <div class="row">
 <form method='POST'  id='for' enctype="multipart/form-data">{% csrf_token %}
 <tr><td><input id="id_user" name="user" type="hidden" value="{{uu}}" required/></td></tr>
-<tr><th><label for="id_Tipo_de_peticion">Tipo de peticion:</label></th></tr>
+<tr><th><label for="id_Tipo_de_peticion">Tipo de petición:</label></th></tr>
 <td><select id="id_Tipo_de_peticion" name="Tipo_de_peticion">
-	<option value='xx'>Eliga una Opcion</option>
+	<option value='xx'>Eliga una Opción</option>
 <option value="Falta de Higiene">Falta de Higiene</option>
 <option value="Denuncia por corrupcion">Denuncia por corrupcion</option>
 <option value="Horario No Establecido">Horario No Establecido</option>
@@ -57,7 +57,7 @@ Ud. esta en el negocio : {{codd.propietario}}</h2>
 <li id="Sugerencia">Puede dar las superencias que a ud. la paresca una mejor opcion al negocio</li>
 <li id="Otros">Descriva algun tipo de irregularidad observada</li>
 </div> 
-<tr><th><label for="id_comment">Descipcion:</label></th>
+<tr><th><label for="id_comment">Descipción:</label></th>
 	<td><textarea cols="40" id="id_comment" name="comment" rows="10" required placeholder="Escriba su reclamo con palabras claras y espesificas" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()">
 </textarea></td></tr>
 <tr><td><input id="id_idNegocio" name="idNegocio" type="hidden" required  value="{{cod}}"/></td></tr>

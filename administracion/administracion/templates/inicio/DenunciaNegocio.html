@@ -16,13 +16,13 @@
 	{% for i in denuncia %}
 		{% for j in nombre %}
 			{% if j.id == i.Codigo %}
-				<tr><td>H.G.M.P </td><td>Nro.{{j.id}}</td></tr>
-				<tr><td aling="center" colspan="2">COMPARENDO</td></tr>
+				<tr><td>G.A.M.P. </td><td>Nro.{{j.id}}</td></tr>
+				<tr><td aling="center" colspan="2">                                     COMPARENDO</td></tr>
 				<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
 				<tr><td colspan="2">Sr(s):{{j.propietario}}</td></tr>
-				<tr><td colspan="2">Direccion: {{j.direccion}}</td></tr>
-				<tr><td>Fecha de Presentacion en Oficina: {{i.fecha_presentacion}} </td><td>Horas: {{i.hora}}</td></tr>
-				<tr><td colspan="2">Fecha de Notificacion: {{i.fecha_notificacion}}</td></tr>
+				<tr><td colspan="2">Dirección: {{j.direccion}}</td></tr>
+				<tr><td>Fecha de Presentación en Oficina: {{i.fecha_presentacion}} </td><td>Horas: {{i.hora}}</td></tr>
+				<tr><td colspan="2">Fecha de Notificación: {{i.fecha_notificacion}}</td></tr>
 			{% endif %}
 		{% endfor %} 
 	{% endfor %}
@@ -64,7 +64,7 @@ function Multar(){
 		type:'GET',
 		url:"/sanciones/"+{{dni}}+"/",
 		success:function(resp){
-			$('#notiii').html(resp);
+			$('#ttt').html(resp);
 		}
 	});
 }

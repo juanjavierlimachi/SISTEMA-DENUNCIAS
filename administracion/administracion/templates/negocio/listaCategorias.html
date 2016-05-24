@@ -1,16 +1,22 @@
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
 <style type="text/css">
-table{width: 60%; margin: auto;}
+table{width: auto; margin: auto;}
 </style>
 <table border=1>
+	<tr><td>Nombre Registro</td><td>Horario de Atención</td><td>Dias de Atención</td><td>Fecha de Registro</td><td></td></tr>
 {% for i in datos %}
  <tr><td><a href="/EditCategoria/{{i.id}}/">{{i.categoria}}</a></td>
- 	<td>Horario de Atencion: {{i.atencion}}</td>
-	 <td>Registrado: {{i.fecha_registro}} </td><td><span>
-	 <a href='/EliminarCat/{{i.id}}/'><img src="{{STATIC_URL}}img/eli.gif"></a></span></li>
-</td></tr>
+ 	<td>{{i.atencion}}</td>
+ 	<td>{{i.dias}}</td>
+	 <td>{{i.fecha_registro}} </td>
+	 <td>
+	 <a href='/EliCat/{{i.id}}/'><span><img src="{{STATIC_URL}}img/eli.gif"></span></a>
+	 <a href="/EliminarCat/{{i.id}}/" id='ddd'></a>
+	</td>
+</tr>
 {% endfor %}
 </table>
+<br>
 <script type="text/javascript">
 $("table tr td a").on("click",function(e){
 		e.preventDefault()
@@ -23,9 +29,21 @@ $("table tr td a").on("click",function(e){
 			width: 600,
 			hide:"explode",
 			title:"Detalles del Negocio:",
-			position: "center"
+			position: "center",
+			resizable: false,
+			buttons: [
+			{
+			text: "Si",
+			click: function() {
+				//$( this ).dialog( "close" );
+				//window.location.href="/deleteReclamo/"+{{i.id}}+"/";
+				activar();
+				}
+			}
+			]
 		});	
 	});
+
 cargarFormularios=function(url){
 				$.ajax({
 						url: url,
@@ -42,5 +60,27 @@ cargarFormularios=function(url){
 						console.log("complete");
 					});
 			}
+function activar(){
+	//alert("bien");
+	$.ajax({
+		type:'GET',
+		url:$("#ddd").attr("href"),
+		success:function(resp){
+			$("#respuestasservidor").html(resp);
+			Registros();
+			$(this).dialog("close");
+		}
+	});
+}
+function Registros(){
+	$.ajax({
+		type:'GET',
+		url:'/VerCategorias/',
+		success:function(resp){
+          $('#cc').html(resp);
+        }
+	});
+	$('.ui-dialog-buttonset').hide();
+}
 </script>
 <script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

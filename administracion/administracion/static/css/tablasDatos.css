@@ -7,3 +7,4 @@ table tr, td{
 p{
 	text-align: center;
 }
+.ui-dialog-buttonpane{display: none;}

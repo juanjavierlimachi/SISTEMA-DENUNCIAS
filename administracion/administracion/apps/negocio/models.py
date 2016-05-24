@@ -6,7 +6,7 @@ from django.contrib.auth.forms import User
 class Categoria(models.Model):
 	categoria=models.CharField(max_length=50, unique=True, help_text='Escriba una Categoria Ejem. Locales')
 	atencion=models.CharField(max_length=100)
-	#hoar=models.CharField(max_length=100)
+	dias=models.CharField(max_length=100)
 	fecha_registro = models.DateTimeField(auto_now=True)
 	def __unicode__(self):
 		return self.categoria

@@ -14,6 +14,9 @@
 	</style>
 {% else %}
 <head>
+	<style type="text/css">
+		#leftt{display: none;}
+	</style>
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
@@ -34,12 +37,12 @@ $(document).ready(function() {
 </div>
 <div class="card">
 <form method='POST'  id='for' enctype="multipart/form-data">{% csrf_token %}
-{{user}}
+Usuario:{{user|upper}},   
 <tr><td><input id="id_user" name="user" type="hidden" value="{{user}}"/></td></tr>
-<tr><th><label for="id_Tipo_de_peticion">Tipo de peticion:</label></th></tr>
+<tr><th><label for="id_Tipo_de_peticion">Tipo de petición:</label></th></tr>
 <td><select id="id_Tipo_de_peticion" name="Tipo_de_peticion">
 <option value="Falta de Higiene">Falta de Higiene</option>
-<option value="Denuncia por corrupcion">Denuncia por corrupcion</option>
+<option value="Denuncia por corrupcion">Denuncia por corrupción</option>
 <option value="Horario No Establecido">Horario No Establecido</option>
 <option value="Maltratos">Maltratos</option>
 <option value="No Emite Factura">No Emite Factura</option>
@@ -47,10 +50,10 @@ $(document).ready(function() {
 <option value="sugerencias">Sugerencia</option>
 <option value="Otros Casos">Otros Casos</option>
 </select></td><br> 
-<tr><th><label for="id_comment">Descipcion:</label></th><td>
-	<textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo">
+<tr><th><label for="id_comment">Descripción:</label></th><td>
+	<textarea cols="40" id="id_comment" name="comment" rows="10" placeholder="Introdusca su reclamo con palabras breves.">
 </textarea></td></tr>
-<tr><th><label for="id_idNegocio">IdNegocio:</label></th><td>
+<tr><th><label for="id_idNegocio">Código de Negocio:</label></th><td>
 	<input id="id_idNegocio" name="idNegocio" type="number" /></td>
 <input id="id_idUser" name="idUser" type="hidden"  value="{{user.id}}"/></tr>
 <br>

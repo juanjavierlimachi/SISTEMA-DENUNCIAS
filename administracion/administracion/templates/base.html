@@ -232,6 +232,31 @@ function genera(){
                 $('#notiii').text("Generando QR(s)...")
             }
 }
+function Ayuda(){
+    $.ajax({
+        type:'GET',
+        url:'/Ayudas/',
+        beforeSend:entesEnviar,
+        success:function(resp){
+            $('#notiii').html(resp);
+        }
+    });
+    function entesEnviar(){
+        $('#notiii').text("Procesando...");
+    }
+}
+function Estadisticos(){
+    $('.card').hide();
+    $('.help').hide();
+    $.ajax({
+        type:'GET',
+        url:'/Estadisticos_vew/',
+        
+        success:function(resp){
+            $('#notiii').html(resp);
+        }
+    });
+}
 </script>
     </script>
     </head>
@@ -270,7 +295,7 @@ function genera(){
 </li>
 </ul>
 </div>
-                <a href="/" class="brand-logo hide-on-med-and-down">Administracion</a>
+                <a href="/" class="brand-logo hide-on-med-and-down">Administración</a>
                 <a href="#" data-activates="nav-mobile" class="button-collapse full">
                     <i class="mdi-navigation-menu"></i></a>
                 <ul id="nav-mobile" class="side-nav fixed">
@@ -279,7 +304,7 @@ function genera(){
                             <img class="responsive-img" src="{{STATIC_URL}}img/escudo.jpg">
                         </a>
 <form action="/buscar/" name="" id="fbuscar" method="post">{% csrf_token %}
-    <input id="id_texto" maxlength="50" name="texto" type="search" placeholder='Buscar Negocio' />
+    <input id="id_texto" maxlength="50" name="texto" type="search" placeholder='Ingrese Cod. ó Nombre propietario' />
 </form>
                     </li>
                     
@@ -289,7 +314,7 @@ function genera(){
                             <li><a href="/TodaslasDenuncias/">Ver Denuncias</a></li>
                             <li><a href="#" onclick='MisDenuncias()'>Mis denuncias</a></li>
                         </div>
-            <li class="active" id='notificacion'>Notificaciones Recividas</li>
+            <li class="active" id='notificacion'>Notificaciones Recibidas</li>
                         <div>
                             <li><a href="/TodaslasNotificaciones/">Ver Notificaciones</a></li>
                             <li><a href="#" onclick='MisNotificaciones()'>Mis notificaciones</a></li>
@@ -297,7 +322,7 @@ function genera(){
                         <li class="active">Negocios</li>
                         <div>
                             <li><a href="/RegistroNegocio/">Registrar negocio</a></li>
-                            <li><a href="#" onclick='Registertyp()'>Tipo Negocio</a></li>
+                            <li><a href="#" onclick='Registertyp()'>Nueva Ordenaza</a></li>
                             <li><a href="#" onclick="Negocios()">Ver Negocios</a></li>
                         </div>
 
@@ -318,7 +343,8 @@ function genera(){
                         <div>
                             <!--  <li><a href="/seguimiento/"></a></li> -->
                             <li><a href="/ImportarBackup/">Importar Backup</a></li>
-                            <li><a href="#">Ayuda</a></li>
+                            <li><a href="#" onclick="Ayuda()">Manual de Usuario</a></li>
+                            <li><a href="#" onclick="Estadisticos()">Ver Reporte Estadistico</a></li>
                         </div>
                  </div> 
                 </ul>

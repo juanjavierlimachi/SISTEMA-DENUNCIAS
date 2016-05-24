@@ -28,4 +28,5 @@ urlpatterns = patterns('',
 	url(r'^inspeccioness/(?P<id>\d+)/$',inspeccionesDato),
 	url(r'^deli/(?P<id>\d+)/$',deli),
 	url(r'^delii/(?P<id>\d+)/$',delii),
+	url(r'^ayudasInspertor/$', ayudasInspertor),
 )

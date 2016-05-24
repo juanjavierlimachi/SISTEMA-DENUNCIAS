@@ -1,3 +1,4 @@
+#encoding:utf-8
 from django.contrib import admin
 from django.forms import ModelForm
 from django import forms
@@ -12,6 +13,7 @@ Resolucion = (('Si', 'Presento',), ('No', 'Pendiente',))
 class formNegocio(forms.ModelForm):
 	memorial_apertura=forms.ChoiceField(widget=forms.RadioSelect, choices=Memorial)
 	resolucion_municipal=forms.ChoiceField(widget=forms.RadioSelect, choices=Resolucion)
+	direccion = forms.CharField(required=True,label="Dirección")
 	class Meta:
 		model=Negocio
 		exclude=('user','estadoN','estadoD','qr','activo',)

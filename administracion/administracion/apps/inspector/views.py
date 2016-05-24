@@ -225,9 +225,12 @@ def inspeccionesDato(request ,id):
 def deli(request, id):
 	denuncia=Comment.objects.get(id=int(id))
 	print denuncia.idNegocio
-	return HttpResponse("Esta seguro de Eliminar, la Denuncia Cod. %s ?"%(denuncia.idNegocio))
+	return HttpResponse("Esta seguro de Eliminar la Denuncia Cod, %s ?"%(denuncia.idNegocio))
 
 def delii(request, id):
 	denuncia=multa.objects.get(id=int(id))
 	print denuncia.Codigo
-	return HttpResponse("Esta seguro de Eliminar, la Notificacion Cod. %s ?"%(denuncia.Codigo))
+	return HttpResponse("Esta seguro de Eliminar la Notificacion Cod, %s ?"%(denuncia.Codigo))
+def ayudasInspertor(request):
+
+	return render_to_response('inspector/Ayudas.html',{},context_instance=RequestContext(request))

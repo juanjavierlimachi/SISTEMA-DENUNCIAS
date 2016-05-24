@@ -139,7 +139,9 @@ def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
 		else:#Viene aki si el usuario ya realizo una denuncia algunaves!!!
 			cod=int(id)
 			uu=request.user
-			return render_to_response('cliente/cliente.html',{'cod':cod,'uu':uu},context_instance=RequestContext(request))
+			denuncias=Comment.objects.filter(idUser=int(request.user.id)).order_by("-id")
+			print "Holas:",denuncias
+			return render_to_response('cliente/cliente.html',{'cod':cod,'uu':uu,'denuncias':denuncias},context_instance=RequestContext(request))
 
 class nuevoUser(FormView):
 	#usuario=request.cleaned_data['username']
@@ -355,7 +357,7 @@ def crearBackup(request):
 	src = 'G:\sistemasDenuncias/administracion/bd_'+file+'.sql'
 	dst = 'G:\sistemasDenuncias/administracion/administracion/media/bd_'+file+'.sql'
 	shutil.copy(src, dst)
-	return HttpResponse("Respaldo de la base de datos correctamente!!!<a href='/http://localhost:9595/media/' target='_blank'>Descargar</a>")
+	return HttpResponse("Respaldo de la base de datos correctamente!!!<a href='/media/bd_"+file+".sql' download='bd_"+file+".sql'>Descargar</a>")
 
 def ImportarBackup(request):
 	if request.method=='POST':

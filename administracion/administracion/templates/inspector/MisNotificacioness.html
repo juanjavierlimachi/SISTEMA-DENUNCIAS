@@ -13,6 +13,7 @@ p{text-align: center;}
         background: #90EE90;
     }
     .nn li a:hover{content: white;}
+    .nn li{list-style: none;}
 </style>
 </style>
 <p>{{user.username|upper}}, Estas son tus Notificaiones realizadas Total:{{cont}}</p>
@@ -20,12 +21,18 @@ p{text-align: center;}
 	<ul class='nn'>
 {%  for i in notificaciones %}
 	{% if i.activo == 0 %}
-		<li><a href="/detDenuncias/{{i.id}}/">Fecha de notificacion: {{i.fecha_notificacion}}  Descripcion:
+		<li> {% if i.estado == 0 %}
+          		 <span><img src="/static/img/icon_error.gif"></span>
+                {%  else %}
+                <span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
+         {%  endif %}
+		<a href="/detDenuncias/{{i.id}}/">Fecha de notificacion: {{i.fecha_notificacion}}  Descripcion:
 		{{i.descripcion}},Cod:{{i.Codigo}}</a>
 		<a href="/EditNotificacion/{{i.id}}/">Edit</a>|
 		<!-- <a href="/DeleteNotificacion/{{i.id}}/">Elimin</a> -->
 		<a href="/DeshavilitarNot/{{i.id}}/" id='ddd'></a>|
 		<a href="/delii/{{i.id}}/">Eliminar</a>
+
 	</li>
 	{% endif %}
 {% endfor %}
