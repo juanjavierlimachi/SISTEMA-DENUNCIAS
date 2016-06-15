@@ -11,8 +11,8 @@ from django.forms.extras.widgets import SelectDateWidget
 Memorial = (('Si', 'Presento',), ('No', 'Pendiente',))
 Resolucion = (('Si', 'Presento',), ('No', 'Pendiente',))
 class formNegocio(forms.ModelForm):
-	memorial_apertura=forms.ChoiceField(widget=forms.RadioSelect, choices=Memorial)
-	resolucion_municipal=forms.ChoiceField(widget=forms.RadioSelect, choices=Resolucion)
+	memorial_apertura=forms.ChoiceField(widget=forms.RadioSelect, choices=Memorial, label="Memorial de Apertura")
+	resolucion_municipal=forms.ChoiceField(widget=forms.RadioSelect, choices=Resolucion, label="Resolución Municipal")
 	direccion = forms.CharField(required=True,label="Dirección")
 	class Meta:
 		model=Negocio
@@ -25,7 +25,7 @@ class regisArchivoForm(forms.Form):
 	csv=forms.FileField()
 
 #objeto = (('Horario No Establecido', 'Horario No Establecido',),('Falta de Higiene','Falta de Higiene',),('Alteracion al Negocio','Alteracion al Negocio',) ,('Infraestructura', 'Infraestructura',),('Equipamiento De Comodidades al cliente', 'Falta de Equipamiento',))
-tipo = (('150', 'Por primera vez',), ('300', 'Por segunda vez',),('400', 'Por Clausura Temporal 5 Dias',),('1000','Clausuara Temporal 15 Dias',))
+tipo = (('150', '1er. Grado',), ('300', '2do. Grado',),('400', '3er Grado',),('1000','4to. Grado',),('1500','Clausura Indefinida',))
 class FormCobro(forms.ModelForm):
 	monto=forms.ChoiceField(widget=forms.Select, choices=tipo)
 	#estado=forms.ChoiceField(widget=forms.Select, choices=objeto)

@@ -1,7 +1,5 @@
-<link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
-<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css"> 
-<div class=''>
-	
+ <link rel="stylesheet" type="text/css" href="/static/css/tablasDatos.css">
+<div>
 		<div>
 			<select id='cate'>
 				<option>Seleccione una categoria</option>
@@ -10,80 +8,49 @@
 				{% endfor %}
 			</select>
 
-	<!-- 	<select id='Notificado'> 
-		<option>Seleccione una categoria</option>
-		{% for dato in categorias %}
-			<option value="{{dato.id}}">{{dato.categoria}}</option>
-		{% endfor %}
-		</select>  -->
-
 		</div>
 		 <div class="datalles"></div>
-		 <div class="infoNegocio"></div>
-		 <!--<a href="/detalleNegocio/{{negosio.id}}/">-->
-	
+		 
 <table border=1>
 	<tr>
-		<td>Código</td><td>Nombre Propietario</td><td>Memorial de Apertura</td><td>Resolución Municipal</td>
-		<td>Not.|Den.</td><td>Opciones</td>
+		<td>Código</td>
+		<td>Nombre Propietario</td>
+		<td>Memorial de Apertura</td>
+		<td>Resolución Municipal</td>
+		<td>Not.|Den.</td>
+		<td>Opciones</td>
+		<td>QR</td>
 	</tr>
 	{% for negosio in negosios %}
 		{% if negosio.activo == 0 %}
 	<tr>
-		<td>{{negosio.id}}</td><td>{{negosio.propietario}}
+		<td><a href="/detalleNegocio/{{negosio.id}}/">{{negosio.id}}</a></td>
+		<td>
 	{% if negosio.estadoN == 1 %}
 			<span><img src="/static/img/alert.gif"></span>
-			{% endif %}
-		{% if negosio.estadoD == 1 %}
+		{% endif %}
+	{% if negosio.estadoD == 1 %}
 			<span><img src="/static/img/icon_error.gif"></span>
-			{% endif %}</td><td> {{negosio.memorial_apertura}}</td><td>{{negosio.resolucion_municipal}}</td>
-		
+		{% endif %}
+			{{negosio.propietario}}</td>
+		<td> {{negosio.memorial_apertura}}</td>
+		<td>{{negosio.resolucion_municipal}}</td>
 		<td>
 			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>|
 			<span><a href="/denunciasAdmin/{{negosio.id}}/"><img src="/static/img/icon_error.gif "></a></span>
 		</td>
-		<td><span><a href="/deliteNew/{{negosio.id}}/"><img src="/static/img/eli.gif"></a></span> |
+		<td><span><a href="/deliteNew/{{negosio.id}}/"><img src="/static/img/eli.gif"></a></span>|
 	<span><a href="/EditarNegocio/{{negosio.id}}/"><img src="/static/img/edit.png"></a></span> </td>
+	<td><a href="/VerCodigoQR/{{negosio.id}}/" target="_blank" title="Imprimir Códogo QR">QR</a></td>
 		{% endif %}
 	{% endfor %}
 	</td>
 	</tr>
-	<tr><td colspan="6">Total registros Consultados:{{conta}}</td></tr>
-	</table>
+	<tr><td colspan="7">Total registros Consultados:{{conta}}</td></tr>
+	</table> 
 </div>
+<script type="text/javascript" src="{{STATIC_URL}}js/tablesUI.js"></script>
 <script type="text/javascript">
-$('.card').hide();
-$("table tr td a").on("click",function(e){
-		e.preventDefault()
-		var urla=$(this).attr("href");  
-		console.log(urla);
-		cargarFormularios(urla)
-		$(".infoNegocio").dialog({
-			modal:true,
-			show:"blind",
-			width: 600,
-			hide:"explode",
-			title:"Detalles del Negocio:",
-			position: "center"
-		});	
-	});
-cargarFormularios=function(url){
-				$.ajax({
-						url: url,
-						type: 'GET',
-						data: {}
-					})
-					.done(function(response) {
-						$(".infoNegocio").html(response);
-					})
-					.fail(function() {
-						console.log("error");
-					})
-					.always(function() {
-						console.log("complete");
-					});
-			}
-
 	$('#cate').on('change',inicio);
 	function inicio(){
 		var id = $(this).val();
@@ -111,4 +78,3 @@ cargarFormularios=function(url){
 		});
 	}
 </script>
-<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>

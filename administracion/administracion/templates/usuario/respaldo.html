@@ -6,7 +6,7 @@
 </style>
 <br>
 	<form method='POST' id='userr'>{% csrf_token %}
-		<p>Configuracion de la bae de datos</p>
+		<p>Configuracion de la Bae de datos: <br>Ingrese su nombre de Usuario y Contraseña de Administrador</p>
 		<label>Usuario:</label><input type='text' name='user' id='user' placeholder='Ejem: Mario'>
 		<label>Password:</label><input type='password' name='pass' id='pass' placeholder='Ejem: 12345'>
 		<input type='submit' name='uu' id='btnn' value='Acceso'>
@@ -28,7 +28,7 @@
 	});
 	$('#btn').click(mensaje);
 	function mensaje(){
-		alert("La base de datos de esta restaurando Espere por favor...");
+		alert("La Base de datos se está restaurando Espere por favor...");
 	}
 	function Respaldo(){
 		$.ajax({
@@ -41,7 +41,7 @@
                 }
 		});
 		function entesEnviar(){
-                $('#notiii').text("Creando la Restauracion de la Base de Datos")
+                $('#notiii').text("Creando la Restauración de la Base de Datos")
             }
 	}
 $('#userr').submit(function(e){

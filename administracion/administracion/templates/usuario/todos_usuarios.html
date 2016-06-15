@@ -11,14 +11,19 @@
 {% for j in user %}
 	{% for i in perfil %}
 			{% if j.id == i.usuario_id %}
-<tr><td>{{j.username}}</td><td>{{j.first_name}}</td><td>{{j.last_name}}</td><td>{{i.ci}}</td><td>{{j.date_joined}}</td><td>{{j.last_login|timesince}}</td><td>
-{% if j.is_active %}
-				<span><a href="/datosUsuari/{{j.id}}/"><img src="/static/img/icon_success.gif"></a></span>
-				{% else %}
-				<span><a href="/datosUsuari/{{j.id}}/"><img src="/static/img/icon_error.gif"></a></span>
-				{% endif %}
-</td><td><a href="/UserDenuncias/{{j.id}}/">Den</a>|
-				<a href="/UserNotificaciones/{{j.id}}/">Not</a></td>
+<tr><td>{{j.username}}</td>
+	<td>{{j.first_name}}</td>
+	<td>{{j.last_name}}</td>
+	<td>{{i.ci}}</td>
+	<td>{{j.date_joined}}</td>
+	<td>{{j.last_login|timesince}}</td>
+	<td>{% if j.is_active %}
+			<span><a href="/datosUsuario/{{j.id}}/"><img src="/static/img/icon_success.gif"></a></span>
+		{% else %}
+			<span><a href="/datosUsuario/{{j.id}}/"><img src="/static/img/icon_error.gif"></a></span>
+		{% endif %}
+</td>
+<td><a href="/UserDenuncias/{{j.id}}/">Den</a>|<a href="/UserNotificaciones/{{j.id}}/">Not</a></td>
 				</tr>
 			{% endif %}
 		{% endfor %}

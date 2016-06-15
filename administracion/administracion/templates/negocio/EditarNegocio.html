@@ -1,3 +1,9 @@
+<style type="text/css">
+.formu form ul li{list-style: none;}
+.formu form p{text-align: left;margin-left: 10px;font-size: 16px}
+#id_memorial_apertura{width: 100%;margin-top: 10px;}
+#id_resolucion_municipal{width: 100%}
+</style>
 <script type="text/javascript">
 $('#form').submit(function(e){
 	e.preventDefault();
@@ -12,11 +18,9 @@ $('#form').submit(function(e){
 	});
 });
 </script>
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
-
-	<div class="formu">
+<div class="formu">
 	<form method='POST' id='form'>{% csrf_token %}
-		{{forms}}<br><br>
-		<button  class="waves-effect waves-light btn" type="submit">Guardar Canbios</button>
+		{{forms.as_p}}<br>
+		<button  class="waves-effect waves-light btn" type="submit">Actualizar</button>
 	</form>
-	</div>
+</div>

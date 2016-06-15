@@ -13,41 +13,41 @@ from django.http import  HttpResponseRedirect, HttpResponse
 from administracion.settings import RUTA_PROYECTO
 import os
 import csv
-import datetime
+#import datetime
 from datetime import date
 from pyqrcode import QRCode
 import sys
+from datetime import datetime
 #import xlwt
 # Create your views here.
 #d= Seguimientos.objects.count()
 import shutil
 @login_required(login_url='/')
-def RegistroNegocio(request):
-    if request.method == 'POST':
+def NewNegocio(request):
+    if request.method=='POST':
         estado=False
         user=Negocio(user=request.user)
-        formulario=formNegocio(request.POST, instance=user)
-        if formulario.is_valid():
-            formulario.save()
+        forms=formNegocio(request.POST, instance=user)
+        if forms.is_valid():
+            forms.save()
+            uu=forms.save()
             estado=True
-            if estado==True:
-                dato=Negocio.objects.all().order_by('-id')[0:1]
-                for i in dato:#Aki indicar la IP de mi PC (servidor)
-                    url = QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
-                    url.svg(sys.stdout, scale=15)
-                    url.svg('QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg',scale=6)
-                    number=QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
-                    number.png('QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.png')
-                    ruta='http://localhost:9595/media/QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg'
-                    Negocio.objects.filter(id=i.id).update(qr=ruta)
-                    src = 'G:\sistemasDenuncias/administracion/QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg'
-                    dst = 'G:\sistemasDenuncias/administracion/administracion/media/QR_'+str(i.propietario.encode('utf-8'))+'_Cod_'+str(i.id)+'.svg'
-                    shutil.copy(src, dst)
-            return HttpResponseRedirect('/RegistroNegocio/')
+            if estado:
+                neg=Negocio.objects.get(id=int(uu.id))
+                url = QRCode('http://localhost:9595/privado/'+str(uu.id)+'/')
+                url.svg(sys.stdout, scale=15)
+                url.svg('QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.svg',scale=6)
+                number=QRCode('http://localhost:9595/privado/'+str(uu.id)+'/')
+                number.png('QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png')
+                ruta='http://localhost:9595/media/QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png'
+                Negocio.objects.filter(id=uu.id).update(qr=ruta)
+                src = 'G:\sistemasDenuncias/administracion/QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png'
+                dst = 'G:\sistemasDenuncias/administracion/administracion/media/QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png'
+                shutil.copy(src, dst)
+                return HttpResponseRedirect("/detalleNegocio/"+str(neg.id))
     else:
-        formulario=formNegocio()
-    return render_to_response('negocio/registroNegocio.html',{'formulario':formulario},context_instance=RequestContext(request))
-
+        forms=formNegocio()
+    return render_to_response('negocio/registroNegocio.html',{'forms':forms},context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def ListaNegocio(request):
@@ -72,19 +72,7 @@ def Filtro(request,id):
     negosios = Negocio.objects.filter(categoria=int(id)).order_by('propietario')
     aux=Negocio.objects.filter(categoria=int(id), activo=0).count()
     return render_to_response('negocio/ListaNegociosPORcategoria.html',{'negosios':negosios,'aux':aux,'c':c},context_instance=RequestContext(request))
-"""def buscar(request):
-	if request.method=='POST':
-		formulario=buscarForm(request.POST)
-		if (formulario.is_valid()):
-			criterio=request.POST["buscar"]
-			if criterio!="":
-				listas=Negocio.objects.filter(Q(propietario__contains=criterio) or Q(memorial_apertura__contains=criterio))
-				return render_to_response('negocio/resultadoBus.html',{'listas':listas},RequestContext(request))
-			else:
-				HttpResponse("error")
-	formulario=buscarForm()
-	return render_to_response('negocio/formBusqueda.html',{'formulario':formulario},RequestContext(request))
-""" 
+
 @login_required(login_url='/')
 def buscar(request):
     if request.method=="POST":
@@ -101,7 +89,7 @@ def buscar(request):
         		return render_to_response('negocio/resultadoBus.html',{'negocio':negocio},context_instance=RequestContext(request))
         		break
         if cont==0:
-        	return HttpResponse('El Registro No existe o a sido Eliminardo de la dase de datos Consulte con el Administrador')
+        	return render_to_response('negocio/resultadoBus.html',{'cont':cont},context_instance=RequestContext(request))
     else:
         texto=request.GET["texto"]
         busqueda=(
@@ -208,12 +196,13 @@ def seguimiento(request):
 @login_required(login_url='/')
 def sanciones(request, id):
     idn=id
+    
     if request.user.is_superuser and request.user.is_staff:
         if request.method=='POST':
             try:
                 yatiene=Cobro.objects.get(idNotificacion_id=idn)
                 if yatiene:
-                    return HttpResponse("Ya asigno la multa a esta Notificacion. ")
+                    return HttpResponse("Ya asignó la multa a esta Notificación.")
             except Cobro.DoesNotExist:
                 dato=Cobro(idNotificacion_id=idn)
                 forms=FormCobro(request.POST, instance=dato)
@@ -230,7 +219,6 @@ def sanciones(request, id):
     else:
         return HttpResponse("Consulte con el administrador")
     return render_to_response('negocio/RegistroCobro.html',{'forms':forms,'idn':idn},context_instance=RequestContext(request))
-
 def EditarMulta(request, id):
     idn=id
     d=Cobro.objects.get(id=idn)
@@ -249,11 +237,10 @@ def EliminarMulta(request, id):
     if request.user.is_superuser and request.user.is_staff and request.user.is_active:
         dato=Cobro.objects.get(id=int(id))
         dato.delete()
-        return HttpResponse("Se Elimino el registro.")
+        return HttpResponse("Se Eliminó el registro.")
     else:
-        HttpResponse("Ud no tiene permiso para eliminar el registro.")
+        HttpResponse("Ud. no tiene permiso para eliminar el registro.")
 
-from datetime import datetime
 @login_required(login_url='/')
 def EditarNegocio(request, id):
     con=int(id)
@@ -262,16 +249,16 @@ def EditarNegocio(request, id):
         forms=formNegocio(request.POST, instance=neg)
         if forms.is_valid():
             forms.save()
-            url = QRCode('http://localhost:9595/privado/'+str(id)+'/')
-            url.svg(sys.stdout, scale=15)
-            url.svg('QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg',scale=6)
-            number=QRCode('http://localhost:9595/privado/'+str(id)+'/')
-            number.png('QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.png')
-            ruta='http://localhost:9595/media/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
-            Negocio.objects.filter(id=id).update(qr=ruta)
-            src = 'G:\sistemasDenuncias/administracion/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
-            dst = 'G:\sistemasDenuncias/administracion/administracion/media/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
-            shutil.copy(src, dst)
+            # url = QRCode('http://localhost:9595/privado/'+str(id)+'/')
+            # url.svg(sys.stdout, scale=15)
+            # url.svg('QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg',scale=6)
+            # number=QRCode('http://localhost:9595/privado/'+str(id)+'/')
+            # number.png('QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.png')
+            # ruta='http://localhost:9595/media/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
+            # Negocio.objects.filter(id=id).update(qr=ruta)
+            # src = 'G:\sistemasDenuncias/administracion/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
+            # dst = 'G:\sistemasDenuncias/administracion/administracion/media/QR_'+str(neg.propietario.encode('utf-8'))+'_Cod_'+str(id)+'.svg'
+            # shutil.copy(src, dst)
             return HttpResponse('Se modifico el registro Correctamente')
             #return HttpResponseRedirect('/exito/')
             #return HttpResponse(json.dumps({"result":True}),"application/json")
@@ -435,22 +422,27 @@ def Generar(request,id):
     Negocio.objects.filter(id=id).update(qr=number.png('QR_'+propietario+'_Cod_'+nombe+'.png'))
     return HttpResponse("Se creo el codigo QR Correctamente")
 @login_required(login_url='/')
-
-def VerCodigoQR(request,id):
+def VerCodigoQRr(request,id):
     dato=Negocio.objects.get(id=int(id))
-    return render_to_response('negocio/VerCodigoQR.html',{'dato':dato},context_instance=RequestContext(request))
+    return render_to_response('negocio/VerCodigoQRone.html',{'dato':dato},context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def generarQR(request):
-    datos=Negocio.objects.all()
-    for i in datos:
-        url = QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
-        url.svg(sys.stdout, scale=15)
-        url.svg('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.svg',scale=6)
-        number=QRCode('http://localhost:9595/privado/'+str(i.id)+'/')
-        number.png('QR_'+str(i.propietario)+'_Cod_'+str(i.id)+'.png')
+    negocios=Negocio.objects.all()
+    for uu in negocios:
+        if uu.qr==None:
+            url = QRCode('http://localhost:9595/privado/'+str(uu.id)+'/')
+            url.svg(sys.stdout, scale=15)
+            url.svg('QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.svg',scale=6)
+            number=QRCode('http://localhost:9595/privado/'+str(uu.id)+'/')
+            number.png('QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png')
+            ruta='http://localhost:9595/media/QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png'
+            Negocio.objects.filter(id=uu.id).update(qr=ruta)
+            src = 'G:\sistemasDenuncias/administracion/QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png'
+            dst = 'G:\sistemasDenuncias/administracion/administracion/media/QR_'+str(uu.propietario.encode('utf-8'))+'_Cod_'+str(uu.id)+'.png'
+            shutil.copy(src, dst)
+    return HttpResponse("Se Genero Correctamente los codigos QR, para cada Negocio")
 
-    return HttpResponse("Se Genero Los codigos QR |<a href='G:sistemasDenuncias/administracion/'>Ver</a>")
 
 def resultadosN(request, id):
     total_Denuncias=Comment.objects.filter(idNegocio=int(id)).count()
@@ -475,7 +467,6 @@ def resultadosN(request, id):
         'recaudado':recaudado
     }
     return render(request, 'negocio/resultados.html', dic)
-
 def Aclusurar(request, id):
     negocios=Negocio.objects.filter(categoria_id=int(id), estadoN=1).distinct()
     noti=multa.objects.all()
@@ -506,5 +497,90 @@ def DeshavilitarNot(request, id):
     #dato=Negocio.objects.get(id=int(id))
     multa.objects.filter(id=int(id)).update(activo=1)
     return HttpResponse("El registro a sido Desactivado de la base de Datos")
+def gegocio_ajax(request):
+    try:
+        dato=Negocio.objects.get(id=int(request.GET['id_negocio']))
+        return HttpResponse("exito")
+    except Negocio.DoesNotExist:
+        return HttpResponse("No")
 
+def RegistrarMulta(request, id):
+    #negocio=int(id)
+    noti=multa.objects.filter(Codigo=int(id))
+    cobros=Cobro.objects.all()
+    contador=0
+    bs=150
+    id_notificacion=0
+    for i in noti:
+        for j in cobros:
+            #for k in cobros:
+            if i.id==j.idNotificacion_id:
+                #pass
+                contador+=1
+    # if contador>5 and contador <=6:
+    #     contador=0
+    # if contador>7 and contador <=8:
+    #     contador = 1
 
+    tiene=multa.objects.filter(Codigo=int(id)).order_by('-id')[0:1]
+    if len(tiene)==0:
+        return HttpResponse("Aún no se registró ninguna notificacion para este negocio <a href='/privado/"+str(id)+"'>Registrar</a>")
+    else:
+        for x in tiene:
+            id_notificacion=int(x.id)
+        print "Esta es la NOT:",id_notificacion
+        try:
+            siTienenMulta=Cobro.objects.get(idNotificacion_id=id_notificacion)
+            return HttpResponse("No hay notificaciones para asignar la multa: Decea registrar una nueva notificacion?<a href='/privado/"+str(id)+"'>Registrar</a>")
+            #print siTienenMulta
+        except Cobro.DoesNotExist:
+            print "No tiene cobro"
+            if contador==0:
+                bs=150
+                print bs
+            if contador==1:
+                bs=300
+                print bs
+            if contador==2:
+                bs=400
+                print bs
+            if contador==3:
+                bs=1000
+                print bs
+            if contador==4:
+                bs=1500
+                print bs
+            if contador >= 5:
+                forms=FormCobro()
+                return render_to_response('negocio/RegistroCobro.html',{'forms':forms,'idn':id_notificacion},context_instance=RequestContext(request))
+    dic={
+        'contador':contador,
+        'tiene':tiene,
+        #'forms':forms,
+        'id_notificacion':id_notificacion,
+        'bs':bs,
+        'adi':int(id)
+    }
+    return render_to_response('negocio/RegistrarMulta.html', dic,context_instance=RequestContext(request))
+
+def guadarMulta(request):
+    multa=Cobro()
+    monto=request.POST['monto']
+    print "Este es el monto",monto
+    multa.monto=int(request.POST['monto'])
+    multa.idNotificacion_id=int(request.POST['not'])
+    multa.save()
+    return HttpResponse("Registro exitoso")
+def VerMultasRegistrdas(request, id):
+    cobro=Cobro.objects.all().order_by("-id")
+    noti=multa.objects.filter(Codigo=int(id)).order_by("-id")
+    dic={
+        'cobro':cobro,
+        'noti':noti,
+        'ids':id
+    }
+    return render_to_response('negocio/VerMultasRegistrdas.html',dic,context_instance=RequestContext(request))
+def deliiMul(request, id):
+    denuncia=Cobro.objects.get(id=int(id))
+    print denuncia.idNotificacion_id
+    return HttpResponse("Esta seguro de Eliminar Multa?, Nro: %s"%(denuncia.idNotificacion_id))

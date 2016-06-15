@@ -15,6 +15,7 @@ from administracion.apps.negocio.models import Negocio
 from administracion.apps.cliente.models import *
 from administracion.apps.cliente.forms import *
 # Create your views here.
+import datetime
 @login_required(login_url='/')
 def perfilinspector(request,id):
 	perfil=User.objects.filter(id=id)
@@ -36,7 +37,7 @@ def buscarNegocio(request):
         		return render_to_response('inspector/resultadoBusNegocio.html',{'negocio':negocio},context_instance=RequestContext(request))
         		break
         if cont==0:
-        	return HttpResponse('No existe')
+        	return render_to_response('inspector/resultadoBusNegocio.html',{'cont':cont},context_instance=RequestContext(request))
     else:
         texto=request.GET["texto"]
         print texto
@@ -60,10 +61,13 @@ class emitirInfraccion(TemplateView):
 	def get(self, request, *args, **kwargs):
 		contexto=request.user
 		multas=multa.objects.all().order_by("-id")[0:3]
+		fecha=datetime.datetime.now()
+		fecha=fecha.strftime('%Y-%m-%d')
 		dic = {
 			'user':contexto,
 			'form': FormMulta(),
-			'multa':multas
+			'multa':multas,
+			'fecha':fecha
 		}
 			#una ves optenido el nombre enviamos al templete cliente.html
 		return render(request, 'inspector/formMultas.html', dic)

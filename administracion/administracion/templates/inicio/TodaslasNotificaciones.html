@@ -143,8 +143,7 @@ window.onload = function(){
 {% endblock %}
 {% block contenidos %}
 {% if user.is_authenticated and user.is_staff and user.is_active %}
-<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
-<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/listas.css">
 <!-- <script type="text/javascript" src="{{STATIC_URL}}js/newUi.js"></script> -->
 <style type="text/css">
@@ -186,7 +185,7 @@ $(".nn li a").on("click",function(e){
 		var urla=$(this).attr("href");  
 		console.log(urla);
 		cargarFormularios(urla)
-		$("#notiii").dialog({
+		$(".infoNegocio").dialog({
 			modal:true,
 			show:"blind",
 			width: 600,
@@ -202,7 +201,7 @@ cargarFormularios=function(urla){
 						data: {}
 					})
 					.done(function(response) {
-						$("#notiii").html(response);
+						$(".infoNegocio").html(response);
 					})
 					.fail(function() {
 						console.log("error");
@@ -215,7 +214,7 @@ cargarFormularios=function(urla){
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){
-    alert(window.location='/')
+    window.location='/';
 });
 </script>
 <style type="text/css">

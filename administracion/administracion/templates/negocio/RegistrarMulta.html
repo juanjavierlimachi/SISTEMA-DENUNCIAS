@@ -1,0 +1,46 @@
+<div id="xyz">
+<p>Actualmente Tiene registrado {{contador}} Multas:  <a href="/VerMultasRegistrdas/{{adi}}/" id="vermultas">Ver</a></p>
+<!-- {% for i in tiene %}
+	<li>Negocio:{{i.Codigo}} ID{{i.id}} :{{i.fecha_notificacion}}  hora{{i.hora}}>>{{i.descripcion}}</li>
+{% endfor %}  -->
+
+{% if contador >= 0 %}
+<form method="POST" id="muta">{% csrf_token %}
+Monto a Canselar sera:Bs<input type="text" name="monto" id="id_monto" value="{{bs}}" readonly="readonly" >
+<input type="text" name="not" id="id_not" value="{{id_notificacion}}" readonly="readonly" >
+<button>Registrar</button> 
+</form>
+<script type="text/javascript">
+$("#muta").submit(function(e){
+	//alert($("id_monto").val());
+	e.preventDefault();
+	var dato=$(this).serialize();
+	console.log(dato);
+	$.ajax({
+		type:'POST',
+		url:'/guadarMulta/',
+		data:dato,
+		success:function(resp){
+			$("#xyz").html(resp);
+		}
+	});
+});
+$("#vermultas").on('click',function(e){
+	e.preventDefault();
+	ulrs=$(this).attr('href');
+	$.ajax({
+		type:'GET',
+		url:ulrs,
+		success:function(resp){
+			$("#verMultas").html(resp);
+		}
+	});
+});
+$(function(){
+	var id_nn=$("id_not").val();
+	$("#id_not").hide();
+})
+</script>
+{% endif %}
+<div id="verMultas"></div>
+</div>

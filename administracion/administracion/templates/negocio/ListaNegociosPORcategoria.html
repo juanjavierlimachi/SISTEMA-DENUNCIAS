@@ -1,13 +1,18 @@
-<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.4.custom.min.css">
-
 <table border=1>
 	<tr>
-		<td>Codigo</td><td>Nombre Propietario</td><td>Memorial de Apertura</td><td>Resolución Municipal</td><td>Not.|Den.</td><td>Opciones</td>
+		<td>Codigo</td>
+		<td>Nombre Propietario</td>
+		<td>Memorial de Apertura</td>
+		<td>Resolución Municipal</td>
+		<td>Not.|Den.</td>
+		<td>Opciones</td>
+		<td>QR</td>
 	</tr>
 	{% for negosio in negosios %}
 	{% if negosio.activo == 0 %}
 	<tr>
-		<td>{{negosio.id}}</td><td>{{negosio.propietario}}
+		<td><a href="/detalleNegocio/{{negosio.id}}/">{{negosio.id}}</a></td>
+		<td>{{negosio.propietario}}
 	{% if negosio.estadoN == 1 %}
 			<span><a href="/datosDenuncia/{{negosio.id}}/"><img src="/static/img/alert.gif"></a></span>
 			{% endif %}
@@ -19,46 +24,13 @@
 		</td>
 		<td><span><a href="/deliteNew/{{negosio.id}}/"><img src="/static/img/eli.gif"></a></span> |
 	<span><a href="/EditarNegocio/{{negosio.id}}/"><img src="/static/img/edit.png"></a></span> </td>
+	<td><a href="/VerCodigoQR/{{negosio.id}}/" target="_blank" title="Imprimir Códogo QR">QR</a></td>
 		{% endif %}
 	{% empty %}
 	<p>No hay Registros</p>
 	{% endfor %}
-	<tr><td colspan="6">Total Registros {{aux}}</td></tr>
+	<tr><td colspan="7">Total Registros {{aux}}</td></tr>
 	</td>
 	</tr>
 	</table><br>
-
-
-<script type="text/javascript">
-$("table tr td a").on("click",function(e){
-		e.preventDefault()
-		var urla=$(this).attr("href");  
-		console.log(urla);
-		cargarFormularios(urla)
-		$(".infoNegocio").dialog({
-			modal:true,
-			show:"blind",
-			width: 600,
-			hide:"explode",
-			title:"Detalles del Negocio:",
-			position: "center"
-		});	
-	});
-cargarFormularios=function(url){
-				$.ajax({
-						url: url,
-						type: 'GET',
-						data: {}
-					})
-					.done(function(response) {
-						$(".infoNegocio").html(response);
-					})
-					.fail(function() {
-						console.log("error");
-					})
-					.always(function() {
-						console.log("complete");
-					});
-			}
-</script>
-<script type="text/javascript" src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tablesUI.js"></script>

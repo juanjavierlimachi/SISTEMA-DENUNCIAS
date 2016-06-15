@@ -9,12 +9,12 @@ $(document).ready(function(){
 			url:link,
 			beforeSend: entesEnviar,
 			success:function(resp){
-				$('.card').html(resp);
+				$('.infoNegocio').html(resp);
 				Recargar();
 			}
 		});
 		function entesEnviar(){
-                $('.card').text("Procesando...")
+                $('.infoNegocio').text("Registro Eliminado.");
             }
 	});
 	function Recargar(){
@@ -28,7 +28,7 @@ $(document).ready(function(){
         });
         function entesEnviar(){
                 $('#notiii').text("Procesando...")
-            }
+           }
 	}
 });
 </script>

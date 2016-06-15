@@ -1,31 +1,14 @@
-{% extends 'base.html' %}
-{% block title %}.:Perfil Usuario:.{% endblock %}
-{% block contenidos %}
-{% if user.is_authenticated and user.is_staff and user.is_superuser %} 
-<link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
-<style type="text/css">
-    #leftt{
-        display: none;
-    }
-    .card h5{
-        text-align: center;
-    }
-    .card .perfil{
-        width: 90%;height: 100px; margin: auto;
-    }
-    .card .perfil li{
-        width: 45%;margin: auto;float: left;margin-left: 15px;list-style: none;
-    }
-    .card a{
-        margin-left: 50px;float: left;margin-left: 5px;
-    }
-    #staff{width: 10%;height: 25px;float: left;}
-   #userr{float:left;margin-right: 15px;height: 25px;}
-   #activo{width: 10%;height: 25px;float: left;}
-     #avilitar{float:left;height: 25px;}
-</style>
 
-<div class="card">
+{% if user.is_authenticated and user.is_staff and user.is_superuser %} 
+<style type="text/css">
+.datosUser h5{text-align: center;font-size: 15px;}
+.datosUser{height: auto;width: 90%;}
+.datosUser ul li{width: auto;height: auto; list-style: none;}
+.datosUser ul li label{width: 250px;margin-left: 10px;padding: 10px; font-size: 12px;}
+.datosUser form{width: 40%;float: left;margin-left: 25px;}
+.infor{width: 100%;position: absolute;}
+</style>
+<div class="datosUser">
      <h5>Datos de Perfil</h5>
     {% for info in dato %}
         {% for user in usuario %}
@@ -34,28 +17,37 @@
                     <li><label>Primer Nombre:</label>{{user.first_name}}</li>
                     <li><label>Apellido:</label>{{user.last_name}}</li>
                    <li> <label>Numero de Ci:</label>{{info.ci}}</li>
-                    <li><label>Inspector activo:</label>{% if user.is_staff %}
+                    <li><label>Inspector activo:</label>{% if user.is_staff and user.is_active %}
                         <span><img src="/static/img/icon_success.gif"></span>
                         {% else %}
                         <span><img src="/static/img/icon_error.gif"></span>
                         {% endif %}
                     </li>
-                    <li><label>Usuario del sistema:</label>{% if user.is_active %}
+                    <li><label>Usuario Administrador:</label>{% if user.is_active and user.is_staff and user.is_superuser %}
                         <span><img src="/static/img/icon_success.gif"></span>
                         {% else %}
                           <span><img src="/static/img/icon_error.gif"></span>
                         {% endif %}
                     </li>
+                    {% if user.is_active %}
                     <form method='GET' id='form'>{% csrf_token %}
                         <input type='hidden' id='nombre' value='{{user.username}}'>
                         <input type='checkbox' name='staff' id='staff' >
                         <button id='userr'>Deshabilitar</button>
                     </form>
+                    {% else %}
+                    <!-- Como Inspector:<input type='checkbox' name='activo' id='activo' value="activo">
+                        Administrador:<input type='checkbox' name='super' id='super' value="super"> -->
                     <form method='GET' id='formu'>{% csrf_token %}
                         <input type='hidden' id='nombre' value='{{user.username}}'>
-                        <input type='checkbox' name='activo' id='activo' >
+                        <select name="op" id="op">    
+                            <option value="ins">Habilitar como Inspector </option>
+                            <option value="sp">Habilitar como Administrador</option>
+                        </select>   
                         <button id='avilitar'>Habilitar</button>
                     </form>
+                    {% endif %}
+                 
                 </ul>
              {% endif %}
         {% endfor %}
@@ -65,7 +57,7 @@
       <a class="btn btn-primary" href="/editarperfil/">Editar Datos</a></p>
       {% else %}
     <p></p>
-    {% endif %}
+    {% endif %}<br><br>
 <div class="infor"></div>
 </div>
 <script type="text/javascript">
@@ -74,8 +66,9 @@ function Havilitar(e){
     e.preventDefault();
     var datos={
         'nombre':$('#nombre').val(),
-        'activo':$('#activo:checked').val()
+        'op':$('#op').val()
     }
+    //var datos=$(this).serialize();
     console.log(datos);
     $.ajax({
         type:'get',
@@ -83,8 +76,21 @@ function Havilitar(e){
         data:datos,
         success:function(resp){
             $('.infor').html(resp);
+            actualizate();
         }
     });
+   var actualizate= function(){
+        $('.card').hide();
+          $('.help').hide();
+        $.ajax({
+            type:'GET',
+            url:"/verUsers/",
+            success:function(data){
+                console.log(data);
+                $('#notiii').html(data);
+            }
+        });
+    }
 }
    $('#form').submit(Desactivar);
    function Desactivar(e){
@@ -100,18 +106,39 @@ function Havilitar(e){
         data:datos,
         success:function(resp){
             $('.infor').html(resp);
+            actualizate();
         }
     });
+   var actualizate= function(){
+        $('.card').hide();
+          $('.help').hide();
+        $.ajax({
+            type:'GET',
+            url:"/verUsers/",
+            success:function(data){
+                console.log(data);
+                $('#notiii').html(data);
+            }
+        });
+    }
+   }
+   function Previlegios(){
+        $.ajax({
+            type:'GET',
+            url:'/privilegios/'+{{userr.id}}+'/',
+            success:function(resp){
+                $(".infor").html(resp);
+            }
+        });
    }
 </script>
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){
-    alert(window.location='/')
+    window.location='/';
 });
 </script>
 <style type="text/css">
 html{display: none;}
 </style>
 {% endif %}
-{% endblock %}

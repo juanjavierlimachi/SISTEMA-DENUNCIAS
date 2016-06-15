@@ -7,17 +7,12 @@
 }
 </style>
 <div class="">
-	<!-- <li>Nombre Inspector:{{denuncia.Usuario}}</li>
-	<li>Fecha de notificacion: {{denuncia.fecha_notificacion}}</li>
-	<li>Objeto: {{denuncia.descripcion}}</li>
-	<li>Fecha de presentacion: {{denuncia.fecha_presentacion}}</li>
-	<li>Hora de presentacion: {{denuncia.hora}}</li> -->
 <table border=1>
 	{% for i in denuncia %}
 		{% for j in nombre %}
 			{% if j.id == i.Codigo %}
 				<tr><td>G.A.M.P. </td><td>Nro.{{j.id}}</td></tr>
-				<tr><td aling="center" colspan="2">                                     COMPARENDO</td></tr>
+				<tr><td colspan="2" aling="center">                                     COMPARENDO</td></tr>
 				<tr><td colspan="2">Objeto: {{i.descripcion}}</td></tr>
 				<tr><td colspan="2">Sr(s):{{j.propietario}}</td></tr>
 				<tr><td colspan="2">Dirección: {{j.direccion}}</td></tr>
@@ -28,8 +23,10 @@
 	{% endfor %}
 </table>
 <a href="/ImprimirNotificacion/{{dni}}" target="_blank">Imprimir</a>|
+{% if user.is_superuser %}
 <a href="/ActivaNegocio/{{dni}}" id='rr'> Revisado</a>|<a href="#" onclick='Multar()'>Registrar Multar</a>|
 <a href="/mostrarMulta/{{dni}}/" id="rrM">Ver Multa</a>
+{% endif %}
 <div id="ttt"></div>
 </div>
 <script type="text/javascript">
@@ -72,7 +69,7 @@ function Multar(){
 {% else %}
 <script type="text/javascript">
 $(document).ready(function(){
-	alert(window.location='/');
+	window.location='/';
 });
 </script>
 <style type="text/css">

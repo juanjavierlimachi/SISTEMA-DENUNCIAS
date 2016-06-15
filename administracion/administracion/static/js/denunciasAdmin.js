@@ -1,5 +1,6 @@
-
 var socket = io.connect("http://localhost:3000");
+$(document).on('ready',function(){
+	$('#id_comment').focus();
 $('#boton').on('click',	Comentar);
 	function Comentar(e){
 		e.preventDefault();
@@ -27,47 +28,68 @@ $('#boton').on('click',	Comentar);
 			return false;
 		}
 		if(datos.user.length==0 || datos.comment.length<10 || datos.idNegocio.length == 0){
-			alert('Error en los datos Verifique por favor');
+			alert('Error la descripcion es muy corta');
 			$('#id_comment').focus()
 			//document.getElementById('boton').disabled=false;
 			$('.icon').hide();
 			return false;
 		}
 		else{
-			socket.emit('nuevo comentario', datos);
-			navigator.geolocation.getCurrentPosition(ubicacion,error);
-			   function ubicacion(posicion)
-				{
-				    var contenedor = document.getElementById("ubicacion");
-				    var latitud = posicion.coords.latitude;
-				    var longitud = posicion.coords.longitude;
-				    var precision = posicion.coords.accuracy;
-				    coordenadas={
-				    	lat:posicion.coords.latitude,
-				    	lng:posicion.coords.longitude
-				    }
-				    socket.emit('UbicacionCliente', coordenadas);
-				     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
-				    
-				    // document.getElementById('boton').disabled=false;
-				     $('.icon').hide();
-				}    
-				function error(error)
-			     {
-				     if(error.code == 0)
-				      alert("Error Desconocido");
-				     else if(error.code == 1)
-				      alert("No fue posible contactarte");
-				     else if(error.code == 2)
-				      alert("No hay una ubicacion disponible");
-				     else if(error.code == 3)
-				      alert("Tiempo agotado");
-				     else 
-				      alert("Error Desconocido");
-				  }
+			var negocio_ajax=$('#id_idNegocio').val();
+			if (negocio_ajax!=""){
+				$.ajax({
+					type:'GET',
+					url:'/gegocio_ajax/',
+					data:{'id_negocio':negocio_ajax},
+					success:function(resp){
+						//alert(resp);
+						var resp=resp;
+						if (resp=='exito'){
+							socket.emit('nuevo comentario', datos);
+							navigator.geolocation.getCurrentPosition(ubicacion,error);
+							   function ubicacion(posicion)
+								{
+								    var contenedor = document.getElementById("ubicacion");
+								    var latitud = posicion.coords.latitude;
+								    var longitud = posicion.coords.longitude;
+								    var precision = posicion.coords.accuracy;
+								    coordenadas={
+								    	lat:posicion.coords.latitude,
+								    	lng:posicion.coords.longitude
+								    }
+								    socket.emit('UbicacionCliente', coordenadas);
+								     //alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
+								    
+								    // document.getElementById('boton').disabled=false;
+								     $('.icon').hide();
+								}    
+								function error(error)
+							     {
+								     if(error.code == 0)
+								      alert("Error Desconocido");
+								     else if(error.code == 1)
+								      alert("No fue posible contactarte");
+								     else if(error.code == 2)
+								      alert("No hay una ubicacion disponible");
+								     else if(error.code == 3)
+								      alert("Tiempo agotado");
+								     else 
+								      alert("Error Desconocido");
+								  }
+						}else{
+							alert("Error el cóodigo Ingresado no exsiste");
+							$('#id_idNegocio').focus();
+							document.getElementById('id_idNegocio').style.color='red';
+							return false;
+						}
+					}
+				});
+			}
+
 		}
 	}
-	/*escucho un evento ObetenerUbicacion para dibijar el mapa*/
+});
+/*escucho un evento ObetenerUbicacion para dibijar el mapa*/
 	socket.on('ObtenerUbicacion',DatosUbicacion);
 	function DatosUbicacion(ubicacion){
 		//console.log(ubicacion);

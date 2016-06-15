@@ -1,7 +1,7 @@
 <style type="text/css">
 p{text-align: center;}
 table{
-	width: 80%;margin: auto;
+	width: 80%;margin: auto;text-align: center;
 }
 #ante{display: none;}
 </style>
@@ -20,10 +20,13 @@ function ver(){
 </table> 
 <p>Inpecciones Anteriores <a href="#" onclick='ver()'>Ver</a></p>
 <table border=1 id='ante'>
+	<tr><td>Inspector</td><td>Realizó el control al negocio</td><td>Fecha</td><td>Estado</td></tr>
 {% for item in datos %}
-	<tr><td>
-		Inspector:{{item.user}}</td><td> Realisó el control al negocio: {{item.neg}} en fecha:{{item.fecha}},
-		    <span><img src="/static/img/icon_success.gif"></span></td>
+	<tr>
+		<td>{{item.user}}</td>
+		<td>{{item.neg}}
+		<td>{{item.fecha}}</td>
+		 <td><span><img src="/static/img/icon_success.gif"></span></td>
 	</tr>
 {% empty %}
 		<p>No hay registros</p>

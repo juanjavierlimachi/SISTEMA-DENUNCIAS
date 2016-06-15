@@ -1,3 +1,4 @@
+#encoding:utf-8
 from django.shortcuts import render, render_to_response
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -16,6 +17,7 @@ from administracion.apps.cliente.models import *
 from administracion.apps.negocio.models import *
 from datetime import datetime
 from administracion.apps.inspector.forms import *
+import datetime
 # Create your views here.
 def ValidarUser(request):
 	usuario=request.POST['user']
@@ -58,14 +60,14 @@ def Usuario(request):
 @login_required(login_url='/')
 def ingreso(request):
 	usuario=request.user
-	hoy=datetime.now()
-	hoy = hoy.time()
-	hoy=hoy.strftime('%M')
-	ingreso_ultimo=usuario.last_login.time()
-	ingreso_ultimo=ingreso_ultimo.strftime('%M')
-	tiempo_espera = int(hoy) - int(ingreso_ultimo)
+	# hoy=datetime.now()
+	# hoy = hoy.time()
+	# hoy=hoy.strftime('%M')
+	# ingreso_ultimo=usuario.last_login.time()
+	# ingreso_ultimo=ingreso_ultimo.strftime('%M')
+	# tiempo_espera = int(hoy) - int(ingreso_ultimo)
 	#tiempo_espera=tiempo_espera
-	print 'jajajaj',tiempo_espera
+	
 	#if tiempo_espera>=5:
 		#return HttpResponseRedirect('/cerrar/')
 	if request.user.is_staff and request.user.is_active and request.user.is_superuser:
@@ -92,8 +94,9 @@ def ingreso(request):
 			# if request.user.is_active:
 			# 	conogramas=Cronograma.objects.all().order_by('-id')[0:1]
 			# 	return render_to_response('inspector/inicio_inspector.html',{'usuario':usuario,'conogramas':conogramas},context_instance=RequestContext(request))
-
 def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
+	fecha=datetime.datetime.now()
+	fecha=fecha.strftime('%Y-%m-%d')
 	if request.user.is_anonymous() and not request.user.is_authenticated():
 		cod=int(id)
 		uu=request.user
@@ -107,10 +110,11 @@ def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
 			seg=Seguimiento()
 			seg.user_id=inspector
 			seg.neg_id=idNegocio
-			seg.save()
+			#seg.save()
 			Negocio.objects.filter(id=id).update(estadoD=0)
 			if request.user.is_staff and request.user.is_active and request.user.is_superuser:
-				return render_to_response('usuario/ingreso.html',{'usuario':usuario},context_instance=RequestContext(request))
+
+				return render_to_response('inicio/Notificaciones.html',{'usuario':usuario,'cod':int(id),'fecha':fecha},context_instance=RequestContext(request))
 			else:
 		#user.is_staff decimoe q el administrador le dio el permiso para subsustema secretria
 				if request.user.is_active and request.user.is_staff:
@@ -122,7 +126,9 @@ def ingresoQR(request, id):#accediendo desde el Codigo QR del Negocio
 						'conogramas':conogramas,
 						'user':contexto,
 						'form': FormMulta(),
-						'multa':multas
+						'multa':multas,
+						'fecha':fecha,
+						'estado':True
 					}
 					return render(request, 'inspector/formMultas.html', dic)
 					#return render_to_response('inspector/formMultas.html',{'usuario':usuario,'conogramas':conogramas,dic},context_instance=RequestContext(request))
@@ -168,7 +174,7 @@ def Datos(request,id):
 	usuario=User.objects.filter(id=id)
 	aux=int(id)
 	dato=Perfiles.objects.all()
-	return render_to_response('usuario/datos.html',{'usuario':usuario,'dato':dato,'aux':aux},context_instance=RequestContext(request))
+	return render_to_response('usuario/datosUser.html',{'usuario':usuario,'dato':dato,'aux':aux},context_instance=RequestContext(request))
  
 @login_required(login_url='/')
 def serrar(request):
@@ -236,7 +242,7 @@ def buscarUsuario(request):
 def datosUsuario(request, id):
 	usuario=User.objects.filter(id=id)
 	userr=request.user
-	dato=Perfiles.objects.all()
+	dato=Perfiles.objects.filter(usuario_id=int(id))
 	return render_to_response('usuario/datos.html',{'usuario':usuario,'dato':dato,'userr':userr},context_instance=RequestContext(request))
 @login_required(login_url='/')
 def editarcontracenia(request,id):
@@ -305,13 +311,21 @@ def DasactivarUser(request):
 def VolverHavilitar(request):
 	try:
 		nombre=request.GET['nombre']
-		staff=request.GET['activo']
+		
 		user=User.objects.get(username=nombre)
-		if staff =='on':
+		print user.id
+		if request.GET['op']== 'ins':
 			user.is_staff=True
 			user.is_active=True
+			user.is_superuser=False
 			user.save()
-			return HttpResponse("El Usuario a sido Habilitado.")
+			return HttpResponse("El Usuario a sido Habilitado como Inspector.")
+		if request.GET['op']== 'sp':
+			user.is_staff=True
+			user.is_active=True
+			user.is_superuser=True
+			user.save()
+			return HttpResponse("El Usuario a sido Habilitado como Administrador.")
 		else:
 			return HttpResponse("Haga click en la casilla para Habilitado esta cuenta")
 	except User.DoesNotExist:

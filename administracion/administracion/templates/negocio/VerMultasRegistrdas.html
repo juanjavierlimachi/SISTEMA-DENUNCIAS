@@ -1,0 +1,83 @@
+<style type="text/css">
+#verMultas li{list-style: none;margin:20px }
+#detalleff li{list-style: none;margin:20px}
+</style>
+{% for i in cobro %}
+	{% for j in noti %}
+		{% if j.id == i.idNotificacion_id %}
+			<li>
+				<span><a href="/EliminarMulta/{{i.id}}/" id='dd'></a></span>
+				<span><a href="/EliminarMultaAA/{{i.id}}/"><img src="/static/img/eli.gif"></a></span>|
+				<span><a href="/EditarMulta/{{i.id}}/"><img src="/static/img/edit.png"></a></span> 
+				Multa en fecha:{{i.fecha}},
+				 Bs:{{i.monto}} <a href="/ImprimirNotificacion/{{i.idNotificacion_id}}/" target="_blank">Imprimir</a></li>
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+<script type="text/javascript">
+	$("li span a").on("click",function(e){
+		e.preventDefault()
+		var urla=$(this).attr("href");  
+		console.log(urla);
+		cargarFormularios(urla)
+		$(".infoNegocio").dialog({
+			modal:true,
+			show:"blind",
+			width: 600,
+			hide:"explode",
+			title:"Detalles del Negocio:",
+			position: "center",
+			buttons: [
+				{
+					text: "Si",
+					click: function() {
+						//$( this ).dialog( "close" );
+						//window.location.href="/deleteReclamo/"+{{i.id}}+"/";
+						activar();
+					}
+				}
+			]
+		});	
+	});
+cargarFormularios=function(url){
+				$.ajax({
+						url: url,
+						type: 'GET',
+						data: {}
+					})
+					.done(function(response) {
+						$(".infoNegocio").html(response);
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+			}
+function activar(){
+	//alert("bien");
+	$.ajax({
+		type:'GET',
+		url:$("#dd").attr("href"),
+		success:function(resp){
+			$(".infoNegocio").html(resp);
+			Load();
+			$(this).dialog("close");
+		}
+	});
+}
+function Load(){
+	$.ajax({
+		type:'GET',
+		url:'/VerMultasRegistrdas/'+{{ids}}+'/',
+		success:function(resp){
+				console.log(resp);
+				$('.detalleff').html(resp);
+				$(this).dialog("close");
+			}
+
+	});
+
+}
+</script>

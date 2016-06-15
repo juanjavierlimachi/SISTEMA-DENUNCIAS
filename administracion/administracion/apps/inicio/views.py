@@ -57,11 +57,14 @@ class AvisosNotificaciones(TemplateView):
 		multas=multa.objects.all().order_by("-id")[0:4]
 		contexto=request.user
 		contarmultas = multa.objects.all().count()
+		fecha=datetime.datetime.now()
+		fecha=fecha.strftime('%Y-%m-%d')
 		dic = {
 			'cont':contarmultas,
 			'user':contexto,
 			'form': FormMulta(),
-			'multa':multas
+			'multa':multas,
+			'fecha':fecha
 		}
 		return render(request, 'inicio/Notificaciones.html', dic)
 	def post(self, request, *args, **kwargs):
@@ -118,7 +121,6 @@ def datosDenuncia(request,id):
 	datosN=multa.objects.filter(Codigo=int(id)).order_by('-id')[0:50]
 	sanciones=Cobro.objects.all()
 	return render_to_response('inicio/DatosNegocio.html',{'datosN':datosN,'nego':nego,'sanciones':sanciones},context_instance=RequestContext(request))
-
 @login_required(login_url='/')
 def allNotDeUnNegocio(request,id):
 	negocio=Negocio.objects.get(id=int(id))
@@ -191,6 +193,11 @@ def ImprimirAyuda(request):
 	html=render_to_string('inicio/AyudasImprecion.html',{'pagesize':'later','today':today,'user':user},context_instance=RequestContext(request))
 	return generar_pdf(html)
 
+@login_required(login_url='/')
+def VerCodigoQR(request,id):
+    dato=Negocio.objects.get(id=int(id))
+    html=render_to_string('negocio/VerCodigoQR.html',{'pagesize':'later','dato':dato},context_instance=RequestContext(request))
+    return generar_pdf(html)
 def generar_pdf(html):
 	resultado=StringIO.StringIO()
 	pdf=pisa.pisaDocument(StringIO.StringIO(html.encode("UTF:8")),resultado)
@@ -345,7 +352,6 @@ def DeleteCat(request, id):
 	dato=Categoria.objects.get(id=int(id))
 	dato.delete()
 	return HttpResponse('El registro a sido Eliminado Correctamente.')
-
 @login_required(login_url='/')
 def MisdatosAdmin(request):
 	user=request.user

@@ -1,10 +1,5 @@
 
 <p>Total de Notificaciones: {{cont}}</p>
-<script type="text/javascript">
-function Informe(){
-
-}
-</script>
 	<ul class='nn'>
 		<table border=1>
 		<tr><td align='center' style="width: 50px"><br>Nro.</td><td align='center' ><br>Nombre Negocio</td><td align='center' style="width: 70px"><br>Multa</td><td align='center'><br>Usuario</td><td align='center'><br>Fecha</td></tr>
@@ -18,9 +13,7 @@ function Informe(){
 				 {% endif %}
 
 			{% endfor %}
-	
 	{% endfor %}
-
 {% empty %}
 <p>Aun no hay registros.</p>
 {% endfor %}

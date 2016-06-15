@@ -1,3 +1,6 @@
+<style type="text/css">
+.ui-dialog-buttonpane{display: none;}
+</style>
 <script type="text/javascript">
 	$('#Tipo').submit(function(e){
 		e.preventDefault();
@@ -9,7 +12,7 @@
 			data: dato,
 			success:function(resp){
 				console.log(resp);
-				$("#respp").html(resp);
+				$("#Tipo").html(resp);
 			}
 		});
 	});

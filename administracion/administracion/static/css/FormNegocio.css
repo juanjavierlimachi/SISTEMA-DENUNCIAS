@@ -1,6 +1,4 @@
-#leftt{
-        display: none;
-    }
+#leftt{display: none;}
     .card{
         width: 50%;height: auto;margin: auto;margin-top: 10px;border-radius: 5px;
         margin-bottom: 50px;
@@ -19,6 +17,7 @@
         height: 20px;margin-left: 0px;display: inline-block;width:90%;
         margin-bottom: 10px;
     }
+
     #id_memorial_apertura li{list-style: none; width: 30%;float: left; margin-left: 55px;}
     #id_memorial_apertura li label input{width: 15px; float: right;}
     #id_resolucion_municipal li{list-style: none; width: 30%;float: left;margin-left: 55px;}

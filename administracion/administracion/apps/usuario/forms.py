@@ -4,13 +4,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from .models import Perfiles
 from django.contrib.auth.forms import User
+from django.forms.extras.widgets import SelectDateWidget
 class UserForm(UserCreationForm):
 	username = forms.CharField(max_length=40,required=True,label="Nombre de Usuario",widget=forms.TextInput())
 	password1 = forms.CharField(required=True, label="Contraseña",widget=forms.PasswordInput(render_value=False))
 	password2 = forms.CharField(required=True,help_text="Introduzca la misma contraseña de arriba para su verificacion" ,label="Confirmación",widget=forms.PasswordInput(render_value=False))
 	first_name = forms.CharField(max_length=40,required=True,label="Nombre Completo",widget=forms.TextInput())
 	last_name = forms.CharField(max_length=50,required=True,label="Apellido",widget=forms.TextInput())
-	ci = forms.IntegerField(required=True,label="Nro. de CI",widget=forms.TextInput())
+	ci = forms.IntegerField(required=True,label="Nro. de CI")
 	#telefono = forms.IntegerField()
 	def clean_ci(self):
 		ci=self.cleaned_data['ci']
@@ -18,7 +19,7 @@ class UserForm(UserCreationForm):
 			p=Perfiles.objects.get(ci=ci)
 		except Perfiles.DoesNotExist:
 			return ci
-		raise forms.ValidationError('El Nro de CI ya Existe')
+		raise forms.ValidationError('El Nro. de CI ya Existe')
 	class Meta:
 		model=User
 		fields=("username","password1","password2","first_name","last_name")
@@ -56,3 +57,4 @@ class CambioForm(forms.Form):
 
 class dbArchivoForm(forms.Form):
 	base=forms.FileField()
+

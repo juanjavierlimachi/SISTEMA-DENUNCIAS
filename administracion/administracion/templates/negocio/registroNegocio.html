@@ -1,55 +1,74 @@
 {% extends 'base.html' %}
-{% block title %}.:Nuevo:.{% endblock %}
 {% block contenidos %}
 {% if user.is_authenticated and user.is_staff and user.is_active %}
 <style type="text/css">
 .icon{width: 8px;float: right;margin-right: 150px;margin-top: -20px;}
 </style>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
 <script type="text/javascript">
-  function verificar(){
-    var pro= $('#id_propietario').val();
-    var memorial=$('#id_memorial_apertura').val();
-    var resolucion=$('#id_resolucion_municipal').val();
-    var dir=$('#id_direccion').val();
+                  /*function verificar(){
+                    var pro= $('#id_propietario').val();
+                    var memorial=$('#id_memorial_apertura').val();
+                    var resolucion=$('#id_resolucion_municipal').val();
+                    var dir=$('#id_direccion').val();*/
     /*if (pro=='' || memorial=='' || resolucion ==''){
       alert('Datos Incorrectos Verifique por favor..');
       $('#id_propietario').focus()
       return false;
     }*/
-    if (!isNaN(pro)){
-        alert("No deve ser numero");
-        $('#id_propietario').focus()
-        $('#id_propietario').val("");
-        return false;
-    }
-    if (pro==''){
-      alert("Este campo es Obrigatorio")
-        $('#id_propietario').focus()
-        return false;
-    }
-    if (dir == ''){
-       alert("Este campo es Obrigatorio")
-        $('#id_direccion').focus()
-        return false;
-    }
-    else{
-      alert("Registro Exitoso");
-    }
-  }
-  function ventanaSecundaria(URL){
-                window.open(URL,"Editar","width=500,height=225,scrollbars=NO top=150 left=550");
-            } 
-</script>
+                      /*if (!isNaN(pro)){
+                          alert("No deve ser numero");
+                          $('#id_propietario').focus()
+                          $('#id_propietario').val("");
+                          return false;
+                      }
+                      if (pro==''){
+                        alert("Este campo es Obrigatorio")
+                          $('#id_propietario').focus()
+                          return false;
+                      }
+                      if (dir == ''){
+                         alert("Este campo es Obrigatorio")
+                          $('#id_direccion').focus()
+                          return false;
+                      }
+                      else{
+                        alert("Registro Exitoso");
+                      }
+                    }
+                    */
+ function ventanaSecundaria(URL){
+    window.open(URL,"Editar","width=900,height=250,scrollbars=NO top=120 left=200");
+}                   
+ $(function(){
+    $("#reg span #new").on('click',function(e){
+      e.preventDefault();
+      $("#notiii").dialog({
+        modal:true,
+        show:"blind",
+        width: 600,
+        hide:"explode",
+        title:"Ingrese una Nueva Ordenanza",
+        position: "center"
+      }); 
+      $.ajax({
+        type:'GET',
+        url:$(this).attr('href'),
+        success:function(resp){
+            $('#notiii').html(resp);
+        }
+      })
+    })
+ });
 
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
+</script>
  <div class="card">
   <p>Registro Negocio</p>
-            <form method="POST" action="" onsubmit='return verificar()'>{% csrf_token %} 
-              {{formulario}}
-              <span class='icon'><a href="javascript:ventanaSecundaria('/Registertype/')" title='Nuevo Categoria'><img src="{{STATIC_URL}}img/add.gif"></a></span><br><br>
-              <button class="waves-effect waves-light btn" type="submit"
-       onsubmit='verificar()'>Guardar</button>
-     <!--  <a href="javascript:ventanaSecundaria('/saveFiles/')">Archivo</a>| -->
+            <form method="POST" id="reg">{% csrf_token %} 
+              {{forms}}
+              <span class='icon'><a href="/Registertype/" title='Nuevo Categoria' id='new'><img src="{{STATIC_URL}}img/add.gif"></a></span><br><br>
+    <button class="btn btn-primary" type="submit">Guardar</button>
+     <!--  <a href="javascript:ventanaSecundaria('/saveFiles/')">Archivo</a>|    onsubmit='verificar()' onsubmit='return verificar()'-->
       <a href="javascript:ventanaSecundaria('/admin/negocio/negocio/import/')">Importar</a>|
       <a href="javascript:ventanaSecundaria('/admin/negocio/negocio/export/?')">Exportar</a>
             </form>

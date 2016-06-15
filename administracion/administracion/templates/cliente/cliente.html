@@ -19,8 +19,7 @@
 <style type="text/css">
 </style>
 </head>
-<audio id="player" src="/static/tonos/sonidoUno.mp3">
-		</audio>
+<audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
 <div id='comentario'>
 	{% for comment in comments %}
 		<li><a  href="javascript:ventanaSecundaria('/DetalleDenuncias/{{comment.id}}/')">
@@ -36,9 +35,9 @@ Ud. esta en el negocio : {{codd.propietario}}</h2>
 <tr><td><input id="id_user" name="user" type="hidden" value="{{uu}}" required/></td></tr>
 <tr><th><label for="id_Tipo_de_peticion">Tipo de petición:</label></th></tr>
 <td><select id="id_Tipo_de_peticion" name="Tipo_de_peticion">
-	<option value='xx'>Eliga una Opción</option>
+	<option value='Mala Atencion'>Mala Atención</option>
 <option value="Falta de Higiene">Falta de Higiene</option>
-<option value="Denuncia por corrupcion">Denuncia por corrupcion</option>
+<option value="Denuncia por corrupcion">Denuncia por corrupción</option>
 <option value="Horario No Establecido">Horario No Establecido</option>
 <option value="Maltratos">Maltratos</option>
 <option value="Licencia vencida">Licencia vencida</option>
@@ -63,7 +62,7 @@ Ud. esta en el negocio : {{codd.propietario}}</h2>
 <tr><td><input id="id_idNegocio" name="idNegocio" type="hidden" required  value="{{cod}}"/></td></tr>
 <input id="id_idUser" name="idUser" type="hidden"  value="{{uu.id}}"/>
 <br>
-<button id ="boton" name="enviar" class="btn btn-primary">Notificar</button>
+<button id ="boton" name="enviar" class="btn btn-primary">Denunciar</button>
 <span class="icon"><img src="{{STATIC_URL}}img/loader.gif"></span>
 </form>
 </div> 

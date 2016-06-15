@@ -1,6 +1,14 @@
 {% extends 'inspector/inicio_inspector.html' %}
 {% block user %}{{user}}{% endblock %}
 {% block inspecciones %}
+{% if cont == 0 %}
+<style type="text/css">#leftt{display: none;} </style>
+	<script type="text/javascript">
+		$(function(){
+			$('#notiii').html('<p align="center">Nose encontraron registros con el Código Ingresado</p>');
+		});
+	</script>
+{% else %}
 <link rel="stylesheet" type="text/css" href="/static/css/frontends.css">
 <link rel="stylesheet" type="text/css" href="/static/css/formularios.css">
 <style type="text/css">
@@ -35,6 +43,8 @@
 		 <a href="#" onclick="Notificaiones()" class="btn btn-warning">Notificaciones</a>
 		 <a href="#" onclick="Denuncias()" class="btn btn-danger">Denuncias</a>
 		 <a href="#" onclick="SeguimientoDelNegocio()" class="btn btn-info">Seguimientos</a>
+
+		 <a href="/privado/{{negocio.id}}/"  class="btn btn-info">Notificar</a>
 	</li> 
 		<!-- <li><a href="/eliminarN/{{negocio.id}}/">Eliminar</a></li> -->
 	</ul>
@@ -80,4 +90,5 @@ function SeguimientoDelNegocio(){
             }
 }
 </script>
+	{% endif %}
 {% endblock %}

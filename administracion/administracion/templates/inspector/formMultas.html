@@ -2,30 +2,30 @@
 {% block user %}{{user}}{% endblock %}
 {% block js %}
 {% if user.is_authenticated and user.is_staff %}
-<script type="text/javascript">
-$(document).ready(function(){
-	Calendar.setup({
-		        inputField     :    "id_fecha_presentacion",      // id del campo de texto
-		        ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
-		        button         :    "lanzador"   // el id del botón que lanzará el calendario
-		    });
-});
-</script>
-<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
-  <!-- librería principal del calendario -->
-  <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
-  <!-- librería para cargar el lenguaje deseado -->
-  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
-  <!-- librería que declara la función Calendar.setup, que ayuda a generar un calendario en unas pocas líneas de código -->
-  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
-{% endif %}
+	<script type="text/javascript">
+	$(document).ready(function(){
+		Calendar.setup({
+			        inputField     :    "id_fecha_presentacion",      // id del campo de texto
+			        ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
+			        button         :    "lanzador"   // el id del botón que lanzará el calendario
+			    });
+	});
+	</script>
+	<link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/calendar-green.css" title="win2k-cold-1" />
+	  <!-- librería principal del calendario -->
+	  <script type="text/javascript" src="{{STATIC_URL}}js/calendar.js"></script>
+	  <!-- librería para cargar el lenguaje deseado -->
+	  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-es.js"></script>
+	  <!-- librería que declara la función Calendar.setup, que ayuda a generar un calendario en unas pocas líneas de código -->
+	  <script type="text/javascript" src="{{STATIC_URL}}js/calendar-setup.js"></script>
+	{% endif %}
 {% endblock %}
 {% block inspecciones %}
 {% if not user.is_authenticated or not user.is_staff %}
 	<h2>Inicie sesion</h2>
 	<script type="text/javascript">
 	$(document).ready(function(){
-		alert(window.location='/');
+		window.location='/';
 	})
 	</script>
 	<style type="text/css">
@@ -53,18 +53,19 @@ $(document).ready(function(){
 	<input id="id_idUser" name="idUser" value='{{user.id}}' type="hidden">
 	<tr><th><label for="id_Usuario">Usuario:{{user.username|upper}}</label></th><td>
 	<input id="id_Usuario" maxlength="100" name="Usuario" type="hidden" value='{{user.username}}' /></td></tr>
-	<tr><th><label for="id_descripcion">Descripcion:</label></th><td>
+	<tr><th><label for="id_descripcion">Descripción:</label></th><td>
 	<textarea cols="40" id="id_descripcion" name="descripcion" rows="10" required placeholder="Describa la notificacion"></textarea></td></tr>
-	<tr><th><label for="id_Codigo">Codigo:</label></th><td>
+	<tr><th><label for="id_Codigo">Código Negocio:</label></th><td>
 	<input id="id_Codigo" name="Codigo" type="number" value='{{cod}}' placeholder='Ingrese el codigo del negocio'/></td></tr>
-	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" placeholder='Año-Mes-Dia' disabled/>
+	<input id="id_fecha_presentacion" name="fecha_presentacion" type="text" value="{{fecha}}" disabled/>
 	<input type="button" id="lanzador" value="Fecha" /></td></tr>
 	<tr><td><label for="id_hora">Hora:</label>
 	<input id="id_hora" type="time" name="hora" max="23:59:00" min="00:00:00" step="1" placeholder="Ejem:08:30" required></td></tr><br>
-	<button name='btn' id='bo'class="btn btn-primary">Notificar</button>
+	<button name='btn' id='bo'class="btn btn-primary">Notificar</button>{% if estado %}
+<a href="/DetalleNegocio/{{cod}}/" class="btn btn-danger">Detalles</a>
+{% endif %}
 </form>
 </div>
-<audio id="player" src="/static/tonos/sonidoUno.mp3"></audio>
 <script type="text/javascript" src="{{STATIC_URL}}js/NotificacionesAdmin.js"></script>
 {% endif %}
 {% endblock %}

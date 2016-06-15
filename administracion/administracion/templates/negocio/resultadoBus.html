@@ -1,12 +1,18 @@
-
 {% extends 'base.html' %}
 {% block contenidos %}
-
+{% if cont == 0 %}
+<style type="text/css">#leftt{display: none;} </style>
+	<script type="text/javascript">
+		$(function(){
+			$('#notiii').html('<p align="center">Nose encontraron registros con el Código Ingresado</p>');
+		});
+	</script>
+{% else %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/FormNegocio.css">
 <style type="text/css">
 .infoNegocio{width: 92%;margin: auto;}
 .nn li{list-style: none;}
-.card{background: #eee;}
+.card{background: #eee; width: 60%;}
 #notiii form{width: 50%; margin: auto;}
 </style>
 <div class='card'>
@@ -24,21 +30,23 @@
 			<span><img src="{{STATIC_URL}}img/icon-yes.gif"></span>
 			{% endif %}
 	</p>
-	<ul class='nn'>
-		<li><a href=""></a>
+	<ul class='nnkk'>
+		<li>
 			<!-- <a href="/eliminarN/{{negocio.id}}/">Eliminar</a>| -->
 			<a href="/deliteNew/{{negocio.id}}/">Eliminar</a>|
 			<a href="/EditarNegocio/{{negocio.id}}/">Editar</a>|
 			<a href="/datosDenuncia/{{negocio.id}}/">Notificaciones</a>|
 			<a href="/denunciasAdmin/{{negocio.id}}/">Denuncias</a>|
 			<a href="/resultadosN/{{negocio.id}}/">Resultados</a>|
-			<a href="/VerCodigoQR/{{negocio.id}}/">QR</a>
+			<a href="/VerCodigoQRr/{{negocio.id}}/">QR</a>|
+			<a href="/RegistrarMulta/{{negocio.id}}/">Multar</a>|
+			<a href="/VerMultasRegistrdas/{{negocio.id}}/">Ver Multas</a>
 		</li>
 	</ul>
-	<div class="infoNegocio"></div>
+	<div class="detalleff"></div>
 </div>
 <script type="text/javascript">
-	$('.nn li a').click(function(e){
+	$('.nnkk li a').click(function(e){
 		e.preventDefault();
 		var urla=$(this).attr("href"); 
 		console.log(urla);
@@ -47,10 +55,11 @@
 			url:urla,
 			success:function(resp){
 				console.log(resp);
-				$('.infoNegocio').html(resp);
+				$('.detalleff').html(resp);
 			}
 		});
 	});
 </script>
+{% endif %}
 {% endblock %}
 
